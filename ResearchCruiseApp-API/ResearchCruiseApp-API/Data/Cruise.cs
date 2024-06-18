@@ -14,9 +14,9 @@ public class Cruise : IYearBasedNumberedEntity
 
     public Guid MainDeputyManagerId { get; set; }
 
-    public DateOnly StartDate { get; set; }
+    public DateTime StartDate { get; set; }
 
-    public DateOnly EndDate { get; set; }
+    public DateTime EndDate { get; set; }
 
     public List<Application> Applications { get; set; } = null!;
 }
