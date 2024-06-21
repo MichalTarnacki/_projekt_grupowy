@@ -1,4 +1,4 @@
-import React, {Dispatch, useState} from 'react';
+import React, {Dispatch, useEffect, useState} from 'react';
 import Page from "../Page";
 import "react-big-calendar/lib/css/react-big-calendar.css"
 import PageTitle from "../CommonComponents/PageTitle";
@@ -63,7 +63,18 @@ export default function CruisesPage(props: Props) {
         return records;
     };
 
-    const [cruises, setCruises]: [Cruise[], Dispatch<any>] = useState(generateCruises())
+    const [cruises, setCruises] = useState<Cruise[]>()
+    useEffect(() => {
+        Api
+            .get(
+                '/api/Cruises',)
+            .then(response =>
+                setCruises(response.data)
+            )
+            .catch(exception => {
+                console.log(exception.message)
+            })
+    },[]);
 
     return (
         <Page className="justify-content-center col-12 col-xl-9 bg-white">

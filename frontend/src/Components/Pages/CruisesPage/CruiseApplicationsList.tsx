@@ -17,7 +17,7 @@ export default function CruiseApplicationsList(props: Props) {
                         key={index}
                         className={`d-flex col-12 ${(index < props.applicationsShortInfo.length - 1) && "mb-2"}`}
                     >
-                        <div className="d-flex flex-wrap align-content-center col-6 mt-2">
+                        <div className="d-flex flex-wrap align-content-center col-6">
                             <div className="d-flex justify-content-center w-100">Numer:</div>
                             <LinkWithState
                                 className="text-center w-100"
