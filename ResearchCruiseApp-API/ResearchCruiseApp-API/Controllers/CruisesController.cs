@@ -36,7 +36,7 @@ namespace ResearchCruiseApp_API.Controllers
                     MainDeputyManagerId = application.FormA.DeputyManagerId,
                     StartDate = cruiseDates.Item1,
                     EndDate = cruiseDates.Item2,
-                    //Applications = [application]
+                    Applications = [application]
                 };
                 
                 // Using transaction to prevent multiple users from generating a cruise with the same number

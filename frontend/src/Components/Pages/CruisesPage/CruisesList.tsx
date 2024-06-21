@@ -56,7 +56,10 @@ export default function CruisesList(props: Props) {
                         {/*    <FontAwesomeIcon icon={faArrowDown} />*/}
                         {/*</div>*/}
                     </div>
-                    <div className="d-none d-xl-flex justify-content-center align-items-center p-2" style={{width: "44%"}}>
+                    <div className="d-none d-xl-flex justify-content-center align-items-center p-2" style={{width: "24%"}}>
+                        <b>Kierownik główny</b>
+                    </div>
+                    <div className="d-none d-xl-flex justify-content-center align-items-center p-2" style={{width: "20%"}}>
                         <b>Zgłoszenia</b>
                     </div>
                     <div className="d-none d-xl-flex justify-content-center align-items-center p-2 border-end" style={{width: "16%"}}>
@@ -96,8 +99,15 @@ export default function CruisesList(props: Props) {
                             <div className="col-12 d-flex d-xl-none justify-content-center">Czas zakończenia:</div>
                             <ReadOnlyTextInput value={row.endDate} className="mb-1"/>
                         </div>
+                        <div className="d-flex flex-wrap justify-content-center align-content-center p-2"
+                             style={{width: windowWidth >= 1200 ? "24%" : "100%"}}
+                        >
+                            <div className="col-12 d-flex d-xl-none justify-content-center">Kierownik główny:</div>
+                            <ReadOnlyTextInput value={row.mainCruiseManagerFirstName} className="d-flex w-100 mb-1" />
+                            <ReadOnlyTextInput value={row.mainCruiseManagerLastName} className="d-flex w-100" />
+                        </div>
                         <div className="d-flex flex-wrap justify-content-center align-items-center p-2"
-                             style={{width: windowWidth >= 1200 ? "44%" : "100%"}}
+                             style={{width: windowWidth >= 1200 ? "20%" : "100%"}}
                         >
                             <div className="col-12 d-flex d-xl-none justify-content-center">Zgłoszenia:</div>
                             <CruiseApplicationsList applicationsShortInfo={row.applicationsShortInfo} />
