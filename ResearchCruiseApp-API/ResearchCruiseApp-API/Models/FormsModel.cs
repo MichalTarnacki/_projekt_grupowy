@@ -17,7 +17,7 @@ public struct DateRange
 
 public class UGTeam
 {
-    public int Value { get; set; }
+    public int UnitId { get; set; }
     public int? NoOfEmployees { get; set; }
     public int? NoOfStudents { get; set; }
 }
