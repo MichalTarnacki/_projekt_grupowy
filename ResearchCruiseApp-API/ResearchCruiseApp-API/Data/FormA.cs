@@ -48,7 +48,8 @@ public class FormA
     public string? Permissions { get; set; }
     /* TODO Zdobyć wymagania co do obszaru */
     
-    
+    // TODO should be list
+    // public List<int> ResearchArea { get; set; } 
     public int ResearchArea { get; set; } 
     
     public int CruiseGoal { get; set; }
