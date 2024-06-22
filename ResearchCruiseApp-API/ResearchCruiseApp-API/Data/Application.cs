@@ -26,9 +26,9 @@ public class Application : IYearBasedNumberedEntity
     
     public FormA? FormA { get; set; } = null!;
     
-    public FormA? FormB { get; set; } = null!;
+    public FormB? FormB { get; set; } = null!;
     
-    public FormA? FormC { get; set; } = null!;
+    public FormC? FormC { get; set; } = null!;
     
     public int Points { get; set; }
     
