@@ -14,7 +14,7 @@ public class EvaluatedApplicationModel
 
     public List<EvaluatedPublication> Publications { get; set; } = [];
 
-    public List<ResearchTask> CruiseEffects { get; set; } = [];
+    public List<EvaluatedResearchTask> CruiseEffects { get; set; } = [];
 
     public List<EvaluatedSPUBTask> SpubTasks { get; set; } = [];
 }

@@ -15,7 +15,8 @@ namespace ResearchCruiseApp_API.Controllers
     public class FormsAController(
         ResearchCruiseContext researchCruiseContext,
         UsersContext usersContext,
-        IYearBasedKeyGenerator yearBasedKeyGenerator) : ControllerBase
+        IYearBasedKeyGenerator yearBasedKeyGenerator,
+        IApplicationEvaluator applicationEvaluator) : ControllerBase
     {
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetFormById([FromRoute] Guid id)
@@ -58,7 +59,7 @@ namespace ResearchCruiseApp_API.Controllers
             return Ok(formModels);
         }
         
-        [HttpPost]
+        [HttpPost("A")]
         public async Task<IActionResult> AddForm([FromBody] FormAModel form)
         {
             if (!ModelState.IsValid)
@@ -86,6 +87,12 @@ namespace ResearchCruiseApp_API.Controllers
         
         public async Task AddApplicationAsync(FormA formA)
         {
+            
+            var mapper = MapperConfig.InitializeAutomapper();
+            var formAModel = mapper.Map<FormAModel>(formA);
+            
+            var evaluatedApplication = applicationEvaluator.EvaluateApplication(formAModel, []);
+            
             var newApplication = new Application
             {
                 Number = yearBasedKeyGenerator.GenerateKey(researchCruiseContext.Applications),
@@ -93,7 +100,7 @@ namespace ResearchCruiseApp_API.Controllers
                 FormA = formA,
                 FormB = null,
                 FormC = null,
-                Points = 0,
+                Points = applicationEvaluator.CalculateSumOfPoints(evaluatedApplication),
                 Status = Application.ApplicationStatus.New
             };
 

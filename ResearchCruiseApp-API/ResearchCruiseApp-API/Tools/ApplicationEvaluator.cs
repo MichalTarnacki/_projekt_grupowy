@@ -1,3 +1,4 @@
+using System.Globalization;
 using ResearchCruiseApp_API.Models;
 
 namespace ResearchCruiseApp_API.Tools;
@@ -57,7 +58,7 @@ public class ApplicationEvaluator : IApplicationEvaluator
     private const int SpubTaskPoints = 100;
 
 
-    public EvaluatedApplicationModel EvaluateApplication(FormsModel formA, List<ResearchTask> cruiseEffects)
+    public EvaluatedApplicationModel EvaluateApplication(FormAModel formA, List<ResearchTask> cruiseEffects)
     {
         var evaluatedApplication = new EvaluatedApplicationModel();
 
@@ -83,9 +84,16 @@ public class ApplicationEvaluator : IApplicationEvaluator
         if (formA.UgTeams != null)
             evaluatedApplication.UgTeams = formA.UgTeams;
 
-        if (evaluatedApplication.UgTeams.Count >= 3)
+        var emptyTeams = 0;
+        foreach (var ugTeam in evaluatedApplication.UgTeams)
+        {
+            if (ugTeam.NoOfEmployees <= 0 && ugTeam.NoOfStudents <= 0)
+                emptyTeams++;
+        }
+
+        if (evaluatedApplication.UgTeams.Count - emptyTeams >= 3)
             evaluatedApplication.UgTeamsPoints = UgTeamPointsFromAtLeast3Units;
-        else if (evaluatedApplication.UgTeams.Count >= 2)
+        else if (evaluatedApplication.UgTeams.Count - emptyTeams >= 2)
             evaluatedApplication.UgTeamsPoints = UgTeamPointsFromAtLeast2Units;
         else
             evaluatedApplication.UgTeamsPoints = DefaultPoints;
@@ -95,10 +103,10 @@ public class ApplicationEvaluator : IApplicationEvaluator
             evaluatedApplication.Publications.Add(EvaluatePublication(publication));
         }
 
-        // foreach (var cruiseEffect in CruiseEffects)
-        // {
-        //     evaluatedApplication.CruiseEffects.Add(EvaluateResearchTask(cruiseEffect));   
-        // }
+        foreach (var cruiseEffect in cruiseEffects)
+        {
+             evaluatedApplication.CruiseEffects.Add(EvaluateResearchTask(cruiseEffect));   
+        }
 
         foreach (var spubTask in formA.SpubTasks)
         {
@@ -131,12 +139,12 @@ public class ApplicationEvaluator : IApplicationEvaluator
         if (researchTask.Type == DomesticProject)
             return new EvaluatedResearchTask(researchTask, (int)(DomesticProjectPoints
                                                                  * Math.Floor(
-                                                                     int.Parse(researchTask.Values.FinancingAmount)
+                                                                     float.Parse(researchTask.Values.FinancingAmount, CultureInfo.InvariantCulture)
                                                                      * DomesticProjectPointsRatio)));
         if (researchTask.Type == ForeignProject)
             return new EvaluatedResearchTask(researchTask, (int)(ForeignProjectPoints
                                                                  * Math.Floor(
-                                                                     int.Parse(researchTask.Values.FinancingAmount)
+                                                                     float.Parse(researchTask.Values.FinancingAmount, CultureInfo.InvariantCulture)
                                                                      * ForeignProjectPointsRatio)));
         if (researchTask.Type == InternalProject)
             return new EvaluatedResearchTask(researchTask, InternalProjectPoints);
@@ -175,5 +183,39 @@ public class ApplicationEvaluator : IApplicationEvaluator
     private EvaluatedSPUBTask EvaluateSpubTask(SPUBTask spubTask)
     {
         return new EvaluatedSPUBTask(spubTask, SpubTaskPoints);
+    }
+    
+    public int CalculateSumOfPoints(EvaluatedApplicationModel evaluatedApplication)
+    {
+        var sum = 0;
+
+        foreach (var researchTask in evaluatedApplication.ResearchTasks)
+        {
+            sum += researchTask.CalculatedPoints;
+        }
+            
+        foreach (var contract in evaluatedApplication.Contracts)
+        {
+            sum += contract.CalculatedPoints;
+        }
+
+        sum += evaluatedApplication.UgTeamsPoints;
+            
+        foreach (var publication in evaluatedApplication.Publications)
+        {
+            sum += publication.CalculatedPoints;
+        }
+            
+        foreach (var cruiseEffect in evaluatedApplication.CruiseEffects)
+        {
+            sum += cruiseEffect.CalculatedPoints;
+        }
+            
+        foreach (var spubTask in evaluatedApplication.SpubTasks)
+        {
+            sum += spubTask.CalculatedPoints;
+        }
+
+        return sum;
     }
 }

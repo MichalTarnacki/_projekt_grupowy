@@ -71,14 +71,14 @@ namespace ResearchCruiseApp_API.Tools
                 //     ;
                 
                 //Configuring FormsModel and FormA
-                cfg.CreateMap<FormsModel, FormA>()
+                cfg.CreateMap<FormAModel, FormA>()
                     .ForMember(dest => dest.AcceptablePeriodBeg, act => act.MapFrom(src => src.AcceptablePeriod!.Min()))
                     .ForMember(dest => dest.AcceptablePeriodEnd, act => act.MapFrom(src => src.AcceptablePeriod!.Max()))
                     .ForMember(dest => dest.OptimalPeriodBeg, act => act.MapFrom(src => src.OptimalPeriod!.Min()))
                     .ForMember(dest => dest.OptimalPeriodEnd, act => act.MapFrom(src => src.OptimalPeriod!.Max()))
                     ;
 
-                cfg.CreateMap<FormA, FormsModel>()
+                cfg.CreateMap<FormA, FormAModel>()
                     .ForMember(
                         dest => dest.AcceptablePeriod,
                         options =>
