@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using NuGet.Protocol;
 using ResearchCruiseApp_API.Data;
 using ResearchCruiseApp_API.Models;
@@ -19,7 +20,7 @@ namespace ResearchCruiseApp_API.Controllers
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetFormById([FromRoute] Guid id)
         {
-            var form = await GetAllFormsFromDb(researchCruiseContext)
+            var form = await GetFormsQuery(researchCruiseContext)
                 .FirstOrDefaultAsync(form => form.Id == id);
             if (form == null)
                 return NotFound();
@@ -28,8 +29,8 @@ namespace ResearchCruiseApp_API.Controllers
             return Ok(mapper.Map<FormsModel>(form));
         }
 
-        public static Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<ResearchCruiseApp_API.Data.FormA,
-            System.Collections.Generic.List<ResearchCruiseApp_API.Data.SPUBTask>> GetAllFormsFromDb(ResearchCruiseContext researchCruiseContext)
+        private static IIncludableQueryable<FormA, List<Data.SPUBTask>>GetFormsQuery(
+            ResearchCruiseContext researchCruiseContext)
         {
             // TODO include appropriate entities
             return researchCruiseContext.FormsA
@@ -45,7 +46,7 @@ namespace ResearchCruiseApp_API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllForms()
         {
-            var forms = await GetAllFormsFromDb(researchCruiseContext).ToListAsync();
+            var forms = await GetFormsQuery(researchCruiseContext).ToListAsync();
             var formModels = new List<FormAModel>();
             var mapper = MapperConfig.InitializeAutomapper();
 
