@@ -77,7 +77,7 @@ namespace ResearchCruiseApp_API.Controllers
 
             var mapper = MapperConfig.InitializeAutomapper();
 
-            var formAModel = mapper.Map<FormsModel>(application.FormA);
+            var formAModel = mapper.Map<FormAModel>(application.FormA);
             var evaluatedApplicationModel = applicationEvaluator.EvaluateApplication(formAModel, []);
             
             return Ok(evaluatedApplicationModel);

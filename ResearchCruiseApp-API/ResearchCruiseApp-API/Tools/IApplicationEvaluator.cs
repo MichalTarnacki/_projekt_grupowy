@@ -4,5 +4,6 @@ namespace ResearchCruiseApp_API.Tools;
 
 public interface IApplicationEvaluator
 {
-    public EvaluatedApplicationModel EvaluateApplication(FormsModel formA, List<ResearchTask> cruiseEffects);
+    public EvaluatedApplicationModel EvaluateApplication(FormAModel formA, List<ResearchTask> cruiseEffects);
+    public int CalculateSumOfPoints(EvaluatedApplicationModel evaluatedApplication);
 }
