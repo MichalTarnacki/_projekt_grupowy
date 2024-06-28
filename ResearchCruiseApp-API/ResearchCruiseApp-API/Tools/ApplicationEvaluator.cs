@@ -131,12 +131,12 @@ public class ApplicationEvaluator : IApplicationEvaluator
         if (researchTask.Type == DomesticProject)
             return new EvaluatedResearchTask(researchTask, (int)(DomesticProjectPoints
                                                                  * Math.Floor(
-                                                                     int.Parse(researchTask.Values.FinancingAmount)
+                                                                     Int32.Parse(researchTask.Values.FinancingAmount)
                                                                      * DomesticProjectPointsRatio)));
         if (researchTask.Type == ForeignProject)
             return new EvaluatedResearchTask(researchTask, (int)(ForeignProjectPoints
                                                                  * Math.Floor(
-                                                                     int.Parse(researchTask.Values.FinancingAmount)
+                                                                     Int32.Parse(researchTask.Values.FinancingAmount)
                                                                      * ForeignProjectPointsRatio)));
         if (researchTask.Type == InternalProject)
             return new EvaluatedResearchTask(researchTask, InternalProjectPoints);
