@@ -80,6 +80,11 @@ public class EvaluatedResearchTask : ResearchTask, IEvaluatedField
         this.Values = task.Values;
         this.CalculatedPoints = points;
     }
+
+    public EvaluatedResearchTask()
+    {
+        
+    }
 }
 
 public class Contract
@@ -117,6 +122,11 @@ public class EvaluatedContract : Contract, IEvaluatedField
         this.Scan = contract.Scan;
         this.CalculatedPoints = points;
     }
+
+    EvaluatedContract()
+    {
+        
+    }
 }
 
 public class Publication
@@ -145,6 +155,10 @@ public class EvaluatedPublication : Publication, IEvaluatedField
         this.Points = publication.Points;
         this.Info = publication.Info;
         this.CalculatedPoints = points;
+    }
+    EvaluatedPublication()
+    {
+        
     }
 }
 
@@ -196,6 +210,11 @@ public class EvaluatedSPUBTask : SPUBTask, IEvaluatedField
         this.YearTo = spubTask.YearTo;
         this.Name = spubTask.Name;
         this.CalculatedPoints = points;
+    }
+    
+    EvaluatedSPUBTask()
+    {
+        
     }
 }
 
