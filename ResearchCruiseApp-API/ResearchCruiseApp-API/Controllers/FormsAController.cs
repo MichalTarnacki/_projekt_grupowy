@@ -90,9 +90,15 @@ namespace ResearchCruiseApp_API.Controllers
             
             var mapper = MapperConfig.InitializeAutomapper();
             var formAModel = mapper.Map<FormAModel>(formA);
+
             
-            var evaluatedApplication = applicationEvaluator.EvaluateApplication(formAModel, []);
+            var evaluatedApplicationModel = applicationEvaluator.EvaluateApplication(formAModel, []);
+            
+            var evaluatedApplication = mapper.Map<EvaluatedApplication>(evaluatedApplicationModel);
+            
+        
             await researchCruiseContext.EvaluatedApplications.AddAsync(evaluatedApplication);
+            await researchCruiseContext.SaveChangesAsync();
             
             var newApplication = new Application
             {
@@ -101,7 +107,8 @@ namespace ResearchCruiseApp_API.Controllers
                 FormA = formA,
                 FormB = null,
                 FormC = null,
-                Points = applicationEvaluator.CalculateSumOfPoints(evaluatedApplication),
+                EvaluatedApplication = evaluatedApplication,
+                Points = applicationEvaluator.CalculateSumOfPoints(evaluatedApplicationModel),
                 Status = Application.ApplicationStatus.New
             };
 
