@@ -54,31 +54,30 @@ namespace ResearchCruiseApp_API.Controllers
         public async Task<IActionResult> CalculatePoints([FromRoute] Guid applicationId)
         {
             var application = await GetApplicationsQuery()
+                .Include(application => application.EvaluatedApplication)
                 .Include(application =>
-                    application.FormA != null ? application.FormA.Contracts : null)
+                    application.EvaluatedApplication != null ? application.EvaluatedApplication.Contracts : null)
                 .Include(application =>
-                    application.FormA != null ? application.FormA.Publications : null)
+                    application.EvaluatedApplication != null ? application.EvaluatedApplication.Publications : null)
                 .Include(application =>
-                    application.FormA != null ? application.FormA.Works : null)
+                    application.EvaluatedApplication != null ? application.EvaluatedApplication.GuestTeams : null)
                 .Include(application =>
-                    application.FormA != null ? application.FormA.GuestTeams : null)
+                    application.EvaluatedApplication != null ? application.EvaluatedApplication.ResearchTasks : null)
                 .Include(application =>
-                    application.FormA != null ? application.FormA.ResearchTasks : null)
+                    application.EvaluatedApplication != null ? application.EvaluatedApplication.UgTeams : null)
                 .Include(application =>
-                    application.FormA != null ? application.FormA.UGTeams : null)
-                .Include(application =>
-                    application.FormA != null ? application.FormA.SPUBTasks : null)
+                    application.EvaluatedApplication != null ? application.EvaluatedApplication.SpubTasks : null)
                 .FirstOrDefaultAsync(application => application.Id == applicationId);
 
             if (application == null)
                 return NotFound();
-            if (application.FormA == null)
+            
+            if (application.EvaluatedApplication == null)
                 return BadRequest();
-
+            
             var mapper = MapperConfig.InitializeAutomapper();
 
-            var formAModel = mapper.Map<FormsModel>(application.FormA);
-            var evaluatedApplicationModel = applicationEvaluator.EvaluateApplication(formAModel, []);
+            var evaluatedApplicationModel = mapper.Map<EvaluatedApplicationModel>(application.EvaluatedApplication);
             
             return Ok(evaluatedApplicationModel);
         }
