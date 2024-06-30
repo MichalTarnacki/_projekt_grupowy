@@ -43,7 +43,7 @@ public class ApplicationEvaluator : IApplicationEvaluator
     private const string DomesticContract = "domestic";
     private const int DomesticContractPoints = 150;
 
-    private const string ForeignContract = "foreign";
+    private const string InternationalContract = "international";
     private const int ForeignContractPoints = 300;
 
     private const int UgTeamPointsFromAtLeast3Units = 100;
@@ -164,7 +164,7 @@ public class ApplicationEvaluator : IApplicationEvaluator
     {
         if (contract.Category == DomesticContract)
             return new EvaluatedContract(contract, DomesticContractPoints);
-        if (contract.Category == ForeignContract)
+        if (contract.Category == InternationalContract)
             return new EvaluatedContract(contract, ForeignContractPoints);
 
         return new EvaluatedContract(contract, DefaultPoints);
