@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -45,11 +46,14 @@ namespace ResearchCruiseApp_API.Controllers
             return Ok(await UserModel.GetUserModel(user, userManager));
         }
         
-        [Authorize(Roles = RoleName.Administrator)]
+        [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.Shipowner}")]
         [HttpPost]
         public async Task<IActionResult> AddUser(
             [FromBody] RegisterModel registerModel, [FromServices] IServiceProvider serviceProvider)
         {
+            if (registerModel.Role is null)
+                return BadRequest("Nie wybrano roli dla nowego użytkownika");
+            
             var emailAddressAttribute = new EmailAddressAttribute();
             if (string.IsNullOrEmpty(registerModel.Email) || !emailAddressAttribute.IsValid(registerModel.Email))
                 return BadRequest("Adres e-mail jest niepoprawny");
@@ -57,8 +61,15 @@ namespace ResearchCruiseApp_API.Controllers
             if (await userManager.FindByEmailAsync(registerModel.Email) != null)
                 return Conflict("Użytkownik o tym adresie e-mail już istnieje");
             
-            string? responseMessage = null;
-            var roleName = string.Empty;
+            if (!await CanCurrentUserGiveRole(registerModel.Role))
+                return Forbid();
+            
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var rolesNames = await roleManager.Roles
+                .Select(role => role.Name)
+                .ToListAsync();
+            if (!rolesNames.Contains(registerModel.Role))
+                return BadRequest("Rola nie istnieje");
             
             var newUser = new User()
             {
@@ -69,30 +80,13 @@ namespace ResearchCruiseApp_API.Controllers
                 Accepted = true
             };
             await userManager.CreateAsync(newUser, registerModel.Password);
-
-            if (registerModel.Role is not null)
-            {
-                var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-                var rolesNames = await roleManager.Roles
-                    .Select(role => role.Name!)
-                    .ToListAsync();
-
-                if (rolesNames.Contains(registerModel.Role))
-                {
-                    await userManager.AddToRoleAsync(newUser, registerModel.Role);
-                    roleName = registerModel.Role;
-                }
-                else
-                    responseMessage = "Role does not exist";
-            }
+            await userManager.AddToRoleAsync(newUser, registerModel.Role);
 
             var emailSender = serviceProvider.GetRequiredService<IEmailSender>();
             await emailSender.SendAccountConfirmationMessageAsync(
-                newUser, registerModel.Email, roleName, serviceProvider);
-            
-            return CreatedAtAction(nameof(GetUserById),
-                new { id = newUser.Id, controller = "Users" },
-                new {Id = newUser.Id, message = responseMessage});
+                newUser, registerModel.Email, registerModel.Role, serviceProvider);
+
+            return Created();
         }
 
         [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.Shipowner}")]
@@ -159,25 +153,32 @@ namespace ResearchCruiseApp_API.Controllers
             return NoContent();
         }
 
-        // [Authorize(Roles = RoleName.Administrator)]
-        // [HttpGet("locked")]
-        // public async Task<IActionResult> GetAllLockedUsers()
-        // {
-        //     
-        // }
-        //
-        // [Authorize(Roles = RoleName.Administrator)]
-        // [HttpPatch("locked/{id}")]
-        // public async Task<IActionResult> SetLocked([FromRoute] string id, [FromQuery] bool setLocked)
-        // {
-        //     var user = await userManager.FindByIdAsync(id);
-        //     if (user == null)
-        //         return NotFound();
-        //
-        //     var um = userManager;
-        //     await userManager.SetLockoutEnabledAsync(user, setLocked);
-        //
-        //     return NoContent();
-        // }
+
+        private async Task<bool> CanCurrentUserGiveRole(string roleName)
+        {
+            var currentUserId = User.Claims
+                .FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier)
+                ?.Value;
+            if (currentUserId is null)
+                return false;
+            
+            var currentUser = await userManager.FindByIdAsync(currentUserId);
+            if (currentUser is null)
+                return false;
+            
+            var currentUserRoles = await userManager.GetRolesAsync(currentUser);
+            
+            if (currentUserRoles.Contains(RoleName.Administrator))
+                return true;
+
+            if (currentUserRoles.Contains(RoleName.Shipowner))
+            {
+                if (roleName is RoleName.Administrator or RoleName.Shipowner)
+                    return false;
+                return true;
+            }
+            
+            return false;
+        }
     }
 }

@@ -81,8 +81,8 @@ export default function AddUserForm() {
                         form={newUserForm}
                         label="E-mail"
                         name="email"
-                        // validationPattern={/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/}
-                        // validationPatternMessage="Nieprawidłowy adres e-mail"
+                        validationPattern={/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/}
+                        validationPatternMessage="Nieprawidłowy adres e-mail"
                         disabled={sending}
                     />
                     <TextInput
