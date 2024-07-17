@@ -19,7 +19,7 @@ import useCustomEvent from "../../../Tools/useCustomEvent";
 import api from "../../../Tools/Api";
 import ThesisInput, {Thesis} from "../Inputs/ThesisInput/ThesisInput"
 import PublicationsInput, {Publication} from "../Inputs/PublicationsInput/PublicationsInput";
-import ErrorCode from "../../LoginPage/ErrorCode";
+import ErrorCode from "../../CommonComponents/ErrorCode";
 import ActionInput from "../Inputs/ActionInput/ActionInput";
 import DetailedPlanInput from "../Inputs/DetailedPlanInput";
 import EquipmentInput from "../Inputs/EquipmentInput";

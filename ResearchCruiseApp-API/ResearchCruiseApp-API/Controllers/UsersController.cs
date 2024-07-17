@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,19 +16,22 @@ namespace ResearchCruiseApp_API.Controllers
     [Route("[controller]")]
     [ApiController]
     public class UsersController(
-        UsersContext usersContext, UserManager<User> userManager)
+        UsersContext usersContext,
+        UserManager<User> userManager,
+        IUserPermissionVerifier userPermissionVerifier)
         : ControllerBase
     {
-        [Authorize(Roles = RoleName.Administrator)]
+        [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.Shipowner}")]
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()
         {
-            var users = await usersContext.Users.ToListAsync();
-            var userModels = new List<UserModel>();
+            var allUsers = await usersContext.Users.ToListAsync();
 
-            foreach (var user in users)
+            var userModels = new List<UserModel>();
+            foreach (var user in allUsers)
             {
-                userModels.Add(await UserModel.GetUserModel(user, userManager));
+                if (await userPermissionVerifier.CanUserAccessAsync(User.Claims, user))
+                    userModels.Add(await UserModel.GetAsync(user, userManager));
             }
             
             return Ok(userModels);
@@ -43,7 +45,7 @@ namespace ResearchCruiseApp_API.Controllers
             if (user == null)
                 return NotFound();
             
-            return Ok(await UserModel.GetUserModel(user, userManager));
+            return Ok(await UserModel.GetAsync(user, userManager));
         }
         
         [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.Shipowner}")]
@@ -58,11 +60,11 @@ namespace ResearchCruiseApp_API.Controllers
             if (string.IsNullOrEmpty(registerModel.Email) || !emailAddressAttribute.IsValid(registerModel.Email))
                 return BadRequest("Adres e-mail jest niepoprawny");
             
+            if (!await userPermissionVerifier.CanUserAssignRoleAsync(User.Claims, registerModel.Role))
+                return StatusCode(StatusCodes.Status403Forbidden, "Nie można nadać tej roli");
+            
             if (await userManager.FindByEmailAsync(registerModel.Email) != null)
                 return Conflict("Użytkownik o tym adresie e-mail już istnieje");
-            
-            if (!await CanCurrentUserGiveRole(registerModel.Role))
-                return Forbid();
             
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var rolesNames = await roleManager.Roles
@@ -100,7 +102,7 @@ namespace ResearchCruiseApp_API.Controllers
 
             foreach (var user in users)
             {
-                userModels.Add(await UserModel.GetUserModel(user, userManager));
+                userModels.Add(await UserModel.GetAsync(user, userManager));
             }
 
             return Ok(userModels);
@@ -151,34 +153,6 @@ namespace ResearchCruiseApp_API.Controllers
                 await userManager.RemoveFromRoleAsync(user, toggleUserRoleModel.RoleName);
 
             return NoContent();
-        }
-
-
-        private async Task<bool> CanCurrentUserGiveRole(string roleName)
-        {
-            var currentUserId = User.Claims
-                .FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier)
-                ?.Value;
-            if (currentUserId is null)
-                return false;
-            
-            var currentUser = await userManager.FindByIdAsync(currentUserId);
-            if (currentUser is null)
-                return false;
-            
-            var currentUserRoles = await userManager.GetRolesAsync(currentUser);
-            
-            if (currentUserRoles.Contains(RoleName.Administrator))
-                return true;
-
-            if (currentUserRoles.Contains(RoleName.Shipowner))
-            {
-                if (roleName is RoleName.Administrator or RoleName.Shipowner)
-                    return false;
-                return true;
-            }
-            
-            return false;
         }
     }
 }
