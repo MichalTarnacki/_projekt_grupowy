@@ -46,7 +46,7 @@ builder.Services.AddDbContext<ResearchCruiseContext>(options =>
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddTransient<IUserPermissionVerifier, UserPermissionVerifier>();
+builder.Services.AddScoped<IUserPermissionVerifier, UserPermissionVerifier>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddSingleton<IYearBasedKeyGenerator, YearBasedKeyGenerator>();
 builder.Services.AddScoped<IApplicationEvaluator, ApplicationEvaluator>();
