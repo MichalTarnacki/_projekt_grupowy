@@ -9,10 +9,10 @@ import {Contract} from "../ContractsInput/ContractsInput";
 type Props = {
     className: string,
     label: string,
-    name:string,
+    name: string,
     form?: UseFormReturn,
     historicalPublications: Publication[],
-    required? :boolean,
+    required?: boolean,
     readonly?: boolean
 }
 
@@ -22,8 +22,8 @@ export type Publication = {
     authors: string,
     title: string,
     magazine: string,
-    year: string,
-    points: string
+    year: number,
+    points: number
 }
 
 
@@ -53,19 +53,19 @@ function PublicationsInput(props: Props){
                             validate: {
                                 noEmptyInputs: (value: Publication[]) => {
                                     if (value.some((row: Publication) => {
-                                        return Object
+                                        if (Object
                                             .values(row)
-                                            .some((rowField: object | string) => {
-                                                if (typeof rowField == 'object') {
-                                                    return Object
-                                                        .values(rowField)
-                                                        .some((rowSubField: string) => !rowSubField)
+                                            .some((rowField) => {
+                                                if (typeof rowField == 'string' && rowField === "") {
+                                                    return true
                                                 }
-                                                return !rowField
                                             })
-                                    })
-                                    )
+                                        ) {
+                                            return true
+                                        }
+                                    })) {
                                         return "Wypełnij wszystkie pola"
+                                    }
                                 }
                             }
                         }}
@@ -278,7 +278,6 @@ function PublicationsInput(props: Props){
                                                     onChange={(e) => {
                                                         const sanitizedValue = parseInt(e.target.value);
                                                         var val = field.value;
-                                                        console.log(sanitizedValue)
                                                         if (!isNaN(sanitizedValue) && sanitizedValue < 9999) {
                                                             val[index].year = sanitizedValue
                                                         } else {
@@ -311,7 +310,6 @@ function PublicationsInput(props: Props){
                                                     onChange={(e) => {
                                                         const sanitizedValue = parseInt(e.target.value);
                                                         var val = field.value;
-                                                        console.log(sanitizedValue)
                                                         if (!isNaN(sanitizedValue) && sanitizedValue < 9999) {
                                                             val[index].points = sanitizedValue
                                                         } else {
@@ -371,8 +369,8 @@ function PublicationsInput(props: Props){
                                                     authors: "",
                                                     title: "",
                                                     magazine: "",
-                                                    year: "",
-                                                    points: ""
+                                                    year: new Date().getFullYear(),
+                                                    points: 0
                                                 }
                                                 props.form!.setValue(
                                                     props.name,

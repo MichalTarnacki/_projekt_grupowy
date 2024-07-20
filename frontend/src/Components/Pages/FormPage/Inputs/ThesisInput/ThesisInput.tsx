@@ -24,7 +24,7 @@ export type Thesis = {
     author: string,
     title: string,
     promoter: string,
-    year: string
+    year: number
 }
 
 

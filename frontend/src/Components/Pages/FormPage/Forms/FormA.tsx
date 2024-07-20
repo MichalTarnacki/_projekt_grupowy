@@ -41,20 +41,23 @@ type FormAInitValues = {
 }
 
 export type FormAValues = {
+    id?: string
     cruiseManagerId: string
     deputyManagerId: string
-    year: string
-    acceptedPeriod: number[]
+    year: number
+    acceptablePeriod: number[]
     optimalPeriod: number[]
-    cruiseDays: string
-    cruiseHours: any
-    periodNotes: string
-    shipUsage: string
-    permissions: string
-    researchArea: string
-    researchAreaInfo: string
-    cruiseGoal: string
-    cruiseGoalDescription: string
+    cruiseHours: number
+    cruiseDays: number
+    periodNotes?: string
+    shipUsage: number
+    differentUsage?: string
+    permissionsRequired: number
+    permissions?: string
+    researchArea: number
+    researchAreaInfo?: string
+    cruiseGoal: number
+    cruiseGoalDescription?: string
     researchTasks: Task[]
     contracts: Contract[]
     ugTeams: UgTeam[]
@@ -66,6 +69,7 @@ export type FormAValues = {
 
 export type FormAValue =
     string |
+    number |
     number[] |
     any |
     Task[] |
@@ -83,7 +87,7 @@ type Props = {
 
 
 function FormA(props: Props){
-    const form = useForm({
+    const form = useForm<FormAValues>({
         mode: 'onBlur',
         // defaultValues: defaultValues,
         shouldUnregister: false
@@ -113,10 +117,6 @@ function FormA(props: Props){
             })
             .catch(error => console.log(error))
     },[]);
-
-    useEffect(() => {
-        console.log(formInitValues)
-    }, [formInitValues])
 
     const { dispatchEvent } = useCustomEvent('busy')
 
@@ -170,7 +170,7 @@ function FormA(props: Props){
                                  label="Liczba planowanych dób rejsowych"
                                  connectedName="cruiseHours"
                                  notZero
-                                 newVal={(e) => 24*e}
+                                 newVal={(e) => 24 * e}
                                  maxVal={99}
                     />
                     <NumberInput className="col-12 col-md-12 col-xl-6"
@@ -239,7 +239,8 @@ function FormA(props: Props){
 
                 <FormSection title={sections.Rejon}>
                     <ClickableMap
-                        label="Obszar prowadzonych badań" name="researchArea"
+                        label="Obszar prowadzonych badań"
+                        name="researchArea"
                         // image={formInitValues?.researchAreasMap}
                         regions={formInitValues?.researchAreas}
                     />
@@ -274,8 +275,8 @@ function FormA(props: Props){
                                 "values": {
                                     "title": "3re",
                                     "time": {
-                                        "startDate": "Mon Jan 01 2024 00:00:00 GMT+0100 (czas środkowoeuropejski standardowy)",
-                                        "endDate": "Sun Dec 01 2024 00:00:00 GMT+0100 (czas środkowoeuropejski standardowy)"
+                                        "start": "Mon Jan 01 2024 00:00:00 GMT+0100 (czas środkowoeuropejski standardowy)",
+                                        "end": "Sun Dec 01 2024 00:00:00 GMT+0100 (czas środkowoeuropejski standardowy)"
                                     },
                                     "financingAmount": "0.00"
                                 }
@@ -285,8 +286,8 @@ function FormA(props: Props){
                                 "values": {
                                     "title": "3re",
                                     "time": {
-                                        "startDate": "Wed May 01 2024 00:00:00 GMT+0200 (czas środkowoeuropejski letni)",
-                                        "endDate": "Wed May 01 2024 00:00:00 GMT+0200 (czas środkowoeuropejski letni)"
+                                        "start": "Wed May 01 2024 00:00:00 GMT+0200 (czas środkowoeuropejski letni)",
+                                        "end": "Wed May 01 2024 00:00:00 GMT+0200 (czas środkowoeuropejski letni)"
                                     },
                                     "financingAmount": "0.00"
                                 }
@@ -424,8 +425,8 @@ function FormA(props: Props){
                                 authors: "Urszula Kwasigroch, Katarzyna Łukawska-Matuszewska, Agnieszka Jędruch, Olga Brocławik, Magdalena Bełdowska",
                                 title: "Mobility and bioavailability of mercury in sediments of the southern Baltic sea in relation to the chemical fractions of iron: Spatial and temporal patterns",
                                 magazine: "Marine Environmental Research",
-                                year: "2023",
-                                points: "0"
+                                year: 2023,
+                                points: 0
 
                             },
                             {
@@ -434,8 +435,8 @@ function FormA(props: Props){
                                 authors: "Aleksandra Brodecka-Goluch, Katarzyna Łukawska-Matuszewska",
                                 title: "Porewater dissolved organic and inorganic carbon in relation to methane occurrence in sediments of the Gdańsk Basin (southern Baltic Sea)",
                                 magazine: "Continental Shelf Research",
-                                year: "2018",
-                                points: "30"
+                                year: 2018,
+                                points: 30
                             },
                             {
                                 category: "postscript",
@@ -443,8 +444,8 @@ function FormA(props: Props){
                                 authors: "Natalia Miernik, Urszula Janas, Halina Kendzierska",
                                 title: "Role of macrofaunal communities in the Vistula River plume, the Baltic Sea - bioturbation and bioirrigation potential",
                                 magazine: "Biology",
-                                year: "2023",
-                                points: "100"
+                                year: 2023,
+                                points: 100
                             },
                             {
                                 category: "postscript",
@@ -452,8 +453,8 @@ function FormA(props: Props){
                                 authors: "Jakub Idczak, Aleksandra Brodecka-Goluch, Katarzyna Łukawska-Matuszewska, Bożena Graca, Natalia Gorska, Zygmunt Klusek, Patryk Pezacki, Jerzy Bolałek",
                                 title: "A geophysical, geochemical and microbiological study of a newly discovered pockmark with active gas seepage and submarine groundwater discharge (MET1-BH, central Gulf of Gdańsk, southern Baltic Sea)",
                                 magazine: "Science of the Total Environment",
-                                year: "2020",
-                                points: "200"
+                                year: 2020,
+                                points: 200
                             }
                         ]}
                     />

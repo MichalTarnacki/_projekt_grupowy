@@ -10,7 +10,7 @@ import {UseFormReturn} from "react-hook-form";
 export type FormValues =
     FormAValues // | FormBValues | FormCValues
 
-type FormValue =
+export type FormValue =
     FormAValue // | FormBValue | FormCValue
 
 export type SavedFormData = {
@@ -23,7 +23,7 @@ export type SavedFormData = {
 
 type Props = {
     children?: React.ReactElement<any, string | React.JSXElementConstructor<HTMLElement>>[]
-    form: UseFormReturn,
+    form: UseFormReturn<FormValues>,
     loadValues?: FormValues,
     type: string,
     readonly?:boolean
@@ -109,7 +109,8 @@ function FormTemplate(props: Props) {
         console.log(props.form.getValues())
         console.log(props.form.formState.errors)
         console.log(props.form.formState.touchedFields)
-        dispatchEvent("Trwa wysyłanie")
+        //dispatchEvent("Trwa wysyłanie")
+
         // const savedFormsDataString = localStorage.getItem('sentFormData');
         // let savedFormsData: SavedFormData[] = [];
         // // Jeśli nie ma jeszcze żadnych danych w localStorage, utwórz nową tablicę
@@ -129,20 +130,20 @@ function FormTemplate(props: Props) {
         //
         // // Zapisz zaktualizowane dane w localStorage
         // localStorage.setItem('sentFormData', JSON.stringify(savedFormsData));
-        Api
-            .post(
-                '/formsA/'+props.type,
-                data
-            )
-            .catch(err =>
-                null
-            )
-            .then(()=> {
-                setTimeout(()=> {
-                    dispatchEvent(null)
-                    navigate("/ViewForms")
-                },1000)
-            })
+        // Api
+        //     .post(
+        //         '/formsA/'+props.type,
+        //         data
+        //     )
+        //     .catch(err =>
+        //         null
+        //     )
+        //     .then(()=> {
+        //         setTimeout(()=> {
+        //             dispatchEvent(null)
+        //             navigate("/ViewForms")
+        //         },1000)
+        //     })
     }
 
     return (
@@ -159,7 +160,14 @@ function FormTemplate(props: Props) {
                                     <button onClick={props.form.handleSubmit(saveValues,saveValues)} className="btn btn-primary w-100" style={{fontSize:"inherit"}}>Zapisz</button>
                                 </div>
                                 <div className="d-flex col-6 text-center p-2 justify-content-center" >
-                                    <button onClick={props.form.handleSubmit(handleSubmit)} className="btn btn-primary w-100" style={{fontSize:"inherit"}}>Wyślij</button>
+                                    <button
+                                        // onClick={props.form.handleSubmit(handleSubmit)}
+                                        onClick={handleSubmit}
+                                        className="btn btn-primary w-100"
+                                        style={{ fontSize:"inherit" }}
+                                    >
+                                        Wyślij
+                                    </button>
                                 </div>
                             </>
                         }
