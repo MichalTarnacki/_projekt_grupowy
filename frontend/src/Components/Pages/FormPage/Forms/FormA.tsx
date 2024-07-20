@@ -20,7 +20,7 @@ import {administrationUnits} from "../../../../resources/administrationUnits";
 import useCustomEvent from "../../../Tools/useCustomEvent";
 import api from "../../../Tools/Api";
 import FormYearSelect from "../Inputs/FormYearSelect";
-import ThesisInput, {Thesis} from "../Inputs/ThesisInput/ThesisInput"
+import ThesesInput, {Thesis} from "../Inputs/ThesesInput/ThesesInput"
 import PublicationsInput, {Publication} from "../Inputs/PublicationsInput/PublicationsInput";
 
 
@@ -464,18 +464,18 @@ function FormA(props: Props){
                             wskazujący jednoznacznie że <strong>badania w ramach niniejszej pracy były prowadzone z
                                 pokładu jednostki RV Oceanograf.</strong></p>
                     </div>
-                        <ThesisInput
+                        <ThesesInput
                             required={true}
                             className="col-12"
                             label="Prace"
                             name="theses"
-                            historicalThesis={[
+                            historicalTheses={[
                                 {
                                     category: "doctor",
                                     author: "Marian Domogolski",
                                     title: "Analiza i badania wód głębinowych na terenie Morza Bałtyckiego ze szczególnym uwzględnieniem wód i wód głębinowych",
                                     promoter: "Elżbieta Widłogrodzka",
-                                    year: "2020"
+                                    year: 2020
 
                                 },
                                 {
@@ -483,14 +483,14 @@ function FormA(props: Props){
                                     author: "Marian Domogolski",
                                     title: "Analiza i badania wód głębinowych na terenie Morza Bałtyckiego ze szczególnym uwzględnieniem wód i wód głębinowych",
                                     promoter: "Elżbieta Widłogrodzka",
-                                    year: "2020"
+                                    year: 2020
                                 },
                                 {
                                     category: "bachelor",
                                     author: "Marian Domogolski",
                                     title: "Analiza i badania wód głębinowych na terenie Morza Bałtyckiego ze szczególnym uwzględnieniem wód i wód głębinowych",
                                     promoter: "Elżbieta Widłogrodzka",
-                                    year: "2020"
+                                    year: 2020
                                 }
                             ]}
                         />
@@ -502,18 +502,18 @@ function FormA(props: Props){
                         name="spubTasks"
                         historicalSpubTasks={[
                             {
-                                yearFrom: "2020",
-                                yearTo: "2030",
+                                yearFrom: 2020,
+                                yearTo: 2030,
                                 name: "Badanie nowych właściwości wodno-tlenowych Morza Bałtyckiego w obszarze Zatoki Gdańskiej"
                             },
                             {
-                                yearFrom: "2021",
-                                yearTo: "2026",
+                                yearFrom: 2021,
+                                yearTo: 2026,
                                 name: "Badanie właściwości azotowych Morza Bałtyckiego w obszarze Zatoki Puckiej"
                             },
                             {
-                                yearFrom: "2022",
-                                yearTo: "2024",
+                                yearFrom: 2022,
+                                yearTo: 2024,
                                 name: "Bałtycki pobór zasobów mineralnych na obszarze Polskiej WSE"
                             },
                         ]}

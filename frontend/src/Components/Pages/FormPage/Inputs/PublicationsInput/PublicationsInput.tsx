@@ -53,16 +53,11 @@ function PublicationsInput(props: Props){
                             validate: {
                                 noEmptyInputs: (value: Publication[]) => {
                                     if (value.some((row: Publication) => {
-                                        if (Object
+                                        return Object
                                             .values(row)
                                             .some((rowField) => {
-                                                if (typeof rowField == 'string' && rowField === "") {
-                                                    return true
-                                                }
+                                                return (typeof rowField == 'string' && rowField === "")
                                             })
-                                        ) {
-                                            return true
-                                        }
                                     })) {
                                         return "Wypełnij wszystkie pola"
                                     }

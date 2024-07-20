@@ -4,9 +4,6 @@ import ErrorCode from "../../../CommonComponents/ErrorCode";
 import Select from "react-select";
 import ThesisCategoryPicker from "./ThesisCategoryPicker";
 import {Publication} from "../PublicationsInput/PublicationsInput";
-import {Contract} from "../ContractsInput/ContractsInput";
-import {prop} from "react-data-table-component/dist/DataTable/util";
-
 
 
 type Props = {
@@ -14,7 +11,7 @@ type Props = {
     label: string,
     name:string,
     form?: UseFormReturn,
-    historicalThesis: Thesis[],
+    historicalTheses: Thesis[],
     required? :boolean,
     readonly?: boolean
 }
@@ -28,7 +25,7 @@ export type Thesis = {
 }
 
 
-function WorkList(props: Props){
+function ThesesInput(props: Props){
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     useEffect(
         () => {
@@ -54,17 +51,12 @@ function WorkList(props: Props){
                                     if (value.some((row: Thesis) => {
                                         return Object
                                             .values(row)
-                                            .some((rowField: object | string) => {
-                                                if (typeof rowField == 'object') {
-                                                    return Object
-                                                        .values(rowField)
-                                                        .some((rowSubField: string) => !rowSubField)
-                                                }
-                                                return !rowField
+                                            .some((rowField) => {
+                                                return (typeof rowField == 'string' && rowField === "");
                                             })
-                                    })
-                                    )
+                                    })) {
                                         return "Wypełnij wszystkie pola"
+                                    }
                                 }
                             }
                         }}
@@ -304,7 +296,7 @@ function WorkList(props: Props){
                                                     author: "",
                                                     title: "",
                                                     promoter: "",
-                                                    year: ""
+                                                    year: new Date().getFullYear()
                                                 }
                                                 props.form!.setValue(
                                                     props.name,
@@ -350,7 +342,7 @@ function WorkList(props: Props){
                                             {
                                                 label: "Licencjackie",
                                                 options:
-                                                    props.historicalThesis
+                                                    props.historicalTheses
                                                         .filter((thesis: Thesis) => thesis.category == "bachelor")
                                                         .map((thesis: Thesis) => ({
                                                             label: `Autor: ${thesis.author}\n
@@ -363,7 +355,7 @@ function WorkList(props: Props){
                                             {
                                                 label: "Magisterskie",
                                                 options:
-                                                    props.historicalThesis
+                                                    props.historicalTheses
                                                         .filter((thesis: Thesis) => thesis.category == "master")
                                                         .map((thesis: Thesis) => ({
                                                             label: `${thesis.author}, ${thesis.title}, ${thesis.promoter}, ${thesis.year}`,
@@ -373,7 +365,7 @@ function WorkList(props: Props){
                                             {
                                                 label: "Doktorskie",
                                                 options:
-                                                    props.historicalThesis
+                                                    props.historicalTheses
                                                         .filter((thesis: Thesis) => thesis.category == "doctor")
                                                         .map((thesis: Thesis) => ({
                                                             label: `${thesis.author}, ${thesis.title}, ${thesis.promoter}, ${thesis.year}`,
@@ -410,4 +402,4 @@ function WorkList(props: Props){
 }
 
 
-export default WorkList
+export default ThesesInput
