@@ -37,9 +37,6 @@ function FormPage(){
                         setLoadValues(response.data)
                     }
                 )
-                .catch(error =>
-                    console.log(error)
-                )
         }
         else {
             setLoadValues(locationState?.localStorageValues)
