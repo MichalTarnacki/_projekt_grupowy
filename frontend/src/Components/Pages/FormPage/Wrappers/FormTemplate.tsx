@@ -109,7 +109,7 @@ function FormTemplate(props: Props) {
         console.log(props.form.getValues())
         console.log(props.form.formState.errors)
         console.log(props.form.formState.touchedFields)
-        //dispatchEvent("Trwa wysyłanie")
+        dispatchEvent("Trwa wysyłanie")
 
         // const savedFormsDataString = localStorage.getItem('sentFormData');
         // let savedFormsData: SavedFormData[] = [];
@@ -130,20 +130,18 @@ function FormTemplate(props: Props) {
         //
         // // Zapisz zaktualizowane dane w localStorage
         // localStorage.setItem('sentFormData', JSON.stringify(savedFormsData));
-        // Api
-        //     .post(
-        //         '/formsA/'+props.type,
-        //         data
-        //     )
-        //     .catch(err =>
-        //         null
-        //     )
-        //     .then(()=> {
-        //         setTimeout(()=> {
-        //             dispatchEvent(null)
-        //             navigate("/ViewForms")
-        //         },1000)
-        //     })
+        Api
+            .post(
+                '/formsA/' + props.type,
+                data
+            )
+            .catch(err =>
+                null
+            )
+            .then(()=> {
+                dispatchEvent(null)
+                navigate("/ViewForms")
+            })
     }
 
     return (
@@ -161,8 +159,7 @@ function FormTemplate(props: Props) {
                                 </div>
                                 <div className="d-flex col-6 text-center p-2 justify-content-center" >
                                     <button
-                                        // onClick={props.form.handleSubmit(handleSubmit)}
-                                        onClick={handleSubmit}
+                                        onClick={props.form.handleSubmit(handleSubmit)}
                                         className="btn btn-primary w-100"
                                         style={{ fontSize:"inherit" }}
                                     >

@@ -48,7 +48,7 @@ export type FormAValues = {
     acceptablePeriod: number[]
     optimalPeriod: number[]
     cruiseHours: number
-    cruiseDays: number
+    cruiseDays?: number
     periodNotes?: string
     shipUsage: number
     differentUsage?: string
