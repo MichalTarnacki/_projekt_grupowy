@@ -42,7 +42,7 @@ function NumberInput(props: Props){
                 render={({ field}) =>
                     <input className="text-center placeholder-glow"
                            disabled={props.readonly ?? false}
-                           value={field.value?.toString() ?? "0"}
+                           value={field.value?.toString() ?? ""}
                            onBlur={
                         (e) => {
                                if (re.test(e.target.value)) {
@@ -73,7 +73,7 @@ function NumberInput(props: Props){
                            onChange={(e) => { onChange(e) }}
                     />
                 }
-                defaultValue={""}
+                //defaultValue={undefined}
                 name={props.name}
                 control={props.form!.control}
                 rules={{

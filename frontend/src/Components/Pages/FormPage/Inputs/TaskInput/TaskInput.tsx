@@ -289,7 +289,6 @@ function TaskInput(props: Props) {
                                                                                     showMonthYearPicker
                                                                                     showMonthYearDropdown
                                                                                     className={"text-center w-100 border border-opacity-75 rounded-2 p-1 bg-light"}
-                                                                                    selectsStart
                                                                                     startDate={(val as Time).start ? new Date((val as Time).start) : null}
                                                                                     maxDate={(val as Time).end ? new Date((val as Time).end) : null}
                                                                                     endDate={(val as Time).end ? new Date((val as Time).end) : null}
