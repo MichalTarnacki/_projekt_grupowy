@@ -446,7 +446,7 @@ function FormC(props: Props){
                         historicalPublications={[
                             {
                                 category: "subject",
-                                DOI: "10.1016/j.marenvres.2023.106132",
+                                doi: "10.1016/j.marenvres.2023.106132",
                                 authors: "Urszula Kwasigroch, Katarzyna Łukawska-Matuszewska, Agnieszka Jędruch, Olga Brocławik, Magdalena Bełdowska",
                                 title: "Mobility and bioavailability of mercury in sediments of the southern Baltic sea in relation to the chemical fractions of iron: Spatial and temporal patterns",
                                 magazine: "Marine Environmental Research",
@@ -456,7 +456,7 @@ function FormC(props: Props){
                             },
                             {
                                 category: "subject",
-                                DOI: "10.1016/j.csr.2018.08.008",
+                                doi: "10.1016/j.csr.2018.08.008",
                                 authors: "Aleksandra Brodecka-Goluch, Katarzyna Łukawska-Matuszewska",
                                 title: "Porewater dissolved organic and inorganic carbon in relation to methane occurrence in sediments of the Gdańsk Basin (southern Baltic Sea)",
                                 magazine: "Continental Shelf Research",
@@ -465,7 +465,7 @@ function FormC(props: Props){
                             },
                             {
                                 category: "postscript",
-                                DOI: "10.3390/biology12020147",
+                                doi: "10.3390/biology12020147",
                                 authors: "Natalia Miernik, Urszula Janas, Halina Kendzierska",
                                 title: "Role of macrofaunal communities in the Vistula River plume, the Baltic Sea - bioturbation and bioirrigation potential",
                                 magazine: "Biology",
@@ -474,7 +474,7 @@ function FormC(props: Props){
                             },
                             {
                                 category: "postscript",
-                                DOI: "10.1016/j.scitotenv.2020.140306",
+                                doi: "10.1016/j.scitotenv.2020.140306",
                                 authors: "Jakub Idczak, Aleksandra Brodecka-Goluch, Katarzyna Łukawska-Matuszewska, Bożena Graca, Natalia Gorska, Zygmunt Klusek, Patryk Pezacki, Jerzy Bolałek",
                                 title: "A geophysical, geochemical and microbiological study of a newly discovered pockmark with active gas seepage and submarine groundwater discharge (MET1-BH, central Gulf of Gdańsk, southern Baltic Sea)",
                                 magazine: "Science of the Total Environment",

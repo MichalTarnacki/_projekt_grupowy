@@ -1,6 +1,10 @@
 using AutoMapper;
 using ResearchCruiseApp_API.Data;
+using ResearchCruiseApp_API.Models.DataTypes;
+using ResearchCruiseApp_API.Models.DataTypes.DataSubTypes;
 using ResearchCruiseApp_API.Tools;
+using Contract = ResearchCruiseApp_API.Data.Contract;
+using UGTeam = ResearchCruiseApp_API.Data.UGTeam;
 
 namespace ResearchCruiseApp_API.Models.MapProfiles;
 
@@ -8,126 +12,98 @@ public class FormAProfile : Profile
 {
     public FormAProfile()
     {
-        CreateMap<FormAModel, FormA>()
+        CreateMap<FormA, FormAModel>()
             .ForMember(
-                dest => dest.AcceptablePeriodBeg,
+                dest => dest.AcceptablePeriod,
                 options =>
                     options.MapFrom(src =>
-                        src.AcceptablePeriod.Min()))
+                        new HashSet<int> { src.AcceptablePeriodBeg, src.AcceptablePeriodEnd }))
             .ForMember(
-                dest => dest.AcceptablePeriodEnd,
+                dest => dest.OptimalPeriod,
                 options =>
                     options.MapFrom(src =>
-                        src.AcceptablePeriod.Max()))
+                        new HashSet<int> { src.OptimalPeriodBeg, src.OptimalPeriodEnd }))
             .ForMember(
-                dest => dest.OptimalPeriodBeg,
+                dest => dest.CruiseDays,
                 options =>
                     options.MapFrom(src =>
-                        src.OptimalPeriod.Min()))
+                        src.CruiseHours / 24.0));
+        
+        CreateMap<Data.ResearchTask, Models.DataTypes.ResearchTask>()
             .ForMember(
-                dest => dest.OptimalPeriodEnd,
+                dest => dest.Values,
                 options =>
                     options.MapFrom(src =>
-                        src.OptimalPeriod.Max()));
+                        src));
 
-        CreateMap<Models.DataTypes.ResearchTask, Data.ResearchTask>()
+        CreateMap<Data.ResearchTask, ResearchTaskValues>()
             .ForMember(
-                dest => dest.Title,
+                dest => dest.Time,
                 options =>
                     options.MapFrom(src =>
-                        src.Values.Title))
-            .ForMember(
-                dest => dest.Author,
-                options =>
-                    options.MapFrom(src =>
-                        src.Values.Author))
+                        src.StartDate != null && src.EndDate != null ?
+                            new StringRange{ Start = src.StartDate, End = src.EndDate } :
+                            (StringRange?)null));
+        
+        CreateMap<Data.Contract, Models.DataTypes.Contract>()
             .ForMember(
                 dest => dest.Institution,
                 options =>
                     options.MapFrom(src =>
-                        src.Values.Institution))
+                        src))
             .ForMember(
-                dest => dest.Date,
+                dest => dest.Scan,
                 options =>
                     options.MapFrom(src =>
-                        src.Values.Date))
-            .ForMember(
-                dest => dest.StartDate,
-                options =>
-                    options.MapFrom(src =>
-                        src.Values.Time.HasValue ? src.Values.Time.Value.Start : null))
-            .ForMember(
-                dest => dest.EndDate,
-                options =>
-                    options.MapFrom(src =>
-                        src.Values.Time.HasValue ? src.Values.Time.Value.End : null))
-            .ForMember(
-                dest => dest.EndDate,
-                options =>
-                    options.MapFrom(src =>
-                        src.Values.Time.HasValue ? src.Values.Time.Value.End : null))
-            .ForMember(
-                dest => dest.FinancingAmount,
-                options =>
-                    options.MapFrom(src =>
-                        src.Values.FinancingAmount))
-            .ForMember(
-                dest => dest.Description,
-                options =>
-                    options.MapFrom(src =>
-                        src.Values.Description))
-            .ReverseMap();
+                        src));
 
-        CreateMap<Models.DataTypes.Contract, Data.Contract>()
+        CreateMap<Contract, Institution>()
             .ForMember(
-                dest => dest.InstitutionName,
+                dest => dest.Name,
                 options =>
                     options.MapFrom(src =>
-                        src.Institution.Name))
+                        src.InstitutionName))
             .ForMember(
-                dest => dest.InstitutionUnit,
+                dest => dest.Unit,
                 options =>
                     options.MapFrom(src =>
-                        src.Institution.Unit))
+                        src.InstitutionUnit))
             .ForMember(
-                dest => dest.InstitutionLocation,
+                dest => dest.Localization,
                 options =>
                     options.MapFrom(src =>
-                        src.Institution.Localization))
+                        src.InstitutionLocalization));
+
+        CreateMap<Contract, Scan>()
             .ForMember(
-                dest => dest.ScanName,
+                dest => dest.Name,
                 options =>
                     options.MapFrom(src =>
-                        src.Scan.Name))
+                        src.ScanName))
             .ForMember(
-                dest => dest.ScanContentCompressed,
+                dest => dest.Content,
                 options =>
                     options.MapFrom<ScanContentResolver>());
 
-        CreateMap<Models.DataTypes.UGTeam, Data.UGTeam>()
-            .ReverseMap();
+        CreateMap<UGTeam, Models.DataTypes.UGTeam>();
+        
+        CreateMap<Data.GuestTeam, Models.DataTypes.GuestTeam>();
+        
+        CreateMap<Data.Publication, Models.DataTypes.Publication>();
+        
+        CreateMap<Data.Thesis, Models.DataTypes.Thesis>();
 
-        CreateMap<Models.DataTypes.GuestTeam, Data.GuestTeam>()
-            .ReverseMap();
-
-        CreateMap<Models.DataTypes.Publication, Data.Publication>()
-            .ReverseMap();
-
-        CreateMap<Models.DataTypes.Thesis, Data.Thesis>()
-            .ReverseMap();
-
-        CreateMap<Models.DataTypes.SPUBTask, Data.SPUBTask>()
-            .ReverseMap();
+        CreateMap<Data.SPUBTask, Models.DataTypes.SPUBTask>();
     }
     
     private class ScanContentResolver(
         ResearchCruiseContext researchCruiseContext, ICompressor compressor)
-        : IValueResolver<Models.DataTypes.Contract, Contract, byte[]>
+        : IValueResolver<Contract, Scan, string>
     {
-        public byte[] Resolve(
-            Models.DataTypes.Contract src, Contract dest, byte[] scanContent, ResolutionContext context)
+        public string Resolve(
+            Contract src, Scan dest, string scanContent, ResolutionContext context)
         {
-            var result = compressor.Compress(src.Scan.Content).Result;
+            var result = compressor.Decompress(src.ScanContentCompressed).Result;
             return result;
         }
     }

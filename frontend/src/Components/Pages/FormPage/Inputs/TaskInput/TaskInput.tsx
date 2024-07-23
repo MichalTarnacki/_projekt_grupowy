@@ -23,6 +23,11 @@ export type TaskValues =
     { title: string, time: Time, financingAmount: number } |
     { description: string }
 
+type TaskValuesValue =
+    string |
+    number |
+    Time
+
 export type Task = {
     type: number,
     values: TaskValues
@@ -219,12 +224,13 @@ function TaskInput(props: Props) {
                                              style={{width: windowWidth >= 1200 ? "70%" : "100%"}}
                                         >
                                             <div className="d-flex flex-wrap justify-content-center justify-content-xl-start pb-3 w-100">
-                                                {getFields(row).map((val: string | Time, valIdx: number) => {
+                                                {getFields(row).map((val: TaskValuesValue, valIdx: number) => {
                                                     return (
                                                         <div key={valIdx}
                                                              className={`${getFields(row).length == 2 && "col-xl-6"} ${getFields(row).length == 3 && "col-xl-4"} col-12 p-1`}
                                                         >
                                                             <label className={"d-flex justify-content-center align-items-center"}>
+                                                                {console.log(valIdx)}
                                                                 {Object.values(taskFieldsOptions)[row.type][valIdx]}
                                                             </label>
                                                             {(()=> {

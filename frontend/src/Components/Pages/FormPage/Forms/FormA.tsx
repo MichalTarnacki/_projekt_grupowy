@@ -170,6 +170,7 @@ function FormA(props: Props){
                                  notZero
                                  newVal={(e) => 24 * e}
                                  maxVal={99}
+                                 fractionDigits={2}
                     />
                     <NumberInput className="col-12 col-md-12 col-xl-6"
                                  notZero
@@ -264,58 +265,58 @@ function FormA(props: Props){
                     />
                 </FormSection>
 
-                <FormSection title={sections.Zadania}>
-                    <TaskInput
-                        name={"researchTasks"}
-                        historicalTasks={[
-                            {
-                                "type": 5,
-                                "values": {
-                                    "title": "3re",
-                                    "time": {
-                                        "start": "Mon Jan 01 2024 00:00:00 GMT+0100 (czas środkowoeuropejski standardowy)",
-                                        "end": "Sun Dec 01 2024 00:00:00 GMT+0100 (czas środkowoeuropejski standardowy)"
-                                    },
-                                    "financingAmount": "0.00"
-                                }
-                            },
-                            {
-                                "type": 5,
-                                "values": {
-                                    "title": "3re",
-                                    "time": {
-                                        "start": "Wed May 01 2024 00:00:00 GMT+0200 (czas środkowoeuropejski letni)",
-                                        "end": "Wed May 01 2024 00:00:00 GMT+0200 (czas środkowoeuropejski letni)"
-                                    },
-                                    "financingAmount": "0.00"
-                                }
-                            },
-                            {
-                                "type": 11,
-                                "values": {
-                                    "description": "rtetretret"
-                                }
-                            },
-                            {
-                                "type": 3,
-                                "values": {
-                                    "title": "fsdfds",
-                                    "institution": "ffsdff",
-                                    "date": "Fri Mar 15 2024 00:00:00 GMT+0100 (czas środkowoeuropejski standardowy)"
-                                }
-                            },
-                            {
-                                "type": 0,
-                                "values": {
-                                    "author": "sdfdsf",
-                                    "title": "dsfdfsd"
-                                }
-                            }
-                        ]}
-                        className="col-12"
-                        label="ss"
-                    />
-                </FormSection>
+                {/*<FormSection title={sections.Zadania}>*/}
+                {/*    <TaskInput*/}
+                {/*        name={"researchTasks"}*/}
+                {/*        historicalTasks={[*/}
+                {/*            {*/}
+                {/*                "type": 5,*/}
+                {/*                "values": {*/}
+                {/*                    "title": "3re",*/}
+                {/*                    "time": {*/}
+                {/*                        "start": "Mon Jan 01 2024 00:00:00 GMT+0100 (czas środkowoeuropejski standardowy)",*/}
+                {/*                        "end": "Sun Dec 01 2024 00:00:00 GMT+0100 (czas środkowoeuropejski standardowy)"*/}
+                {/*                    },*/}
+                {/*                    "financingAmount": "0.00"*/}
+                {/*                }*/}
+                {/*            },*/}
+                {/*            {*/}
+                {/*                "type": 5,*/}
+                {/*                "values": {*/}
+                {/*                    "title": "3re",*/}
+                {/*                    "time": {*/}
+                {/*                        "start": "Wed May 01 2024 00:00:00 GMT+0200 (czas środkowoeuropejski letni)",*/}
+                {/*                        "end": "Wed May 01 2024 00:00:00 GMT+0200 (czas środkowoeuropejski letni)"*/}
+                {/*                    },*/}
+                {/*                    "financingAmount": "0.00"*/}
+                {/*                }*/}
+                {/*            },*/}
+                {/*            {*/}
+                {/*                "type": 11,*/}
+                {/*                "values": {*/}
+                {/*                    "description": "rtetretret"*/}
+                {/*                }*/}
+                {/*            },*/}
+                {/*            {*/}
+                {/*                "type": 3,*/}
+                {/*                "values": {*/}
+                {/*                    "title": "fsdfds",*/}
+                {/*                    "institution": "ffsdff",*/}
+                {/*                    "date": "Fri Mar 15 2024 00:00:00 GMT+0100 (czas środkowoeuropejski standardowy)"*/}
+                {/*                }*/}
+                {/*            },*/}
+                {/*            {*/}
+                {/*                "type": 0,*/}
+                {/*                "values": {*/}
+                {/*                    "author": "sdfdsf",*/}
+                {/*                    "title": "dsfdfsd"*/}
+                {/*                }*/}
+                {/*            }*/}
+                {/*        ]}*/}
+                {/*        className="col-12"*/}
+                {/*        label="ss"*/}
+                {/*    />*/}
+                {/*</FormSection>*/}
 
                 <FormSection title={sections.Umowy}>
                     <ContractsInput
@@ -419,7 +420,7 @@ function FormA(props: Props){
                         historicalPublications={[
                             {
                                 category: "subject",
-                                DOI: "10.1016/j.marenvres.2023.106132",
+                                doi: "10.1016/j.marenvres.2023.106132",
                                 authors: "Urszula Kwasigroch, Katarzyna Łukawska-Matuszewska, Agnieszka Jędruch, Olga Brocławik, Magdalena Bełdowska",
                                 title: "Mobility and bioavailability of mercury in sediments of the southern Baltic sea in relation to the chemical fractions of iron: Spatial and temporal patterns",
                                 magazine: "Marine Environmental Research",
@@ -429,7 +430,7 @@ function FormA(props: Props){
                             },
                             {
                                 category: "subject",
-                                DOI: "10.1016/j.csr.2018.08.008",
+                                doi: "10.1016/j.csr.2018.08.008",
                                 authors: "Aleksandra Brodecka-Goluch, Katarzyna Łukawska-Matuszewska",
                                 title: "Porewater dissolved organic and inorganic carbon in relation to methane occurrence in sediments of the Gdańsk Basin (southern Baltic Sea)",
                                 magazine: "Continental Shelf Research",
@@ -438,7 +439,7 @@ function FormA(props: Props){
                             },
                             {
                                 category: "postscript",
-                                DOI: "10.3390/biology12020147",
+                                doi: "10.3390/biology12020147",
                                 authors: "Natalia Miernik, Urszula Janas, Halina Kendzierska",
                                 title: "Role of macrofaunal communities in the Vistula River plume, the Baltic Sea - bioturbation and bioirrigation potential",
                                 magazine: "Biology",
@@ -447,7 +448,7 @@ function FormA(props: Props){
                             },
                             {
                                 category: "postscript",
-                                DOI: "10.1016/j.scitotenv.2020.140306",
+                                doi: "10.1016/j.scitotenv.2020.140306",
                                 authors: "Jakub Idczak, Aleksandra Brodecka-Goluch, Katarzyna Łukawska-Matuszewska, Bożena Graca, Natalia Gorska, Zygmunt Klusek, Patryk Pezacki, Jerzy Bolałek",
                                 title: "A geophysical, geochemical and microbiological study of a newly discovered pockmark with active gas seepage and submarine groundwater discharge (MET1-BH, central Gulf of Gdańsk, southern Baltic Sea)",
                                 magazine: "Science of the Total Environment",

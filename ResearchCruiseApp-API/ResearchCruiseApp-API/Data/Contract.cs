@@ -18,7 +18,7 @@ public class Contract
       public string InstitutionUnit { get; set; } = null!;
       
       [MaxLength(1024)]
-      public string InstitutionLocation { get; set; } = null!;
+      public string InstitutionLocalization { get; set; } = null!;
       
       [MaxLength(1024)]
       public string Description { get; set; } = null!;

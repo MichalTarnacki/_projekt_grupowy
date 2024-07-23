@@ -18,7 +18,7 @@ type Props = {
 
 export type Publication = {
     category: string,
-    DOI: string,
+    doi: string,
     authors: string,
     title: string,
     magazine: string,
@@ -157,12 +157,12 @@ function PublicationsInput(props: Props){
                                                 <textarea
                                                     {...field}
                                                     disabled={props.readonly ?? false}
-                                                    value={row.DOI}
+                                                    value={row.doi}
                                                     className="col-12 p-1 form-control"
                                                     style={{fontSize: "inherit"}}
                                                     onChange={(e) => {
                                                         if (e.target.value.length < 100) {
-                                                            row.DOI = e.target.value
+                                                            row.doi = e.target.value
                                                             props.form!.setValue(
                                                                 props.name,
                                                                 field.value,
@@ -361,7 +361,7 @@ function PublicationsInput(props: Props){
                                             onClick={() => {
                                                 const newPublication: Publication = {
                                                     category: "",
-                                                    DOI: "",
+                                                    doi: "",
                                                     authors: "",
                                                     title: "",
                                                     magazine: "",
@@ -415,7 +415,7 @@ function PublicationsInput(props: Props){
                                                     props.historicalPublications
                                                         .filter((publication: Publication) => publication.category == "subject")
                                                         .map((publication: Publication) => ({
-                                                            label: `DOI: ${publication.DOI}\n
+                                                            label: `DOI: ${publication.doi}\n
                                                                     Autorzy: ${publication.authors}\n
                                                                     Tytuł: ${publication.title}\n
                                                                     Czasopismo: ${publication.magazine}\n
@@ -430,7 +430,7 @@ function PublicationsInput(props: Props){
                                                     props.historicalPublications
                                                         .filter((publication: Publication) => publication.category == "postscript")
                                                         .map((publication: Publication) => ({
-                                                            label: `DOI: ${publication.DOI}\n
+                                                            label: `DOI: ${publication.doi}\n
                                                                     Autorzy: ${publication.authors}\n
                                                                     Tytuł: ${publication.title}\n
                                                                     Czasopismo: ${publication.magazine}\n
