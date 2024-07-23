@@ -32,8 +32,11 @@ public class FormA
     public string? PeriodNotes { get; set; }
     
     public int ShipUsage { get; set; }
+
+    [StringLength(1024)]
+    public string? DifferentUsage { get; set; }
     
-    public bool PermissionsRequired { get; set; }
+    public int PermissionsRequired { get; set; }
     
     [StringLength(1024)]
     public string? Permissions { get; set; }

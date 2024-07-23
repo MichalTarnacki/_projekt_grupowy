@@ -23,7 +23,7 @@ export type Publication = {
     title: string,
     magazine: string,
     year: number,
-    points: number
+    ministerialPoints: number
 }
 
 
@@ -102,7 +102,7 @@ function PublicationsInput(props: Props){
                                             <div
                                                 className="d-none d-xl-flex justify-content-center align-items-center p-2 border-end"
                                                 style={{width: "10%"}}>
-                                                <b>Punkty</b>
+                                                <b>Punkty ministerialne</b>
                                             </div>
                                             <div
                                                 className="d-none d-xl-flex justify-content-center align-items-center p-2"
@@ -293,7 +293,8 @@ function PublicationsInput(props: Props){
                                                 className="d-flex flex-wrap justify-content-center align-items-center p-2 border-end text-center"
                                                 style={{width: windowWidth >= 1200 ? "10%" : "100%"}}
                                             >
-                                                <div className="col-12 d-flex d-xl-none justify-content-center">Punkty
+                                                <div className="col-12 d-flex d-xl-none justify-content-center">
+                                                    Punkty ministerialne
                                                 </div>
                                                 <input
                                                     disabled = {props.readonly ?? false}
@@ -301,14 +302,14 @@ function PublicationsInput(props: Props){
                                                     {...field}
                                                     className="text-center placeholder-glow w-100 p-1 form-control"
                                                     style={{fontSize: "inherit"}}
-                                                    value={row.points}
+                                                    value={row.ministerialPoints}
                                                     onChange={(e) => {
                                                         const sanitizedValue = parseInt(e.target.value);
-                                                        var val = field.value;
+                                                        var val: Publication[] = field.value;
                                                         if (!isNaN(sanitizedValue) && sanitizedValue < 9999) {
-                                                            val[index].points = sanitizedValue
+                                                            val[index].ministerialPoints = sanitizedValue
                                                         } else {
-                                                            val[index].points = '0'
+                                                            val[index].ministerialPoints = 0
                                                         }
                                                         props.form!.setValue(props.name, val, {
                                                             shouldDirty: true,
@@ -365,7 +366,7 @@ function PublicationsInput(props: Props){
                                                     title: "",
                                                     magazine: "",
                                                     year: new Date().getFullYear(),
-                                                    points: 0
+                                                    ministerialPoints: 0
                                                 }
                                                 props.form!.setValue(
                                                     props.name,
@@ -419,7 +420,7 @@ function PublicationsInput(props: Props){
                                                                     Tytuł: ${publication.title}\n
                                                                     Czasopismo: ${publication.magazine}\n
                                                                     Rok wydania: ${publication.year}\n
-                                                                    Punkty: ${publication.points}`,
+                                                                    Punkty: ${publication.ministerialPoints}`,
                                                             value: publication
                                                         }))
                                             },
@@ -434,7 +435,7 @@ function PublicationsInput(props: Props){
                                                                     Tytuł: ${publication.title}\n
                                                                     Czasopismo: ${publication.magazine}\n
                                                                     Rok wydania: ${publication.year}\n
-                                                                    Punkty: ${publication.points}`,
+                                                                    Punkty: ${publication.ministerialPoints}`,
                                                             value: publication
                                                         }))
                                             }

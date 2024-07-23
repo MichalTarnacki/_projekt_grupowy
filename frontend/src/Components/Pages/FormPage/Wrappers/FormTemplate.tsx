@@ -120,10 +120,10 @@ function FormTemplate(props: Props) {
         //SetBusyWithMessage("Trwa wysyłanie")
         Api
             .post('/formsA/' + props.type, data)
-            .then(()=> {setTimeout(()=>
-            {
-                    navigate("/ViewForms")},1000)
-            })
+            // .then(()=> {setTimeout(()=>
+            // {
+            //         navigate("/ViewForms")},1000)
+            // })
     }
 
     return (
@@ -141,8 +141,8 @@ function FormTemplate(props: Props) {
                                 </div>
                                 <div className="d-flex col-6 text-center p-2 justify-content-center" >
                                     <button
-                                        //onClick={props.form.handleSubmit(handleSubmit)}
-                                        onClick={() => console.log(props.form.getValues())}
+                                        onClick={props.form.handleSubmit(handleSubmit)}
+                                        // onClick={() => console.log(props.form.getValues())}
                                         className="btn btn-primary w-100"
                                         style={{ fontSize:"inherit" }}
                                     >
