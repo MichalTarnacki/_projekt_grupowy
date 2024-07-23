@@ -265,58 +265,58 @@ function FormA(props: Props){
                     />
                 </FormSection>
 
-                {/*<FormSection title={sections.Zadania}>*/}
-                {/*    <TaskInput*/}
-                {/*        name={"researchTasks"}*/}
-                {/*        historicalTasks={[*/}
-                {/*            {*/}
-                {/*                "type": 5,*/}
-                {/*                "values": {*/}
-                {/*                    "title": "3re",*/}
-                {/*                    "time": {*/}
-                {/*                        "start": "Mon Jan 01 2024 00:00:00 GMT+0100 (czas środkowoeuropejski standardowy)",*/}
-                {/*                        "end": "Sun Dec 01 2024 00:00:00 GMT+0100 (czas środkowoeuropejski standardowy)"*/}
-                {/*                    },*/}
-                {/*                    "financingAmount": "0.00"*/}
-                {/*                }*/}
-                {/*            },*/}
-                {/*            {*/}
-                {/*                "type": 5,*/}
-                {/*                "values": {*/}
-                {/*                    "title": "3re",*/}
-                {/*                    "time": {*/}
-                {/*                        "start": "Wed May 01 2024 00:00:00 GMT+0200 (czas środkowoeuropejski letni)",*/}
-                {/*                        "end": "Wed May 01 2024 00:00:00 GMT+0200 (czas środkowoeuropejski letni)"*/}
-                {/*                    },*/}
-                {/*                    "financingAmount": "0.00"*/}
-                {/*                }*/}
-                {/*            },*/}
-                {/*            {*/}
-                {/*                "type": 11,*/}
-                {/*                "values": {*/}
-                {/*                    "description": "rtetretret"*/}
-                {/*                }*/}
-                {/*            },*/}
-                {/*            {*/}
-                {/*                "type": 3,*/}
-                {/*                "values": {*/}
-                {/*                    "title": "fsdfds",*/}
-                {/*                    "institution": "ffsdff",*/}
-                {/*                    "date": "Fri Mar 15 2024 00:00:00 GMT+0100 (czas środkowoeuropejski standardowy)"*/}
-                {/*                }*/}
-                {/*            },*/}
-                {/*            {*/}
-                {/*                "type": 0,*/}
-                {/*                "values": {*/}
-                {/*                    "author": "sdfdsf",*/}
-                {/*                    "title": "dsfdfsd"*/}
-                {/*                }*/}
-                {/*            }*/}
-                {/*        ]}*/}
-                {/*        className="col-12"*/}
-                {/*        label="ss"*/}
-                {/*    />*/}
-                {/*</FormSection>*/}
+                <FormSection title={sections.Zadania}>
+                    <TaskInput
+                        name={"researchTasks"}
+                        historicalTasks={[
+                            {
+                                "type": 5,
+                                "values": {
+                                    "title": "3re",
+                                    "time": {
+                                        "start": "Mon Jan 01 2024 00:00:00 GMT+0100 (czas środkowoeuropejski standardowy)",
+                                        "end": "Sun Dec 01 2024 00:00:00 GMT+0100 (czas środkowoeuropejski standardowy)"
+                                    },
+                                    "financingAmount": "0.00"
+                                }
+                            },
+                            {
+                                "type": 5,
+                                "values": {
+                                    "title": "3re",
+                                    "time": {
+                                        "start": "Wed May 01 2024 00:00:00 GMT+0200 (czas środkowoeuropejski letni)",
+                                        "end": "Wed May 01 2024 00:00:00 GMT+0200 (czas środkowoeuropejski letni)"
+                                    },
+                                    "financingAmount": "0.00"
+                                }
+                            },
+                            {
+                                "type": 11,
+                                "values": {
+                                    "description": "rtetretret"
+                                }
+                            },
+                            {
+                                "type": 3,
+                                "values": {
+                                    "title": "fsdfds",
+                                    "institution": "ffsdff",
+                                    "date": "Fri Mar 15 2024 00:00:00 GMT+0100 (czas środkowoeuropejski standardowy)"
+                                }
+                            },
+                            {
+                                "type": 0,
+                                "values": {
+                                    "author": "sdfdsf",
+                                    "title": "dsfdfsd"
+                                }
+                            }
+                        ]}
+                        className="col-12"
+                        label="ss"
+                    />
+                </FormSection>
 
                 <FormSection title={sections.Umowy}>
                     <ContractsInput
