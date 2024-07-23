@@ -25,5 +25,5 @@ public class Publication
     
     public int Year { get; set; }
 
-    public int Points { get; set; }
+    public int MinisterialPoints { get; set; }
 }
