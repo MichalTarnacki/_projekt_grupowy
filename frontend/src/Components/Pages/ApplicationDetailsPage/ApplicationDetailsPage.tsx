@@ -45,8 +45,7 @@ function ApplicationDetailsPage() {
                     `/api/applications/${locationState?.application.id}/points`
                 )
                 .then(response => {
-                    console.log(response)
-                    // setEvaluatedApplication(response.data)
+                    setEvaluatedApplication(response.data)
                     }
                 )
         }

@@ -2,39 +2,38 @@ import React from "react";
 import tilesDndStyle from "/node_modules/react-tiles-dnd/esm/index.css";
 import { TilesContainer, RenderTileFunction } from "react-tiles-dnd";
 
-type TileType = {
-    rows: number;
-    cols: number;
-    element: React.ReactNode;
-}
 
 type Props = {
-    tiles: TileType[];
+    tilesMenu
 }
 
 
-
-export default function TilesMenu(props: Props) {
-    const render: RenderTileFunction<TileType> = ({ data }) => (
-        <div className="p-2 h-100 w-100">
+export default function TilesComponent(props: Props) {
+    const render: RenderTileFunction<typeof props.tilesMenu[0]> = ({ data, isDragging }) => (
+        <div className="p-2 w-100 h-100 d-flex">
+            <div className={`tile bg-white h-100 w-100 text-dark  ${isDragging ? "dragging" : ""}`}
+            >
                 {data.element}
+            </div>
         </div>
     );
 
-    const tileSize = (tile: typeof props.tiles[0]) => ({
+    const tileSize = (tile: typeof props.tilesMenu[0]) => ({
         colSpan: tile.cols,
         rowSpan: tile.rows,
     });
 
     return (
-        <div className={"tiles-container " + tilesDndStyle}>
+        <div className="tileContainer bg-primary bg-opacity-25" style={{display: "flex", justifyContent: "center"}}>
             <TilesContainer
-                data={props.tiles}
+                className={tilesDndStyle}
+                data={props.tilesMenu}
                 disabled={true}
                 renderTile={render}
                 tileSize={tileSize}
                 forceTileWidth={150}
                 forceTileHeight={150}
+                style={{justifyContent: "center"}}
             />
         </div>
     );
