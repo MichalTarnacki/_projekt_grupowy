@@ -22,12 +22,16 @@ public class IdentityService(
     IConfiguration configuration)
     : IIdentityService
 {
+    public Task<User?> GetUserById(Guid id)
+    {
+        return userManager.FindByIdAsync(id.ToString());
+    }
+    
     public async Task<Result> RegisterUserAsync(
         RegisterFormDto registerForm,
         string roleName,
         CancellationToken cancellationToken)
     {
-        var emailStore = (IUserEmailStore<User>)userStore;
         var emailAddressAttribute = new EmailAddressAttribute();
         
         if (!userManager.SupportsUserEmail)
@@ -36,12 +40,7 @@ public class IdentityService(
         if (string.IsNullOrEmpty(registerForm.Email) || !emailAddressAttribute.IsValid(registerForm.Email))
             return Error.BadRequest("E-mail jest niepoprawny");
 
-        var user = new User();
-        await userStore.SetUserNameAsync(user, registerForm.Email, cancellationToken);
-        await emailStore.SetEmailAsync(user, registerForm.Email, cancellationToken);
-        user.FirstName = registerForm.FirstName;
-        user.LastName = registerForm.LastName;
-            
+        var user = await CreateUser(registerForm, cancellationToken);
         var identityResult = await userManager.CreateAsync(user, registerForm.Password);
         await userManager.AddToRoleAsync(user, roleName);
 
@@ -54,6 +53,19 @@ public class IdentityService(
     }
 
 
+    private async Task<User> CreateUser(RegisterFormDto registerForm, CancellationToken cancellationToken)
+    {
+        var emailStore = (IUserEmailStore<User>)userStore;
+        
+        var user = new User();
+        await userStore.SetUserNameAsync(user, registerForm.Email, cancellationToken);
+        await emailStore.SetEmailAsync(user, registerForm.Email, cancellationToken);
+        user.FirstName = registerForm.FirstName;
+        user.LastName = registerForm.LastName;
+
+        return user;
+    }
+    
     private async Task<string> CreateEmailConfirmationMessageAsync(User user, string roleName, bool changeEmail)
     {
         var code = changeEmail

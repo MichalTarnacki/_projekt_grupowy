@@ -5,6 +5,7 @@ using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
 using ResearchCruiseApp_API.Application.Models.DTOs.Cruises;
 using ResearchCruiseApp_API.Application.Services.Cruises;
 using ResearchCruiseApp_API.Application.ServicesInterfaces;
+using ResearchCruiseApp_API.Application.ServicesInterfaces.Persistence.Repositories;
 using ResearchCruiseApp_API.Domain.Entities;
 using ResearchCruiseApp_API.Infrastructure.Persistence;
 
@@ -13,7 +14,7 @@ namespace ResearchCruiseApp_API.Application.UseCases.Cruises.AddCruise;
 
 public class AddCruiseHandler(
     ICruisesService cruisesService,
-    IYearBasedKeyGenerator yearBasedKeyGenerator,
+    ICruiseApplicationsRepository cruiseApplicationsRepository,
     ApplicationDbContext applicationDbContext,
     IMapper mapper)
     : IRequestHandler<AddCruiseCommand, Result>
@@ -45,10 +46,8 @@ public class AddCruiseHandler(
     {
         // New cruise applications are not auto-mapped
         var newCruise = mapper.Map<Cruise>(cruiseFormDto);
-        
-        var newCruiseApplications = await applicationDbContext.CruiseApplications
-            .Where(cruiseApplication => cruiseFormDto.ApplicationsIds.Contains(cruiseApplication.Id))
-            .ToListAsync();
+        var newCruiseApplications =
+            await cruiseApplicationsRepository.GetCruiseApplicationsByIds(cruiseFormDto.ApplicationsIds);
         
         newCruise.CruiseApplications = newCruiseApplications;
 

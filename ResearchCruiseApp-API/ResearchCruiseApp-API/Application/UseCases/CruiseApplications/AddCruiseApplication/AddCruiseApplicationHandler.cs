@@ -1,7 +1,6 @@
 using System.Data;
 using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
 using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
 using ResearchCruiseApp_API.Application.ServicesInterfaces;
@@ -9,7 +8,6 @@ using ResearchCruiseApp_API.Application.ServicesInterfaces.Persistence;
 using ResearchCruiseApp_API.Application.ServicesInterfaces.Persistence.Repositories;
 using ResearchCruiseApp_API.Domain.Common.Enums;
 using ResearchCruiseApp_API.Domain.Entities;
-using ResearchCruiseApp_API.Infrastructure.Persistence;
 
 namespace ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AddCruiseApplication;
 
@@ -20,7 +18,7 @@ public class AddCruiseApplicationHandler(
     IUnitOfWork unitOfWork,
     IFormsARepository formsARepository,
     ICruiseApplicationsRepository cruiseApplicationsRepository,
-    UserManager<User> userManager)
+    IIdentityService identityService)
     : IRequestHandler<AddCruiseApplicationCommand, Result>
 {
     public async Task<Result> Handle(AddCruiseApplicationCommand request, CancellationToken cancellationToken)
@@ -58,8 +56,8 @@ public class AddCruiseApplicationHandler(
     private async Task<Result<FormA>> CreateFormA(FormADto formADto)
     {
         var formA = mapper.Map<FormA>(formADto);
-        var cruiseManager = await userManager.FindByIdAsync(formADto.CruiseManagerId.ToString());
-        var deputyManager = await userManager.FindByIdAsync(formADto.DeputyManagerId.ToString());
+        var cruiseManager = await identityService.GetUserById(formADto.CruiseManagerId);
+        var deputyManager = await identityService.GetUserById(formADto.DeputyManagerId);
 
         if (cruiseManager is null || deputyManager is null)
             return Error.BadRequest("Cruise manager and deputy manager have to be defined");
