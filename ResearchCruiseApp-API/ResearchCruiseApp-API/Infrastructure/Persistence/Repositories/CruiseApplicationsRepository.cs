@@ -28,11 +28,11 @@ internal class CruiseApplicationsRepository : Repository<CruiseApplication>, ICr
         await DbContext.CruiseApplications.AddAsync(cruiseApplication, cancellationToken);
     }
     
-    public Task<List<CruiseApplication>> GetCruiseApplicationsByIds(List<Guid> ids)
+    public Task<List<CruiseApplication>> GetCruiseApplicationsByIds(List<Guid> ids, CancellationToken cancellationToken)
     {
         return DbContext.CruiseApplications
             .Where(cruiseApplication => ids.Contains(cruiseApplication.Id))
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
     
     public Task<FormA?> GetFormAByCruiseApplicationId(Guid id, CancellationToken cancellationToken)
