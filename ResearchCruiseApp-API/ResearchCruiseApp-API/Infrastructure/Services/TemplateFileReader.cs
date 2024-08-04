@@ -1,5 +1,5 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using ResearchCruiseApp_API.Application.ExternalServices;
+using ResearchCruiseApp_API.Application.ServicesInterfaces;
 
 namespace ResearchCruiseApp_API.Infrastructure.Services;
 

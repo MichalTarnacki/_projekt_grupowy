@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
-using ResearchCruiseApp_API.Application.ExternalServices;
+using ResearchCruiseApp_API.Application.ServicesInterfaces;
 using ResearchCruiseApp_API.Domain.Entities;
 
 namespace ResearchCruiseApp_API.Application.UseCases.Users.AcceptUser;

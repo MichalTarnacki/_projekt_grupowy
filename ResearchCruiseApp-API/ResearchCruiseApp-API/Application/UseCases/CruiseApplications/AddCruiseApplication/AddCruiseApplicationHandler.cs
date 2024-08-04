@@ -1,9 +1,12 @@
+using System.Data;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
-using ResearchCruiseApp_API.Application.ExternalServices;
 using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
+using ResearchCruiseApp_API.Application.ServicesInterfaces;
+using ResearchCruiseApp_API.Application.ServicesInterfaces.Persistence;
+using ResearchCruiseApp_API.Application.ServicesInterfaces.Persistence.Repositories;
 using ResearchCruiseApp_API.Domain.Common.Enums;
 using ResearchCruiseApp_API.Domain.Entities;
 using ResearchCruiseApp_API.Infrastructure.Persistence;
@@ -12,9 +15,11 @@ namespace ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AddCruis
 
 
 public class AddCruiseApplicationHandler(
-    ApplicationDbContext applicationDbContext,
     IYearBasedKeyGenerator yearBasedKeyGenerator,
     IMapper mapper,
+    IUnitOfWork unitOfWork,
+    IFormsARepository formsARepository,
+    ICruiseApplicationsRepository cruiseApplicationsRepository,
     UserManager<User> userManager)
     : IRequestHandler<AddCruiseApplicationCommand, Result>
 {
@@ -25,8 +30,7 @@ public class AddCruiseApplicationHandler(
             return formAResult.Error;
         
         var formA = formAResult.Data!;
-        applicationDbContext.FormsA.Add(formA);
-        await applicationDbContext.SaveChangesAsync();
+        await formsARepository.AddFormA(formA, cancellationToken);
         
         //var evaluatedCruiseApplication = cruiseApplicationEvaluator.EvaluateCruiseApplication(formA, []);
             
@@ -35,20 +39,17 @@ public class AddCruiseApplicationHandler(
 
         //var calculatedPoints = cruiseApplicationEvaluator.CalculateSumOfPoints(evaluatedCruiseApplication);
 
-        var newCruiseApplication = new CruiseApplication
-        {
-            Number = yearBasedKeyGenerator.GenerateKey(applicationDbContext.CruiseApplications),
-            Date = DateOnly.FromDateTime(DateTime.Now),
-            FormA = formA,
-            FormB = null,
-            FormC = null,
-            //EvaluatedApplication = evaluatedCruiseApplication,
-            Points = 0,
-            Status = CruiseApplicationStatus.New
-        };
+        await unitOfWork.ExecuteIsolated(async () =>
+            {
+                var newCruiseApplication = await CreateCruiseApplication(formA, cancellationToken);
 
-        await applicationDbContext.CruiseApplications.AddAsync(newCruiseApplication);
-        await applicationDbContext.SaveChangesAsync();
+                await cruiseApplicationsRepository.AddCruiseApplication(newCruiseApplication, cancellationToken);
+                await unitOfWork.Complete(cancellationToken);
+            },
+            IsolationLevel.Serializable,
+            cancellationToken
+        );
+        
 
         return Result.Empty;
     }
@@ -67,5 +68,22 @@ public class AddCruiseApplicationHandler(
         formA.DeputyManager = deputyManager;
 
         return formA;
+    }
+
+    private async Task<CruiseApplication> CreateCruiseApplication(FormA formA, CancellationToken cancellationToken)
+    {
+        var newCruiseApplication = new CruiseApplication
+        {
+            Number = await yearBasedKeyGenerator.GenerateKey(cruiseApplicationsRepository, cancellationToken),
+            Date = DateOnly.FromDateTime(DateTime.Now),
+            FormA = formA,
+            FormB = null,
+            FormC = null,
+            //EvaluatedApplication = evaluatedCruiseApplication,
+            Points = 0,
+            Status = CruiseApplicationStatus.New
+        };
+
+        return newCruiseApplication;
     }
 }

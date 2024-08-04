@@ -2,7 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using ResearchCruiseApp_API.Domain.Entities;
 
-namespace ResearchCruiseApp_API.Application.SharedServices.UserDto;
+namespace ResearchCruiseApp_API.Application.Services.UserDto;
 
 
 public class UserDtoService(UserManager<User> userManager, IMapper mapper) : IUserDtoService

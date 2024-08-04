@@ -1,6 +1,6 @@
 using ResearchCruiseApp_API.Domain.Entities;
 
-namespace ResearchCruiseApp_API.Application.SharedServices.UserDto;
+namespace ResearchCruiseApp_API.Application.Services.UserDto;
 
 
 public interface IUserDtoService
