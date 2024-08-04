@@ -1,4 +1,4 @@
-namespace ResearchCruiseApp_API.Application.ExternalServices;
+namespace ResearchCruiseApp_API.Application.ServicesInterfaces;
 
 
 public interface ITemplateFileReader

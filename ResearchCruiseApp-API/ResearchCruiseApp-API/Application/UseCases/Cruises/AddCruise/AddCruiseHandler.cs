@@ -2,9 +2,9 @@ using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
-using ResearchCruiseApp_API.Application.ExternalServices;
 using ResearchCruiseApp_API.Application.Models.DTOs.Cruises;
-using ResearchCruiseApp_API.Application.SharedServices.Cruises;
+using ResearchCruiseApp_API.Application.Services.Cruises;
+using ResearchCruiseApp_API.Application.ServicesInterfaces;
 using ResearchCruiseApp_API.Domain.Entities;
 using ResearchCruiseApp_API.Infrastructure.Persistence;
 

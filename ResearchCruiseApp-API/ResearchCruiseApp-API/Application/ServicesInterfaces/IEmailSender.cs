@@ -1,6 +1,6 @@
 ﻿using ResearchCruiseApp_API.Domain.Entities;
 
-namespace ResearchCruiseApp_API.Application.ExternalServices;
+namespace ResearchCruiseApp_API.Application.ServicesInterfaces;
 
 
 public interface IEmailSender

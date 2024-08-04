@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using ResearchCruiseApp_API.Domain.Common.Constants;
 using ResearchCruiseApp_API.Domain.Entities;
 
-namespace ResearchCruiseApp_API.Application.SharedServices.UserPermissionVerifier;
+namespace ResearchCruiseApp_API.Application.Services.UserPermissionVerifier;
 
 
 public class UserPermissionVerifier(UserManager<User> userManager) : IUserPermissionVerifier

@@ -1,7 +1,7 @@
 using System.IO.Compression;
 using System.Text;
 
-namespace ResearchCruiseApp_API.Application.SharedServices.Compressor;
+namespace ResearchCruiseApp_API.Application.Services.Compressor;
 
 
 public class Compressor : ICompressor
