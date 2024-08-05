@@ -1,19 +1,14 @@
-﻿using ResearchCruiseApp_API.Domain.Entities;
+﻿using ResearchCruiseApp_API.Application.Common.Models.DTOs;
+using ResearchCruiseApp_API.Domain.Entities;
+using ResearchCruiseApp_API.Infrastructure.Services.Identity;
 
 namespace ResearchCruiseApp_API.Application.ServicesInterfaces;
 
 
 public interface IEmailSender
 {
-    // TODO: Move from here
-    public Task SendAccountAcceptedMessageAsync(User user);
-
-    // TODO: Move from here
-    public Task SendPasswordResetLinkAsync(User user, string email, string resetLink);
-
-    // TODO: Move from here
-    public Task SendPasswordResetCodeAsync(User user, string email, string resetCode);
-
-    
-    Task SendEmail(string email, string subject, string body);
+    Task SendEmailConfirmationEmail(User userDto, string roleName, string emailConfirmationCode);
+    public Task SendAccountAcceptedMessage(User userDto);
+    public Task SendPasswordResetLink(User user, string email, string resetLink);
+    public Task SendPasswordResetCode(User user, string email, string resetCode);
 }

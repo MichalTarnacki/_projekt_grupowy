@@ -8,5 +8,6 @@ namespace ResearchCruiseApp_API.Application.ServicesInterfaces;
 public interface IIdentityService
 {
     Task<User?> GetUserById(Guid id);
+    Task<Result> AcceptUser(Guid id);
     Task<Result> RegisterUserAsync(RegisterFormDto registerForm, string roleName, CancellationToken cancellationToken);
 }

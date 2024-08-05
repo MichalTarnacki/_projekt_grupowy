@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using ResearchCruiseApp_API.Application.Common.Models.DTOs;
 using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
-using ResearchCruiseApp_API.Application.Models.DTOs.Users;
 using ResearchCruiseApp_API.Application.Services.UserDto;
 using ResearchCruiseApp_API.Application.Services.UserPermissionVerifier;
 using ResearchCruiseApp_API.Infrastructure.Persistence;

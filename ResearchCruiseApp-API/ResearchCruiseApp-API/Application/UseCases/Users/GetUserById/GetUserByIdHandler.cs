@@ -1,15 +1,15 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using ResearchCruiseApp_API.Application.Common.Models.DTOs;
 using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
-using ResearchCruiseApp_API.Application.Models.DTOs.Users;
 using ResearchCruiseApp_API.Application.Services.UserDto;
 using ResearchCruiseApp_API.Application.Services.UserPermissionVerifier;
-using ResearchCruiseApp_API.Domain.Entities;
+using Entities_User = ResearchCruiseApp_API.Domain.Entities.User;
 
 namespace ResearchCruiseApp_API.Application.UseCases.Users.GetUserById;
 
 public class GetUserByIdHandler(
-    UserManager<User> userManager,
+    UserManager<Entities_User> userManager,
     IUserPermissionVerifier userPermissionVerifier,
     IUserDtoService userDtoService)
     : IRequestHandler<GetUserByIdQuery, Result<UserDto>>

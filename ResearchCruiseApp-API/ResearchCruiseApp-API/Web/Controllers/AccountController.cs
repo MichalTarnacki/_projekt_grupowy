@@ -14,6 +14,7 @@ using ResearchCruiseApp_API.Application.Services.UserDto;
 using ResearchCruiseApp_API.Application.UseCases.Account;
 using ResearchCruiseApp_API.Domain.Common.Constants;
 using ResearchCruiseApp_API.Domain.Entities;
+using ResearchCruiseApp_API.Infrastructure.Services.Identity;
 using ResearchCruiseApp_API.Web.Common.Extensions;
 
 namespace ResearchCruiseApp_API.Web.Controllers;

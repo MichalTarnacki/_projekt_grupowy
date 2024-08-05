@@ -7,9 +7,9 @@ namespace ResearchCruiseApp_API.Application.Services.UserDto;
 
 public class UserDtoService(UserManager<User> userManager, IMapper mapper) : IUserDtoService
 {
-    public async Task<Models.DTOs.Users.UserDto> CreateUserDto(User user)
+    public async Task<Common.Models.DTOs.UserDto> CreateUserDto(User user)
     {
-        var userDto = mapper.Map<Models.DTOs.Users.UserDto>(user);
+        var userDto = mapper.Map<Common.Models.DTOs.UserDto>(user);
         var userRoles = await userManager.GetRolesAsync(user);
         userDto.Roles = [..userRoles];
 

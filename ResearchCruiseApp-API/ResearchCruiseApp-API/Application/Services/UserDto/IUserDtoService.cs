@@ -5,5 +5,5 @@ namespace ResearchCruiseApp_API.Application.Services.UserDto;
 
 public interface IUserDtoService
 {
-    Task<Models.DTOs.Users.UserDto> CreateUserDto(User user);
+    Task<Common.Models.DTOs.UserDto> CreateUserDto(User user);
 }

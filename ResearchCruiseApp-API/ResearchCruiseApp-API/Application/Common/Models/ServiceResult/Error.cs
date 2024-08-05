@@ -19,6 +19,8 @@ public sealed record Error(int StatusCode, string? ErrorMessage = null)
         new(StatusCodes.Status409Conflict, message);
     
     
+    public static Error InternalServerError(string? message = null) =>
+        new(StatusCodes.Status500InternalServerError, message);
     public static Error ServiceUnavailable(string? message = null) =>
         new(StatusCodes.Status503ServiceUnavailable, message);
 }
