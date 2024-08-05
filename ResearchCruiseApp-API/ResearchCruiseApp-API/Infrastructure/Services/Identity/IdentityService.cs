@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
 using ResearchCruiseApp_API.Application.Models.DTOs.Account;
 using ResearchCruiseApp_API.Application.ServicesInterfaces;
@@ -12,6 +13,7 @@ namespace ResearchCruiseApp_API.Infrastructure.Services.Identity;
 
 public class IdentityService(
     UserManager<User> userManager,
+    RoleManager<IdentityRole> roleManager,
     IUserStore<User> userStore,
     IEmailSender emailSender)
     : IIdentityService
@@ -22,6 +24,16 @@ public class IdentityService(
         return user;
     }
 
+    public Task<List<User>> GetAllUsers(CancellationToken cancellationToken)
+    {
+        return userManager.Users.ToListAsync(cancellationToken);
+    }
+    
+    public async Task<bool> UserWithEmailExists(string email)
+    {
+        return await userManager.FindByEmailAsync(email) is not null;
+    }
+    
     public async Task<Result> AcceptUser(Guid id)
     {
         var user = await userManager.FindByIdAsync(id.ToString());
@@ -39,10 +51,8 @@ public class IdentityService(
         return Result.Empty;
     }
     
-    public async Task<Result> RegisterUserAsync(
-        RegisterFormDto registerForm,
-        string roleName,
-        CancellationToken cancellationToken)
+    public async Task<Result> RegisterUser(
+        RegisterFormDto registerForm, string roleName, CancellationToken cancellationToken)
     {
         var emailAddressAttribute = new EmailAddressAttribute();
         
@@ -62,6 +72,39 @@ public class IdentityService(
         return identityResult.ToApplicationResult();
     }
 
+    public async Task<Result> AddUserWithRole(User user, string password, string roleName)
+    {
+        var identityResult = await userManager.CreateAsync(user, password);
+        if (!identityResult.Succeeded)
+            return identityResult.ToApplicationResult();
+        
+        identityResult = await userManager.AddToRoleAsync(user, roleName);
+        
+        var emailConfirmationCode = await CreateEmailConfirmationCode(user, false);
+        await emailSender.SendEmailConfirmationEmail(user, roleName, emailConfirmationCode);
+        
+        return identityResult.ToApplicationResult();
+    }
+
+    public async Task<Result> AddRoleToUser(User user, string roleName)
+    {
+        var result = await userManager.AddToRoleAsync(user, roleName);
+        return result.ToApplicationResult();
+    }
+
+    public async Task<Result> RemoveRoleFromUser(User user, string roleName)
+    {
+        var result = await userManager.RemoveFromRoleAsync(user, roleName);
+        return result.ToApplicationResult();
+    }
+    
+    public Task<List<string?>> GetAllRoleNames(CancellationToken cancellationToken)
+    {
+        return roleManager.Roles
+            .Select(role => role.Name)
+            .ToListAsync(cancellationToken);
+    }
+    
 
     private async Task<User> CreateUser(RegisterFormDto registerForm, CancellationToken cancellationToken)
     {

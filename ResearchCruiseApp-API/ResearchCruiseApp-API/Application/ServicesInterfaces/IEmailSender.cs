@@ -7,7 +7,7 @@ namespace ResearchCruiseApp_API.Application.ServicesInterfaces;
 
 public interface IEmailSender
 {
-    Task SendEmailConfirmationEmail(User userDto, string roleName, string emailConfirmationCode);
+    Task SendEmailConfirmationEmail(User user, string roleName, string emailConfirmationCode);
     public Task SendAccountAcceptedMessage(User userDto);
     public Task SendPasswordResetLink(User user, string email, string resetLink);
     public Task SendPasswordResetCode(User user, string email, string resetCode);

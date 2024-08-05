@@ -1,19 +1,16 @@
 using System.ComponentModel.DataAnnotations;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
 using ResearchCruiseApp_API.Application.Services.UserPermissionVerifier;
+using ResearchCruiseApp_API.Application.ServicesInterfaces;
 using ResearchCruiseApp_API.Domain.Entities;
-using ResearchCruiseApp_API.Infrastructure.Services.Identity;
 
 namespace ResearchCruiseApp_API.Application.UseCases.Users.AddUser;
 
 
 public class AddUserHandler(
     IUserPermissionVerifier userPermissionVerifier,
-    UserManager<User> userManager,
-    RoleManager<IdentityRole> roleManager)
+    IIdentityService identityService)
     : IRequestHandler<AddUserCommand, Result> 
 {
     public async Task<Result> Handle(AddUserCommand request, CancellationToken cancellationToken)
@@ -27,16 +24,24 @@ public class AddUserHandler(
 
         if (!await userPermissionVerifier.CanUserAssignRoleAsync(request.CurrentUser, request.AddUserForm.Role))
             return Error.Forbidden("Nie można nadać tej roli");
-
-        if (await userManager.FindByEmailAsync(request.AddUserForm.Email) != null)
+        
+        if (await identityService.UserWithEmailExists(request.AddUserForm.Email))
             return Error.Conflict("Użytkownik o tym adresie e-mail już istnieje");
 
-        var rolesNames = await roleManager.Roles
-            .Select(role => role.Name)
-            .ToListAsync(cancellationToken);
+        var rolesNames = await identityService.GetAllRoleNames(cancellationToken);
         if (!rolesNames.Contains(request.AddUserForm.Role))
             return Error.BadRequest("Rola nie istnieje");
 
+        var newUser = CreateUser(request);
+        var result = await identityService
+            .AddUserWithRole(newUser, request.AddUserForm.Password, request.AddUserForm.Role);
+
+        return result;
+    }
+
+
+    private static User CreateUser(AddUserCommand request)
+    {
         var newUser = new User()
         {
             UserName = request.AddUserForm.Email,
@@ -45,13 +50,7 @@ public class AddUserHandler(
             LastName = request.AddUserForm.LastName,
             Accepted = true
         };
-        await userManager.CreateAsync(newUser, request.AddUserForm.Password);
-        await userManager.AddToRoleAsync(newUser, request.AddUserForm.Role);
 
-        // var emailSender = serviceProvider.GetRequiredService<IEmailSender>();
-        // await emailSender.SendAccountConfirmationMessageAsync(
-        //     newUser, addUserForm.Email, addUserForm.Role, serviceProvider);
-
-        return Result.Empty;
+        return newUser;
     }
 }

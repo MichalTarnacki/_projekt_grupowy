@@ -8,6 +8,12 @@ namespace ResearchCruiseApp_API.Application.ServicesInterfaces;
 public interface IIdentityService
 {
     Task<User?> GetUserById(Guid id);
+    Task<List<User>> GetAllUsers(CancellationToken cancellationToken);
+    Task<bool> UserWithEmailExists(string email);
     Task<Result> AcceptUser(Guid id);
-    Task<Result> RegisterUserAsync(RegisterFormDto registerForm, string roleName, CancellationToken cancellationToken);
+    Task<Result> RegisterUser(RegisterFormDto registerForm, string roleName, CancellationToken cancellationToken);
+    Task<Result> AddUserWithRole(User user, string password, string roleName);
+    Task<Result> AddRoleToUser(User user, string roleName);
+    Task<Result> RemoveRoleFromUser(User user, string roleName);
+    Task<List<string?>> GetAllRoleNames(CancellationToken cancellationToken);
 }
