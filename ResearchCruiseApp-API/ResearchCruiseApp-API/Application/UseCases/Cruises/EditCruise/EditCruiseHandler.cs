@@ -40,12 +40,12 @@ public class EditCruiseHandler(
         cruise.MainDeputyManager = newMainDeputyManager;
 
         var newCruiseApplications = await cruiseApplicationsRepository
-            .GetCruiseApplicationsByIds(request.CruiseFormModel.ApplicationsIds, cancellationToken);
+            .GetCruiseApplicationsByIds(request.CruiseFormModel.CruiseApplicationsIds, cancellationToken);
 
         // Cruises that already contain any of newCruiseApplications. The application will be deleted from them
         // since an application cannot be assigned to more than one cruise
         var affectedCruises = await cruisesRepository
-            .GetCruisesByCruiseApplicationsIds(request.CruiseFormModel.ApplicationsIds, cancellationToken);
+            .GetCruisesByCruiseApplicationsIds(request.CruiseFormModel.CruiseApplicationsIds, cancellationToken);
         
         if (!affectedCruises.Contains(cruise))
             affectedCruises.Add(cruise); // The explicitly edited cruise is of course also affected

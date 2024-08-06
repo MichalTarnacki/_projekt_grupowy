@@ -29,7 +29,7 @@ public class AddCruiseHandler(
         // Cruises that already contain any of newCruise applications. The application will be deleted from them
         // since an application cannot be assigned to more than one cruise
         var affectedCruises = await cruisesRepository
-            .GetCruisesByCruiseApplicationsIds(request.CruiseFormDto.ApplicationsIds, cancellationToken);
+            .GetCruisesByCruiseApplicationsIds(request.CruiseFormDto.CruiseApplicationsIds, cancellationToken);
 
         await cruisesService.PersistCruiseWithNewNumber(newCruise, cancellationToken);
 
@@ -49,7 +49,7 @@ public class AddCruiseHandler(
         var newCruiseMainDeputyManager = await identityService
             .GetUserById(cruiseFormDto.ManagersTeam.MainDeputyManagerId);
         var newCruiseApplications = await cruiseApplicationsRepository
-            .GetCruiseApplicationsByIds(cruiseFormDto.ApplicationsIds, cancellationToken);
+            .GetCruiseApplicationsByIds(cruiseFormDto.CruiseApplicationsIds, cancellationToken);
 
         newCruise.MainCruiseManager = newCruiseMainManager;
         newCruise.MainDeputyManager = newCruiseMainDeputyManager;
