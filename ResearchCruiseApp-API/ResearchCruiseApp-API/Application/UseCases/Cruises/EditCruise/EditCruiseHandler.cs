@@ -2,10 +2,10 @@ using System.Globalization;
 using MediatR;
 using ResearchCruiseApp_API.Application.Common.Models.DTOs;
 using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
-using ResearchCruiseApp_API.Application.Services.Cruises;
-using ResearchCruiseApp_API.Application.ServicesInterfaces;
-using ResearchCruiseApp_API.Application.ServicesInterfaces.Persistence;
-using ResearchCruiseApp_API.Application.ServicesInterfaces.Persistence.Repositories;
+using ResearchCruiseApp_API.Application.ExternalServices;
+using ResearchCruiseApp_API.Application.ExternalServices.Persistence;
+using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
+using ResearchCruiseApp_API.Application.SharedServices.Cruises;
 
 namespace ResearchCruiseApp_API.Application.UseCases.Cruises.EditCruise;
 

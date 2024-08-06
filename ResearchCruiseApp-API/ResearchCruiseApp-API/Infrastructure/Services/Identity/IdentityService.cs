@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
+using ResearchCruiseApp_API.Application.ExternalServices;
 using ResearchCruiseApp_API.Application.Models.DTOs.Account;
-using ResearchCruiseApp_API.Application.ServicesInterfaces;
 using ResearchCruiseApp_API.Domain.Entities;
 
 namespace ResearchCruiseApp_API.Infrastructure.Services.Identity;
@@ -15,7 +15,8 @@ public class IdentityService(
     UserManager<User> userManager,
     RoleManager<IdentityRole> roleManager,
     IUserStore<User> userStore,
-    IEmailSender emailSender)
+    IEmailSender emailSender,
+    ICurrentUserService currentUserService)
     : IIdentityService
 {
     public async Task<User?> GetUserById(Guid id)
@@ -96,6 +97,24 @@ public class IdentityService(
     {
         var result = await userManager.RemoveFromRoleAsync(user, roleName);
         return result.ToApplicationResult();
+    }
+
+    public Task<IList<string>> GetUserRolesNames(User user)
+    {
+        return userManager.GetRolesAsync(user);
+    }
+    
+    public async Task<IList<string>> GetCurrentUserRoleNames()
+    {
+        var currentUserId = currentUserService.GetId();
+        if (currentUserId is null)
+            return [];
+
+        var currentUser = await userManager.FindByIdAsync(currentUserId.ToString()!);
+        if (currentUser is null)
+            return [];
+
+        return await userManager.GetRolesAsync(currentUser);
     }
     
     public Task<List<string?>> GetAllRoleNames(CancellationToken cancellationToken)

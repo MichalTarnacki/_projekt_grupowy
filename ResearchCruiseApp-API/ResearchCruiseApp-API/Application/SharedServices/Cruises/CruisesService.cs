@@ -1,11 +1,10 @@
-using Microsoft.EntityFrameworkCore;
-using ResearchCruiseApp_API.Application.ServicesInterfaces;
-using ResearchCruiseApp_API.Application.ServicesInterfaces.Persistence;
-using ResearchCruiseApp_API.Application.ServicesInterfaces.Persistence.Repositories;
+using ResearchCruiseApp_API.Application.ExternalServices;
+using ResearchCruiseApp_API.Application.ExternalServices.Persistence;
+using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
 using ResearchCruiseApp_API.Domain.Entities;
 using ResearchCruiseApp_API.Infrastructure.Persistence;
 
-namespace ResearchCruiseApp_API.Application.Services.Cruises;
+namespace ResearchCruiseApp_API.Application.SharedServices.Cruises;
 
 
 public class CruisesService(

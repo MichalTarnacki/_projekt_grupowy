@@ -2,7 +2,7 @@
 using System.Resources;
 using MimeKit;
 using ResearchCruiseApp_API.App_GlobalResources;
-using ResearchCruiseApp_API.Application.ServicesInterfaces;
+using ResearchCruiseApp_API.Application.ExternalServices;
 using ResearchCruiseApp_API.Domain.Entities;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 

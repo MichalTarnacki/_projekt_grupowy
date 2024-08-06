@@ -7,4 +7,4 @@ using ResearchCruiseApp_API.Application.Models.DTOs.Users;
 namespace ResearchCruiseApp_API.Application.UseCases.Users.GetAllUsers;
 
 
-public record GetAllUsersQuery(ClaimsPrincipal CurrentUser) : IRequest<Result<List<UserDto>>>;
+public record GetAllUsersQuery : IRequest<Result<List<UserDto>>>;

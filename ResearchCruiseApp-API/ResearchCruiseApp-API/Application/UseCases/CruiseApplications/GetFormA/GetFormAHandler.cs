@@ -2,8 +2,8 @@ using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
+using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
 using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
-using ResearchCruiseApp_API.Application.ServicesInterfaces.Persistence.Repositories;
 using ResearchCruiseApp_API.Infrastructure.Persistence;
 
 namespace ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetFormA;

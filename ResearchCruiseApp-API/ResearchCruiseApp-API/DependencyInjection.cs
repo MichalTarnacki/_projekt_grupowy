@@ -1,12 +1,12 @@
 using System.Reflection;
 using Microsoft.AspNetCore.Identity;
-using ResearchCruiseApp_API.Application.Services.Compressor;
-using ResearchCruiseApp_API.Application.Services.Cruises;
-using ResearchCruiseApp_API.Application.Services.UserDto;
-using ResearchCruiseApp_API.Application.Services.UserPermissionVerifier;
-using ResearchCruiseApp_API.Application.ServicesInterfaces;
-using ResearchCruiseApp_API.Application.ServicesInterfaces.Persistence;
-using ResearchCruiseApp_API.Application.ServicesInterfaces.Persistence.Repositories;
+using ResearchCruiseApp_API.Application.ExternalServices;
+using ResearchCruiseApp_API.Application.ExternalServices.Persistence;
+using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
+using ResearchCruiseApp_API.Application.SharedServices.Compressor;
+using ResearchCruiseApp_API.Application.SharedServices.Cruises;
+using ResearchCruiseApp_API.Application.SharedServices.UserDtos;
+using ResearchCruiseApp_API.Application.SharedServices.UserPermissionVerifier;
 using ResearchCruiseApp_API.Domain.Entities;
 using ResearchCruiseApp_API.Infrastructure.Persistence;
 using ResearchCruiseApp_API.Infrastructure.Persistence.Repositories;
@@ -18,7 +18,7 @@ namespace ResearchCruiseApp_API;
 
 public static class DependencyInjection
 {
-    public static void AddApplicationDependencies(this IServiceCollection services)
+    public static void AddApplication(this IServiceCollection services)
     {
         services
             .AddMediatR(cfg => 
@@ -30,18 +30,19 @@ public static class DependencyInjection
         services
             .AddScoped<ICompressor, Compressor>()
             .AddScoped<ICruisesService, CruisesService>()
-            .AddScoped<IUserDtoService, UserDtoService>()
+            .AddScoped<IUserDtosService, UserDtosService>()
             .AddScoped<IUserPermissionVerifier, UserPermissionVerifier>();
     }
 
-    public static void AddInfrastructureDependencies(this IServiceCollection services)
+    public static void AddInfrastructure(this IServiceCollection services)
     {
         services.AddIdentity();
         
         services
             .AddScoped<IEmailSender, EmailSender>()
             .AddScoped<IYearBasedKeyGenerator, YearBasedKeyGenerator>()
-            .AddScoped<ITemplateFileReader, TemplateFileReader>();
+            .AddScoped<ITemplateFileReader, TemplateFileReader>()
+            .AddScoped<ICurrentUserService, CurrentUserService>();
         
         services.AddPersistence();
     }

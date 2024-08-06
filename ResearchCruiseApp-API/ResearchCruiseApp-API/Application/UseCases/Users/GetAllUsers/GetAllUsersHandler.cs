@@ -2,9 +2,9 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ResearchCruiseApp_API.Application.Common.Models.DTOs;
 using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
-using ResearchCruiseApp_API.Application.Services.UserDto;
-using ResearchCruiseApp_API.Application.Services.UserPermissionVerifier;
-using ResearchCruiseApp_API.Application.ServicesInterfaces;
+using ResearchCruiseApp_API.Application.ExternalServices;
+using ResearchCruiseApp_API.Application.SharedServices.UserDtos;
+using ResearchCruiseApp_API.Application.SharedServices.UserPermissionVerifier;
 using ResearchCruiseApp_API.Infrastructure.Persistence;
 
 namespace ResearchCruiseApp_API.Application.UseCases.Users.GetAllUsers;
@@ -12,7 +12,7 @@ namespace ResearchCruiseApp_API.Application.UseCases.Users.GetAllUsers;
 
 public class GetAllUsersHandler(
     IUserPermissionVerifier userPermissionVerifier,
-    IUserDtoService userDtoService,
+    IUserDtosService userDtosService,
     IIdentityService identityService)
     : IRequestHandler<GetAllUsersQuery, Result<List<UserDto>>>
 {
@@ -23,8 +23,8 @@ public class GetAllUsersHandler(
         var userDtos = new List<UserDto>();
         foreach (var user in allUsers)
         {
-            if (await userPermissionVerifier.CanUserAccessAsync(request.CurrentUser, user))
-                userDtos.Add(await userDtoService.CreateUserDto(user));
+            if (await userPermissionVerifier.CanCurrentUserAccess(user))
+                userDtos.Add(await userDtosService.CreateUserDto(user));
         }
             
         return userDtos;

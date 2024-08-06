@@ -2,10 +2,10 @@ using System.Data;
 using AutoMapper;
 using MediatR;
 using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
+using ResearchCruiseApp_API.Application.ExternalServices;
+using ResearchCruiseApp_API.Application.ExternalServices.Persistence;
+using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
 using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
-using ResearchCruiseApp_API.Application.ServicesInterfaces;
-using ResearchCruiseApp_API.Application.ServicesInterfaces.Persistence;
-using ResearchCruiseApp_API.Application.ServicesInterfaces.Persistence.Repositories;
 using ResearchCruiseApp_API.Domain.Common.Enums;
 using ResearchCruiseApp_API.Domain.Entities;
 

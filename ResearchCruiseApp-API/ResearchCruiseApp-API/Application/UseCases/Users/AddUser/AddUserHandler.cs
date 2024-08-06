@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using MediatR;
 using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
-using ResearchCruiseApp_API.Application.Services.UserPermissionVerifier;
-using ResearchCruiseApp_API.Application.ServicesInterfaces;
+using ResearchCruiseApp_API.Application.ExternalServices;
+using ResearchCruiseApp_API.Application.SharedServices.UserPermissionVerifier;
 using ResearchCruiseApp_API.Domain.Entities;
 
 namespace ResearchCruiseApp_API.Application.UseCases.Users.AddUser;
@@ -22,7 +22,7 @@ public class AddUserHandler(
         if (string.IsNullOrEmpty(request.AddUserForm.Email) || !emailAddressAttribute.IsValid(request.AddUserForm.Email))
             return Error.BadRequest("Adres e-mail jest niepoprawny");
 
-        if (!await userPermissionVerifier.CanUserAssignRoleAsync(request.CurrentUser, request.AddUserForm.Role))
+        if (!await userPermissionVerifier.CanCurrentUserAssignRole(request.AddUserForm.Role))
             return Error.Forbidden("Nie można nadać tej roli");
         
         if (await identityService.UserWithEmailExists(request.AddUserForm.Email))

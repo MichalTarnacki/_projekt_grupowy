@@ -36,8 +36,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ResearchCruiseApp-DB")));
 
-builder.Services.AddApplicationDependencies();
-builder.Services.AddInfrastructureDependencies();
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure();
 
 builder.WebHost.ConfigureKestrel(options =>
 {

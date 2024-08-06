@@ -1,6 +1,6 @@
 ﻿using System.Data;
 using Microsoft.EntityFrameworkCore;
-using ResearchCruiseApp_API.Application.ServicesInterfaces.Persistence;
+using ResearchCruiseApp_API.Application.ExternalServices.Persistence;
 
 namespace ResearchCruiseApp_API.Infrastructure.Persistence;
 

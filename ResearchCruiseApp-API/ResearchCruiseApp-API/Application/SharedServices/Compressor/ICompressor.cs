@@ -1,4 +1,4 @@
-namespace ResearchCruiseApp_API.Application.Services.Compressor;
+namespace ResearchCruiseApp_API.Application.SharedServices.Compressor;
 
 
 public interface ICompressor

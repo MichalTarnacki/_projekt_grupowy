@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace ResearchCruiseApp_API.Application.ServicesInterfaces.Persistence;
+namespace ResearchCruiseApp_API.Application.ExternalServices.Persistence;
 
 
 public interface IUnitOfWork

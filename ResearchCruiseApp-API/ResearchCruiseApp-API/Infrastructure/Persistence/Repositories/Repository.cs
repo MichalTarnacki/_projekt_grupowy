@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ResearchCruiseApp_API.Application.ServicesInterfaces.Persistence.Repositories;
+using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
 
 namespace ResearchCruiseApp_API.Infrastructure.Persistence.Repositories;
 

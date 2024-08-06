@@ -2,7 +2,7 @@ using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
 using ResearchCruiseApp_API.Application.Models.DTOs.Account;
 using ResearchCruiseApp_API.Domain.Entities;
 
-namespace ResearchCruiseApp_API.Application.ServicesInterfaces;
+namespace ResearchCruiseApp_API.Application.ExternalServices;
 
 
 public interface IIdentityService
@@ -15,5 +15,7 @@ public interface IIdentityService
     Task<Result> AddUserWithRole(User user, string password, string roleName);
     Task<Result> AddRoleToUser(User user, string roleName);
     Task<Result> RemoveRoleFromUser(User user, string roleName);
+    Task<IList<string>> GetUserRolesNames(User user);
+    Task<IList<string>> GetCurrentUserRoleNames();
     Task<List<string?>> GetAllRoleNames(CancellationToken cancellationToken);
 }

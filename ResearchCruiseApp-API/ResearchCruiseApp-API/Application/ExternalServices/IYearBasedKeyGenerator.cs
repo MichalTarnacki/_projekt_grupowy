@@ -1,7 +1,7 @@
-using ResearchCruiseApp_API.Application.ServicesInterfaces.Persistence.Repositories;
+using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
 using ResearchCruiseApp_API.Domain.Common.Interfaces;
 
-namespace ResearchCruiseApp_API.Application.ServicesInterfaces;
+namespace ResearchCruiseApp_API.Application.ExternalServices;
 
 
 public interface IYearBasedKeyGenerator
