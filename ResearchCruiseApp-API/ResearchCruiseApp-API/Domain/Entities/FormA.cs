@@ -10,9 +10,9 @@ public class FormA
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
 
-    public User CruiseManager { get; set; } = null!;
+    public Guid CruiseManagerId { get; set; }
 
-    public User DeputyManager { get; set; } = null!;
+    public Guid DeputyManagerId { get; set; }
     
     public int Year { get; set; }
   

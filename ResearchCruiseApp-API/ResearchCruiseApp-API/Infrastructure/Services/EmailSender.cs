@@ -4,6 +4,7 @@ using MimeKit;
 using ResearchCruiseApp_API.App_GlobalResources;
 using ResearchCruiseApp_API.Application.ExternalServices;
 using ResearchCruiseApp_API.Domain.Entities;
+using ResearchCruiseApp_API.Infrastructure.Services.Identity;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace ResearchCruiseApp_API.Infrastructure.Services;

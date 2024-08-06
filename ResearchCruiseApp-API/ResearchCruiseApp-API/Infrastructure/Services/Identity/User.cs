@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using ResearchCruiseApp_API.Application.Common.Models.DTOs;
 
-namespace ResearchCruiseApp_API.Domain.Entities;
+namespace ResearchCruiseApp_API.Infrastructure.Services.Identity;
 
 
 public class User : IdentityUser
