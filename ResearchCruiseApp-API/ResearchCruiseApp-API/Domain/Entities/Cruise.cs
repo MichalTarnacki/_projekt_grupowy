@@ -12,7 +12,7 @@ public class Cruise : IYearBasedNumberedEntity
     
     [StringLength(1024)]
     public string Number { get; set; } = null!;
-
+    
     public Guid MainCruiseManagerId { get; set; }
 
     public Guid MainDeputyManagerId { get; set; }

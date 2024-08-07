@@ -1,6 +1,5 @@
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 using System.Text;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -9,11 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using ResearchCruiseApp_API.Application.Models.DTOs.Account;
-using ResearchCruiseApp_API.Application.Models.DTOs.Users;
-using ResearchCruiseApp_API.Application.SharedServices.UserDtos;
 using ResearchCruiseApp_API.Application.UseCases.Account;
-using ResearchCruiseApp_API.Domain.Common.Constants;
-using ResearchCruiseApp_API.Domain.Entities;
+using ResearchCruiseApp_API.Application.UseCases.Account.GetCurrentUser;
 using ResearchCruiseApp_API.Infrastructure.Services.Identity;
 using ResearchCruiseApp_API.Web.Common.Extensions;
 
@@ -26,7 +22,7 @@ public class AccountController(
     IAccountService accountService,
     SignInManager<User> signInManager,
     UserManager<User> userManager,
-    IUserDtosService userDtosService)
+    IMediator mediator)
     : ControllerBase
 {
     [HttpPost("register")]
@@ -157,12 +153,10 @@ public class AccountController(
     [HttpGet]
     public async Task<IActionResult> GetCurrentUser()
     {
-        var userName = User.Identity!.Name!;
-        var user = await userManager.FindByNameAsync(userName);
-            
-        if (user != null)
-            return Ok(await userDtosService.CreateUserDto(user));
-        return NotFound();
+        var result = await mediator.Send(new GetCurrentUserQuery());
+        return result.Error is null
+            ? Ok(result.Data)
+            : this.CreateError(result);
     }
     
     [Authorize]

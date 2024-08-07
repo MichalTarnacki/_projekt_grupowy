@@ -10,6 +10,7 @@ using ResearchCruiseApp_API.Domain.Entities;
 
 namespace ResearchCruiseApp_API.Application.UseCases.Cruises.EditCruise;
 
+
 public class EditCruiseHandler(
     ICruisesService cruisesService,
     IIdentityService identityService,
@@ -50,9 +51,9 @@ public class EditCruiseHandler(
         var newMainCruiseManagerId = request.CruiseFormModel.ManagersTeam.MainCruiseManagerId;
         var newMainDeputyManagerId = request.CruiseFormModel.ManagersTeam.MainDeputyManagerId;
         
-        if (await identityService.GetUserById(newMainCruiseManagerId) is null)
+        if (await identityService.GetUserDtoById(newMainCruiseManagerId) is null)
             return Error.NotFound("Podany kierownik nie istnieje");
-        if ( await identityService.GetUserById(newMainDeputyManagerId) is null)
+        if ( await identityService.GetUserDtoById(newMainDeputyManagerId) is null)
             return Error.NotFound("Podany zastępca nie istnieje"); 
         
         cruise.MainCruiseManagerId = newMainCruiseManagerId;
