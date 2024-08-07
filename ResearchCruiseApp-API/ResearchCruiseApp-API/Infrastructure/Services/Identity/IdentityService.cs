@@ -26,14 +26,20 @@ public class IdentityService(
         var user = await userManager.FindByIdAsync(id.ToString());
         return user is null
             ? null
-            : CreateUserDto(user);
+            : await CreateUserDto(user);
     }
 
-    public Task<List<UserDto>> GetAllUsersDtos(CancellationToken cancellationToken)
+    public async Task<List<UserDto>> GetAllUsersDtos(CancellationToken cancellationToken)
     {
-        return userManager.Users
-            .Select(user => CreateUserDto(user))
-            .ToListAsync(cancellationToken);
+        var users = await userManager.Users.ToListAsync(cancellationToken);
+        var usersDtos = new List<UserDto>();
+
+        foreach (var user in users)
+        {
+            usersDtos.Add(await CreateUserDto(user));
+        }
+        
+        return usersDtos;
     }
     
     public async Task<bool> UserWithEmailExists(string email)
@@ -53,7 +59,7 @@ public class IdentityService(
         if (!identityResult.Succeeded)
             return identityResult.ToApplicationResult();
         
-        await emailSender.SendAccountAcceptedMessage(CreateUserDto(user));
+        await emailSender.SendAccountAcceptedMessage(await CreateUserDto(user));
         
         return Result.Empty;
     }
@@ -79,7 +85,7 @@ public class IdentityService(
             return identityResult.ToApplicationResult();
 
         var emailConfirmationCode = await CreateEmailConfirmationCode(user, false);
-        await emailSender.SendEmailConfirmationEmail(CreateUserDto(user), roleName, emailConfirmationCode);
+        await emailSender.SendEmailConfirmationEmail(await CreateUserDto(user), roleName, emailConfirmationCode);
 
         return identityResult.ToApplicationResult();
     }
@@ -96,7 +102,7 @@ public class IdentityService(
             return identityResult.ToApplicationResult();
         
         var emailConfirmationCode = await CreateEmailConfirmationCode(user, false);
-        await emailSender.SendEmailConfirmationEmail(CreateUserDto(user), roleName, emailConfirmationCode);
+        await emailSender.SendEmailConfirmationEmail(await CreateUserDto(user), roleName, emailConfirmationCode);
         
         return Result.Empty;
     }
@@ -169,9 +175,14 @@ public class IdentityService(
         };
     }
 
-    private UserDto CreateUserDto(User user) =>
-        mapper.Map<UserDto>(user);
-    
+    private async Task<UserDto> CreateUserDto(User user)
+    {
+        var userDto = mapper.Map<UserDto>(user);
+        userDto.Roles = await GetUserRolesNames(userDto.Id);
+
+        return userDto;
+    }
+
     private async Task<string> CreateEmailConfirmationCode(User user, bool changeEmail)
     {
         var code = changeEmail
