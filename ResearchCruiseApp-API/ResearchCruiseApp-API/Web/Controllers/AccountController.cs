@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using ResearchCruiseApp_API.Application.Models.DTOs.Account;
-using ResearchCruiseApp_API.Application.UseCases.Account;
+using ResearchCruiseApp_API.Application.UseCases.Account.ConfirmEmail;
 using ResearchCruiseApp_API.Application.UseCases.Account.GetCurrentUser;
+using ResearchCruiseApp_API.Application.UseCases.Account.Login;
+using ResearchCruiseApp_API.Application.UseCases.Account.Register;
 using ResearchCruiseApp_API.Infrastructure.Services.Identity;
 using ResearchCruiseApp_API.Web.Common.Extensions;
 
@@ -19,47 +21,28 @@ namespace ResearchCruiseApp_API.Web.Controllers;
 [Route("[controller]")]
 [ApiController]
 public class AccountController(
-    IAccountService accountService,
-    SignInManager<User> signInManager,
     UserManager<User> userManager,
+    IConfiguration configuration,
     IMediator mediator)
     : ControllerBase
 {
     [HttpPost("register")]
     public async Task<IActionResult> Register(
-        [FromBody] RegisterFormDto registerForm,
-        CancellationToken cancellationToken)
+        [FromBody] RegisterFormDto registerForm)
     {
-        var result = await accountService.Register(registerForm, cancellationToken);
+        var result = await mediator.Send(new RegisterCommand(registerForm));
         return result.Error is null
             ? Created()
             : this.CreateError(result);
     }
-        
+
     [HttpPost("login")]
-    public async Task<Results<Ok<AccessTokenResponse>, EmptyHttpResult, ProblemHttpResult>> Login(
-        [FromBody] LoginModel loginModel,
-        [FromServices] IServiceProvider serviceProvider)
+    public async Task<IActionResult> Login([FromBody] LoginFormDto loginFormDto)
     {
-        var user = await userManager.FindByEmailAsync(loginModel.Email);
-        if (user is { Accepted: false })
-            return TypedResults.Problem(statusCode: StatusCodes.Status401Unauthorized);
-            
-        const bool isPersistent = false;
-        const bool lockoutOnFailure = true;
-
-        signInManager.AuthenticationScheme = IdentityConstants.BearerScheme;
-        var result = await signInManager.PasswordSignInAsync(
-            loginModel.Email,
-            loginModel.Password,
-            isPersistent,
-            lockoutOnFailure);
-
-        if (!result.Succeeded)
-            return TypedResults.Problem(statusCode: StatusCodes.Status401Unauthorized);
-
-        // The signInManager already produced the needed response in the form of a bearer token.
-        return TypedResults.Empty;
+        var result = await mediator.Send(new LoginCommand(loginFormDto));
+        return result.Error is null
+            ? Ok(result.Data)
+            : this.CreateError(result);
     }
         
     [HttpPost("refresh")]
@@ -87,49 +70,15 @@ public class AccountController(
     }
         
     [HttpGet("confirmEmail")]
-    public async Task<Results<ContentHttpResult, UnauthorizedHttpResult>> ConfirmEmail(
-        [FromQuery] string userId,
+    public async Task<IActionResult> ConfirmEmail(
+        [FromQuery] Guid userId,
         [FromQuery] string code,
         [FromQuery] string? changedEmail)
     {
-        if (await userManager.FindByIdAsync(userId) is not { } user)
-        {
-            // We could respond with a 404 instead of a 401 like Identity UI, but that feels like unnecessary
-            // information.
-            return TypedResults.Unauthorized();
-        }
-    
-        try
-        {
-            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
-        }
-        catch (FormatException)
-        {
-            return TypedResults.Unauthorized();
-        }
-    
-        IdentityResult result;
-    
-        if (string.IsNullOrEmpty(changedEmail))
-        {
-            result = await userManager.ConfirmEmailAsync(user, code);
-        }
-        else
-        {
-            // As with Identity UI, email and user name are one and the same. So when we update the email,
-            // we need to update the user name.
-            result = await userManager.ChangeEmailAsync(user, changedEmail, code);
-    
-            if (result.Succeeded)
-            {
-                result = await userManager.SetUserNameAsync(user, changedEmail);
-            }
-        }
-                
-        if (!result.Succeeded)
-            return TypedResults.Unauthorized();
-    
-        return TypedResults.Text("Email confirmed");
+        var result = await mediator.Send(new ConfirmEmailCommand(userId, code, changedEmail));
+        return result.Error is null
+            ? Ok()
+            : this.CreateError(result);
     }
         
     // [HttpPost("resendConfirmationEmail")]
@@ -161,8 +110,7 @@ public class AccountController(
     
     [Authorize]
     [HttpPatch]
-    public async Task<IActionResult> ChangeAccountDetails(
-        [FromBody] ChangeAccountDetailsModel changeAccountDetailsModel)
+    public async Task<IActionResult> EditAccount([FromBody] EditAccountFormDto editAccountFormDto)
     {
         var userName = User.Identity!.Name!;
         var user = await userManager.FindByNameAsync(userName);
@@ -170,16 +118,16 @@ public class AccountController(
         if (user == null)
             return NotFound();
     
-        if (changeAccountDetailsModel.NewFirstName != null)
-            user.FirstName = changeAccountDetailsModel.NewFirstName;
-        if (changeAccountDetailsModel.NewLastName != null)
-            user.LastName = changeAccountDetailsModel.NewLastName;
-        if (changeAccountDetailsModel.NewPassword != null)
+        if (editAccountFormDto.NewFirstName != null)
+            user.FirstName = editAccountFormDto.NewFirstName;
+        if (editAccountFormDto.NewLastName != null)
+            user.LastName = editAccountFormDto.NewLastName;
+        if (editAccountFormDto.NewPassword != null)
         {
-            if (changeAccountDetailsModel.Password == null)
+            if (editAccountFormDto.Password == null)
                 return BadRequest();
             var result = await userManager.ChangePasswordAsync(
-                user, changeAccountDetailsModel.Password, changeAccountDetailsModel.NewPassword);
+                user, editAccountFormDto.Password, editAccountFormDto.NewPassword);
     
             if (result.Succeeded)
                 return NoContent();

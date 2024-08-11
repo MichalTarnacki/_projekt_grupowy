@@ -1,9 +1,12 @@
 using System.ComponentModel.DataAnnotations;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using ResearchCruiseApp_API.Application.Common.Models.DTOs;
 using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
 using ResearchCruiseApp_API.Application.ExternalServices;
@@ -18,7 +21,8 @@ public class IdentityService(
     RoleManager<IdentityRole> roleManager,
     IEmailSender emailSender,
     ICurrentUserService currentUserService,
-    IMapper mapper)
+    IMapper mapper,
+    IConfiguration configuration)
     : IIdentityService
 {
     public async Task<UserDto?> GetUserDtoById(Guid id)
@@ -64,6 +68,37 @@ public class IdentityService(
         return Result.Empty;
     }
     
+    public async Task<Result> ConfirmEmail(Guid userId, string code, string changedEmail)
+    {
+        if (await userManager.FindByIdAsync(userId.ToString()) is not { } user)
+            return Error.Unauthorized();
+    
+        try
+        {
+            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+        }
+        catch (FormatException)
+        {
+            return Error.Unauthorized();
+        }
+    
+        IdentityResult result;
+    
+        if (string.IsNullOrEmpty(changedEmail))
+            result = await userManager.ConfirmEmailAsync(user, code);
+        else
+        {
+            result = await userManager.ChangeEmailAsync(user, changedEmail, code);
+            
+            if (result.Succeeded)
+                result = await userManager.SetUserNameAsync(user, changedEmail); // Email is also the username
+        }
+
+        return result.Succeeded
+            ? Result.Empty
+            : Error.Unauthorized();
+    }
+    
     public async Task<Result> RegisterUser(
         RegisterFormDto registerForm, string roleName, CancellationToken cancellationToken)
     {
@@ -90,6 +125,34 @@ public class IdentityService(
         return identityResult.ToApplicationResult();
     }
 
+    public async Task<bool> CanUserLogin(string email, string password)
+    {
+        var user = await userManager.FindByEmailAsync(email);
+        return user is not null &&
+               user.Accepted &&
+               await userManager.CheckPasswordAsync(user, password);
+    }
+
+    public async Task<Result<JwtSecurityToken>> GetAccessToken(string userEmail)
+    {
+        var user = await userManager.FindByEmailAsync(userEmail);
+        if (user is null)
+            return Error.InternalServerError();
+        
+        var roles = await userManager.GetRolesAsync(user);
+        
+        var authenticationClaims = new List<Claim>
+        {
+            new(ClaimTypes.NameIdentifier, user.Id),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        };
+        authenticationClaims.AddRange(roles
+            .Select(role => new Claim(ClaimTypes.Role, role))
+        );
+
+        return CreateAccessToken(authenticationClaims);
+    }
+    
     public async Task<Result> AddUserWithRole(AddUserFormDto addUserFormDto, string password, string roleName)
     {
         var user = CreateUser(addUserFormDto);
@@ -191,5 +254,27 @@ public class IdentityService(
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
         return code;
+    }
+
+    private Result<JwtSecurityToken> CreateAccessToken(List<Claim> authClaims)
+    {
+        var secret = configuration["JWT:Secret"];
+        var issuer = configuration["JWT:ValidIssuer"];
+        var audience = configuration["JWT:ValidAudience"];
+        
+        if (secret is null || issuer is null || audience is null)
+            return Error.InternalServerError();
+        
+        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
+
+        var token = new JwtSecurityToken(
+            issuer: issuer,
+            audience: audience,
+            expires: DateTime.Now.AddHours(3),
+            claims: authClaims,
+            signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+        );
+
+        return token;
     }
 }
