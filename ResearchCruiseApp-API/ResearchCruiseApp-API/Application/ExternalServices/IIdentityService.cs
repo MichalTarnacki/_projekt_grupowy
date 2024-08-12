@@ -13,10 +13,11 @@ public interface IIdentityService
     Task<List<UserDto>> GetAllUsersDtos(CancellationToken cancellationToken);
     Task<bool> UserWithEmailExists(string email);
     Task<Result> AcceptUser(Guid id);
-    Task<Result> ConfirmEmail(Guid userId, string code, string changedEmail);
-    Task<Result> RegisterUser(RegisterFormDto registerForm, string roleName, CancellationToken cancellationToken);
+    Task<Result> ConfirmEmail(Guid userId, string code, string? changedEmail);
+    Task<Result> RegisterUser(RegisterFormDto registerForm, string roleName);
     Task<bool> CanUserLogin(string email, string password);
     Task<Result<JwtSecurityToken>> GetAccessToken(string userEmail);
+    Task<Result> ChangePassword(ChangePasswordFormDto changePasswordFormDto);
     Task<Result> AddUserWithRole(AddUserFormDto addUserFormDto, string password, string roleName);
     Task<Result> AddRoleToUser(Guid userId, string roleName);
     Task<Result> RemoveRoleFromUser(Guid userId, string roleName);

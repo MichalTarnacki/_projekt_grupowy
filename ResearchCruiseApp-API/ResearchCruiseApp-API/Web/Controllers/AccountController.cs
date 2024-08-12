@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using ResearchCruiseApp_API.Application.Models.DTOs.Account;
+using ResearchCruiseApp_API.Application.UseCases.Account.ChangePassword;
 using ResearchCruiseApp_API.Application.UseCases.Account.ConfirmEmail;
 using ResearchCruiseApp_API.Application.UseCases.Account.GetCurrentUser;
 using ResearchCruiseApp_API.Application.UseCases.Account.Login;
@@ -77,7 +78,7 @@ public class AccountController(
     {
         var result = await mediator.Send(new ConfirmEmailCommand(userId, code, changedEmail));
         return result.Error is null
-            ? Ok()
+            ? NoContent()
             : this.CreateError(result);
     }
         
@@ -109,32 +110,12 @@ public class AccountController(
     }
     
     [Authorize]
-    [HttpPatch]
-    public async Task<IActionResult> EditAccount([FromBody] EditAccountFormDto editAccountFormDto)
+    [HttpPatch("password")]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordFormDto changePasswordFormDto)
     {
-        var userName = User.Identity!.Name!;
-        var user = await userManager.FindByNameAsync(userName);
-    
-        if (user == null)
-            return NotFound();
-    
-        if (editAccountFormDto.NewFirstName != null)
-            user.FirstName = editAccountFormDto.NewFirstName;
-        if (editAccountFormDto.NewLastName != null)
-            user.LastName = editAccountFormDto.NewLastName;
-        if (editAccountFormDto.NewPassword != null)
-        {
-            if (editAccountFormDto.Password == null)
-                return BadRequest();
-            var result = await userManager.ChangePasswordAsync(
-                user, editAccountFormDto.Password, editAccountFormDto.NewPassword);
-    
-            if (result.Succeeded)
-                return NoContent();
-            return BadRequest();
-        }
-    
-        await userManager.UpdateAsync(user);
-        return NoContent();
+        var result = await mediator.Send(new ChangePasswordCommand(changePasswordFormDto));
+        return result.Error is null
+            ? NoContent()
+            : this.CreateError(result);
     }
 }

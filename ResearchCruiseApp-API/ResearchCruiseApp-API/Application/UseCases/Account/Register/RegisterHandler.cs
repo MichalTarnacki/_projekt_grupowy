@@ -10,6 +10,6 @@ internal class RegisterHandler(IIdentityService identityService) : IRequestHandl
 {
     public Task<Result> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        return identityService.RegisterUser(request.RegisterFormDto, RoleName.CruiseManager, cancellationToken);
+        return identityService.RegisterUser(request.RegisterFormDto, RoleName.CruiseManager);
     }
 }

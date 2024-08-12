@@ -4,6 +4,6 @@
 internal class LoginResponseDto
 {
     public string AccessToken { get; set; } = null!;
-    public DateTime Expiration { get; set; }
+    public DateTime ExpiresIn { get; set; }
     public string RefreshToken { get; set; } = null!;
 }

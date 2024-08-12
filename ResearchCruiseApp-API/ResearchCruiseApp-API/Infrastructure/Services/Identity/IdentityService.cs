@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
+using System.Runtime.InteropServices.JavaScript;
 using System.Security.Claims;
 using System.Text;
 using AutoMapper;
@@ -68,7 +69,7 @@ public class IdentityService(
         return Result.Empty;
     }
     
-    public async Task<Result> ConfirmEmail(Guid userId, string code, string changedEmail)
+    public async Task<Result> ConfirmEmail(Guid userId, string code, string? changedEmail)
     {
         if (await userManager.FindByIdAsync(userId.ToString()) is not { } user)
             return Error.Unauthorized();
@@ -99,8 +100,7 @@ public class IdentityService(
             : Error.Unauthorized();
     }
     
-    public async Task<Result> RegisterUser(
-        RegisterFormDto registerForm, string roleName, CancellationToken cancellationToken)
+    public async Task<Result> RegisterUser(RegisterFormDto registerForm, string roleName)
     {
         var emailAddressAttribute = new EmailAddressAttribute();
         
@@ -152,7 +152,27 @@ public class IdentityService(
 
         return CreateAccessToken(authenticationClaims);
     }
-    
+
+    public async Task<Result> ChangePassword(ChangePasswordFormDto changePasswordFormDto)
+    {
+        var userId = currentUserService.GetId();
+        if (userId is null)
+            return Error.NotFound();
+
+        var user = await userManager.FindByIdAsync(userId.ToString()!);
+        if (user is null)
+            return Error.NotFound();
+        
+        var identityResult = await userManager
+            .ChangePasswordAsync(user, changePasswordFormDto.Password, changePasswordFormDto.NewPassword);
+
+        if (!identityResult.Succeeded)
+            return Error.BadRequest();
+
+        await userManager.UpdateAsync(user);
+        return Result.Empty;
+    }
+
     public async Task<Result> AddUserWithRole(AddUserFormDto addUserFormDto, string password, string roleName)
     {
         var user = CreateUser(addUserFormDto);

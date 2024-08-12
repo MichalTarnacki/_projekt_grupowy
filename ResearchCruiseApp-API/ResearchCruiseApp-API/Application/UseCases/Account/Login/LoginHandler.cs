@@ -21,7 +21,7 @@ internal class LoginHandler(IIdentityService identityService) : IRequestHandler<
         return new LoginResponseDto
         {
             AccessToken = new JwtSecurityTokenHandler().WriteToken(tokenResult.Data),
-            Expiration = tokenResult.Data?.ValidTo ?? DateTime.Now,
+            ExpiresIn = tokenResult.Data?.ValidTo ?? DateTime.Now,
             RefreshToken = string.Empty
         };
     }
