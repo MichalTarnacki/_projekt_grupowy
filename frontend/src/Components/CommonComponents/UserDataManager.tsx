@@ -75,7 +75,7 @@ const UserDataManager = () => {
     }
 
     const ChangePassword = async (changePasswordData:FieldValues) => {
-            return Api.patch('/account', changePasswordData, {raw:true})
+            return Api.patch('/account/password', changePasswordData, {raw:true})
     }
 
     const ForceLogout = () => {
