@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
+using System.Runtime.InteropServices.JavaScript;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -289,11 +290,16 @@ public class IdentityService(
 
         user.RefreshToken = refreshToken;
         user.RefreshTokenExpiry = refreshTokenExpiry;
-        
+
         var identityResult = await userManager.UpdateAsync(user);
+        var concurrencyError = identityResult.Errors.FirstOrDefault(error =>
+            error.Code == nameof(IdentityErrorDescriber.ConcurrencyFailure));
+
+        if (concurrencyError is not null)
+            return Error.Conflict("Wykonano wiele żądań w zbyt krótkim odstępie czasowym");
         if (!identityResult.Succeeded)
             return Error.InternalServerError();
-        
+
         var loginResponseDto = new LoginResponseDto
         {
             AccessToken = new JwtSecurityTokenHandler().WriteToken(accessToken.Data),
@@ -302,7 +308,7 @@ public class IdentityService(
         };
         return loginResponseDto;
     }
-    
+
     private async Task<string> CreateEmailConfirmationCode(User user, bool changeEmail)
     {
         var code = changeEmail
