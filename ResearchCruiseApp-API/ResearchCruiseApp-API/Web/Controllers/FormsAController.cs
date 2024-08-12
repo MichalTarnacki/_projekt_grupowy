@@ -17,6 +17,7 @@ public class FormsAController(ApplicationDbContext applicationDbContext) : Contr
     public async Task<IActionResult> GetFormAInitData()
     {
         var model = await FormAInitValuesDto.Create(applicationDbContext);
+        
         return Ok(model.ToJson());
     }
 }
