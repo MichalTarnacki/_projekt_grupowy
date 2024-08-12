@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
-using System.Runtime.InteropServices.JavaScript;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
@@ -133,26 +133,38 @@ public class IdentityService(
                await userManager.CheckPasswordAsync(user, password);
     }
 
-    public async Task<Result<JwtSecurityToken>> GetAccessToken(string userEmail)
+    public async Task ResendEmailConfirmationEmail(string email, string roleName)
+    {
+        var user = await userManager.FindByEmailAsync(email);
+        if (user is null)
+            return; // According to Microsoft, responding with an error would give to much information
+        
+        var emailConfirmationCode = await CreateEmailConfirmationCode(user, false);
+        await emailSender.SendEmailConfirmationEmail(await CreateUserDto(user), roleName, emailConfirmationCode);
+    }
+    
+    public async Task<Result<LoginResponseDto>> LoginUser(string userEmail)
     {
         var user = await userManager.FindByEmailAsync(userEmail);
         if (user is null)
-            return Error.InternalServerError();
-        
-        var roles = await userManager.GetRolesAsync(user);
-        
-        var authenticationClaims = new List<Claim>
-        {
-            new(ClaimTypes.NameIdentifier, user.Id),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        };
-        authenticationClaims.AddRange(roles
-            .Select(role => new Claim(ClaimTypes.Role, role))
-        );
+            return Error.Unauthorized();
 
-        return CreateAccessToken(authenticationClaims);
+        return await CreateLoginResponseDto(user);
     }
 
+    public async Task<Result<LoginResponseDto>> RefreshUserTokens(RefreshDto refreshDto)
+    {
+        var userIdResult = GetUserIdFromAccessToken(refreshDto.AccessToken);
+        if (userIdResult.Error is not null)
+            return userIdResult.Error;
+
+        var user = await userManager.FindByIdAsync(userIdResult.Data!);
+        if (user is null || user.RefreshTokenExpiry < DateTime.Now || user.RefreshToken != refreshDto.RefreshToken)
+            return Error.Unauthorized();
+
+        return await CreateLoginResponseDto(user);
+    }
+    
     public async Task<Result> ChangePassword(ChangePasswordFormDto changePasswordFormDto)
     {
         var userId = currentUserService.GetId();
@@ -266,6 +278,31 @@ public class IdentityService(
         return userDto;
     }
 
+    private async Task<Result<LoginResponseDto>> CreateLoginResponseDto(User user)
+    {
+        var accessToken = await CreateAccessToken(user);
+        if (accessToken.Error is not null)
+            return accessToken.Error;
+
+        var refreshToken = CreateRefreshToken();
+        var refreshTokenExpiry = DateTime.Now.AddSeconds(40);
+
+        user.RefreshToken = refreshToken;
+        user.RefreshTokenExpiry = refreshTokenExpiry;
+        
+        var identityResult = await userManager.UpdateAsync(user);
+        if (!identityResult.Succeeded)
+            return Error.InternalServerError();
+        
+        var loginResponseDto = new LoginResponseDto
+        {
+            AccessToken = new JwtSecurityTokenHandler().WriteToken(accessToken.Data),
+            ExpiresIn = accessToken.Data?.ValidTo ?? DateTime.Now,
+            RefreshToken = refreshToken
+        };
+        return loginResponseDto;
+    }
+    
     private async Task<string> CreateEmailConfirmationCode(User user, bool changeEmail)
     {
         var code = changeEmail
@@ -275,26 +312,93 @@ public class IdentityService(
 
         return code;
     }
-
-    private Result<JwtSecurityToken> CreateAccessToken(List<Claim> authClaims)
+    
+    private async Task<Result<JwtSecurityToken>> CreateAccessToken(User user)
     {
-        var secret = configuration["JWT:Secret"];
         var issuer = configuration["JWT:ValidIssuer"];
         var audience = configuration["JWT:ValidAudience"];
         
-        if (secret is null || issuer is null || audience is null)
+        if (issuer is null || audience is null)
             return Error.InternalServerError();
         
-        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
+        var authenticationClaims = new List<Claim>
+        {
+            new(ClaimTypes.NameIdentifier, user.Id),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        };
+        
+        var roles = await userManager.GetRolesAsync(user);
+        authenticationClaims.AddRange(roles
+            .Select(role => new Claim(ClaimTypes.Role, role))
+        );
 
+        var securityKeyResult = CreateSecurityKey();
+        if (securityKeyResult.Error is not null)
+            return securityKeyResult.Error;
+        
         var token = new JwtSecurityToken(
             issuer: issuer,
             audience: audience,
-            expires: DateTime.Now.AddHours(3),
-            claims: authClaims,
-            signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+            expires: DateTime.Now.AddSeconds(20),
+            claims: authenticationClaims,
+            signingCredentials: new SigningCredentials(securityKeyResult.Data, SecurityAlgorithms.HmacSha256)
         );
 
         return token;
+    }
+    
+    private static string CreateRefreshToken()
+    {
+        var randomNumber = new byte[512];
+
+        using (var numberGenerator = RandomNumberGenerator.Create())
+        {
+            numberGenerator.GetBytes(randomNumber);
+        }
+
+        return Convert.ToBase64String(randomNumber);
+    }
+
+    private Result<string> GetUserIdFromAccessToken(string accessToken)
+    {
+        var securityKeyResult = CreateSecurityKey();
+        if (securityKeyResult.Error is not null)
+            return securityKeyResult.Error;
+        
+        var validation = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = false, // We want to get the user id even from an expired token
+            ValidAudience = configuration["JWT:ValidAudience"],
+            ValidIssuer = configuration["JWT:ValidIssuer"],
+            IssuerSigningKey = securityKeyResult.Data
+        };
+
+        try
+        {
+            var principal = new JwtSecurityTokenHandler().ValidateToken(accessToken, validation, out _);
+            if (principal is null)
+                return Error.Unauthorized();
+            
+            var userName = principal.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userName is null)
+                return Error.Unauthorized();
+
+            return userName;
+        }
+        catch (SecurityTokenArgumentException)
+        {
+            return Error.Unauthorized();
+        }
+    }
+    
+    private Result<SymmetricSecurityKey> CreateSecurityKey()
+    {
+        var secret = configuration["JWT:Secret"];
+        if (secret is null)
+            return Error.InternalServerError();
+        
+        return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
     }
 }

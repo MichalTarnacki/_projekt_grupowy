@@ -6,7 +6,7 @@ using ResearchCruiseApp_API.Application.ExternalServices;
 namespace ResearchCruiseApp_API.Application.UseCases.Account.GetCurrentUser;
 
 
-internal class GetCurrentUserHandler(
+public class GetCurrentUserHandler(
     ICurrentUserService currentUserService,
     IIdentityService identityService)
     : IRequestHandler<GetCurrentUserQuery, Result<UserDto>>

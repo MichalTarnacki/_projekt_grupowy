@@ -1,4 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
 using ResearchCruiseApp_API.Application.Common.Models.DTOs;
 using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
 using ResearchCruiseApp_API.Application.Models.DTOs.Account;
@@ -16,7 +15,9 @@ public interface IIdentityService
     Task<Result> ConfirmEmail(Guid userId, string code, string? changedEmail);
     Task<Result> RegisterUser(RegisterFormDto registerForm, string roleName);
     Task<bool> CanUserLogin(string email, string password);
-    Task<Result<JwtSecurityToken>> GetAccessToken(string userEmail);
+    Task ResendEmailConfirmationEmail(string email, string roleName);
+    Task<Result<LoginResponseDto>> LoginUser(string userEmail);
+    Task<Result<LoginResponseDto>> RefreshUserTokens(RefreshDto refreshDto);
     Task<Result> ChangePassword(ChangePasswordFormDto changePasswordFormDto);
     Task<Result> AddUserWithRole(AddUserFormDto addUserFormDto, string password, string roleName);
     Task<Result> AddRoleToUser(Guid userId, string roleName);

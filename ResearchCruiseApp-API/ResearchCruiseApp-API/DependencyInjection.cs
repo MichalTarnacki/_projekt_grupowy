@@ -73,23 +73,11 @@ public static class DependencyInjection
     
     private static void AddIdentity(this IServiceCollection services, IConfiguration configuration)
     {
-        // services
-        //     .AddIdentityCore<User>(options =>
-        //         options.SignIn.RequireConfirmedAccount = true)
-        //     .AddRoles<IdentityRole>()
-        //     .AddEntityFrameworkStores<ApplicationDbContext>()
-        //     .AddApiEndpoints();
-
         services
             .AddIdentity<User, IdentityRole>(options =>
                 options.SignIn.RequireConfirmedAccount = true)
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
-        
-        // services
-        //     .AddAuthentication()
-        //     .AddBearerToken(IdentityConstants.BearerScheme);
-        // services.AddAuthorizationBuilder();
 
         services
             .AddAuthentication(options => 
@@ -106,6 +94,8 @@ public static class DependencyInjection
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero,
                     ValidAudience = configuration["JWT:ValidAudience"],
                     ValidIssuer = configuration["JWT:ValidIssuer"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]!))
