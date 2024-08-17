@@ -1,9 +1,9 @@
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NuGet.Protocol;
+using ResearchCruiseApp_API.Application.UseCases.Forms.GetFormAInitValues;
 using ResearchCruiseApp_API.Domain.Common.Constants;
-using ResearchCruiseApp_API.Infrastructure.Persistence;
-using ResearchCruiseApp_API.Temp.DTOs;
+using ResearchCruiseApp_API.Web.Common.Extensions;
 
 namespace ResearchCruiseApp_API.Web.Controllers;
 
@@ -11,13 +11,14 @@ namespace ResearchCruiseApp_API.Web.Controllers;
 [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.CruiseManager}")]
 [Route("[controller]")]
 [ApiController]
-public class FormsAController(ApplicationDbContext applicationDbContext) : ControllerBase
+public class FormsController(IMediator mediator) : ControllerBase
 {
-    [HttpGet("InitData")]
-    public async Task<IActionResult> GetFormAInitData()
+    [HttpGet("InitValues/A")]
+    public async Task<IActionResult> GetFormAInitValues()
     {
-        var model = await FormAInitValuesDto.Create(applicationDbContext);
-        
-        return Ok(model.ToJson());
+        var result = await mediator.Send(new GetFormAInitValuesQuery());
+        return result.Error is null
+            ? Ok(result.Data)
+            : this.CreateError(result);
     }
 }
