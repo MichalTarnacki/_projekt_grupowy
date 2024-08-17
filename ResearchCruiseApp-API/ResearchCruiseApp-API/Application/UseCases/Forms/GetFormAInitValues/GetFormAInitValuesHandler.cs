@@ -1,44 +1,35 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+﻿using MediatR;
+using ResearchCruiseApp_API.Application.Common.Models.DTOs;
+using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
+using ResearchCruiseApp_API.Application.ExternalServices;
 using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
-using ResearchCruiseApp_API.Infrastructure.Persistence;
+using ResearchCruiseApp_API.Application.Models.DTOs.Forms;
 
-namespace ResearchCruiseApp_API.Temp.DTOs;
+namespace ResearchCruiseApp_API.Application.UseCases.Forms.GetFormAInitValues;
 
 
-[JsonObject(NamingStrategyType = typeof (CamelCaseNamingStrategy))]
-public class FormAInitValuesDto
+public class GetFormAInitValuesHandler(
+    IIdentityService identityService)
+    : IRequestHandler<GetFormAInitValuesQuery, Result<FormAInitValuesDto>>
 {
-    [JsonObject(NamingStrategyType = typeof (CamelCaseNamingStrategy))]
-    public class ResearchAreaModel(string name, List<int> x, List<int> y)
+    public async Task<Result<FormAInitValuesDto>> Handle(GetFormAInitValuesQuery request, CancellationToken cancellationToken)
     {
-        public string Name { get; set; } = name;
-        public List<int> X { get; set; } = x;
-        public List<int> Y { get; set; } = y;
+        var model = await CreateFormAInitValuesDto(cancellationToken);
+        return model;
     }
     
     
-    public List<FormUserDto> CruiseManagers = null!;
-    public List<FormUserDto> DeputyManagers = null!;
-    public List<int> Years = null!;
-    public List<string> ShipUsages = null!;
-    public List<ResearchAreaModel> ResearchAreas = null!;
-    public List<string> CruiseGoals = null!;
-    public List<ResearchTaskDto> HistoricalTasks = null!;
-
-    
-    public static async Task<FormAInitValuesDto> Create(ApplicationDbContext applicationDbContext)
+    private async Task<FormAInitValuesDto> CreateFormAInitValuesDto(CancellationToken cancellationToken)
     {
         
-        var users = await applicationDbContext.Users.ToListAsync();
+        var userDtos = await identityService.GetAllUsersDtos(cancellationToken);
             
-        var cruiseManagers = users
-            .Select(FormUserDto.GetFormUserDto)
+        var cruiseManagers = userDtos
+            .Select(CreateFormUserDto)
             .ToList();
 
-        var deputyManagers = users
-            .Select(FormUserDto.GetFormUserDto)
+        var deputyManagers = userDtos
+            .Select(CreateFormUserDto)
             .ToList();
 
         var years = new List<int>
@@ -57,7 +48,7 @@ public class FormAInitValuesDto
             "w inny sposób"
         };
 
-        var researchAreas = new List<ResearchAreaModel>
+        var researchAreas = new List<ResearchAreaDto>
         {
             new(
                 "Gdynia",
@@ -70,7 +61,7 @@ public class FormAInitValuesDto
             )
         };
         
-        var cruiseGoals = new List<String>
+        var cruiseGoals = new List<string>
         {
             "Naukowy",
             "Komercyjny",
@@ -91,5 +82,18 @@ public class FormAInitValuesDto
         };
 
         return model;
+    }
+    
+    private static FormUserDto CreateFormUserDto(UserDto userDto)
+    { 
+        var userModel = new FormUserDto
+        {
+            Id = userDto.Id,
+            Email = userDto.Email!,
+            FirstName = userDto.FirstName,
+            LastName = userDto.LastName,
+        };
+
+        return userModel;
     }
 }
