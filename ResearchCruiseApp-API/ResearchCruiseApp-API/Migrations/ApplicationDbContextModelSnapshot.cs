@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ResearchCruiseApp_API.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
+namespace ResearchCruiseApp_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240812190417_EditedRefreshTokenExpiry")]
-    partial class EditedRefreshTokenExpiry
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -198,9 +195,9 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                         .HasMaxLength(1024)
                         .HasColumnType("nvarchar(1024)");
 
-                    b.Property<string>("ScanContent")
+                    b.Property<byte[]>("ScanContent")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("ScanName")
                         .IsRequired()

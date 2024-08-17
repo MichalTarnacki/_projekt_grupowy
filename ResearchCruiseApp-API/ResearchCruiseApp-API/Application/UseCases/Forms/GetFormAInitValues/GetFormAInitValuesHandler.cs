@@ -70,7 +70,7 @@ public class GetFormAInitValuesHandler(
 
         var historicalTasks = new List<ResearchTaskDto>();
         
-        var model = new FormAInitValuesDto
+        var result = new FormAInitValuesDto
         {
             CruiseManagers = cruiseManagers,
             DeputyManagers = deputyManagers,
@@ -81,7 +81,7 @@ public class GetFormAInitValuesHandler(
             HistoricalTasks = historicalTasks,
         };
 
-        return model;
+        return result;
     }
     
     private static FormUserDto CreateFormUserDto(UserDto userDto)
@@ -89,7 +89,7 @@ public class GetFormAInitValuesHandler(
         var userModel = new FormUserDto
         {
             Id = userDto.Id,
-            Email = userDto.Email!,
+            Email = userDto.Email,
             FirstName = userDto.FirstName,
             LastName = userDto.LastName,
         };
