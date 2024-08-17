@@ -8,6 +8,7 @@ using ResearchCruiseApp_API.Application.ExternalServices;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
 using ResearchCruiseApp_API.Application.SharedServices.Compressor;
+using ResearchCruiseApp_API.Application.SharedServices.CruiseApplicationDtos;
 using ResearchCruiseApp_API.Application.SharedServices.Cruises;
 using ResearchCruiseApp_API.Application.SharedServices.UserPermissionVerifier;
 using ResearchCruiseApp_API.Infrastructure.Persistence;
@@ -30,6 +31,7 @@ public static class DependencyInjection
         services
             .AddScoped<ICompressor, Compressor>()
             .AddScoped<ICruisesService, CruisesService>()
+            .AddScoped<ICruiseApplicationDtosService, CruiseApplicationDtosService>()
             .AddScoped<IUserPermissionVerifier, UserPermissionVerifier>();
     }
 
