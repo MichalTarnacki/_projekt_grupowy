@@ -96,4 +96,17 @@ public class GetFormAInitValuesHandler(
 
         return userModel;
     }
+    
+    private static FormUserDto CreateFormUserDto(UserDto userDto)
+    { 
+        var userModel = new FormUserDto
+        {
+            Id = userDto.Id,
+            Email = userDto.Email!,
+            FirstName = userDto.FirstName,
+            LastName = userDto.LastName,
+        };
+
+        return userModel;
+    }
 }
