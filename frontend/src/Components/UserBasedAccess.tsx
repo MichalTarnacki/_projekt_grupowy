@@ -12,6 +12,7 @@ const UserBasedAccess = () => {
     }
 
     const UserHasAdminAccess = () => {
+        console.log(userData)
         if (UserRoleIncludes("Administrator"))
             return true
         return false
