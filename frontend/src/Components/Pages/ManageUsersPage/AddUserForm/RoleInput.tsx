@@ -21,14 +21,14 @@ type Props = {
 
 export default function RoleInput(props: Props) {
     const fieldOptions = {
-        //required: "Pole wymagane"
+        required: "Pole wymagane"
     }
 
     const getRoleOptions = (): RoleOption[] => {
         const { UserHasAdminAccess, UserHasShipownerAccess } = UserBasedAccess()
         const roleOptions: RoleOption[] = []
 
-        if (!UserHasAdminAccess() || !UserHasShipownerAccess()) {
+        if (UserHasAdminAccess() || UserHasShipownerAccess()) {
             roleOptions.push(
                 {
                     label: "Kierownik",
@@ -40,7 +40,7 @@ export default function RoleInput(props: Props) {
                 }
             )
         }
-        if (!UserHasAdminAccess()) {
+        if (UserHasAdminAccess()) {
             roleOptions.push(
                 {
                     label: "Administrator",
