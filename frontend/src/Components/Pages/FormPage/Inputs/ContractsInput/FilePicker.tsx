@@ -71,7 +71,7 @@ export default function FilePicker(props: Props) {
                         }
 
                         if (e.target.files[0].size > maxFileSizeBytes)
-                            setSizeErrorMessage("Plik nie może być większy niż 2 MiB")
+                            setSizeErrorMessage("Rozmiar pliku nie może przekraczać 2 MiB")
                         else
                             reader.readAsDataURL(e.target.files[0])
                     }
