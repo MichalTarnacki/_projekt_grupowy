@@ -116,7 +116,7 @@ export default function AddUserForm(props: Props) {
 
                     <div className="d-flex w-100 align-items-center mt-1 justify-content-start">
                         <a
-                            className={`btn btn-info ${ sending ? "disabled" : ""}`}
+                            className={`btn btn-info ${sending ? "disabled" : ""}`}
                             type="submit"
                             style={{fontSize: "inherit"}}
                             onClick={newUserForm.handleSubmit(handleSubmit)}
