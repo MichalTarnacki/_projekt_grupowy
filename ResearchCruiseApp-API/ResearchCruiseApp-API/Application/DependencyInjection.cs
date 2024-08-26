@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using FluentValidation;
 using ResearchCruiseApp_API.Application.SharedServices.CruiseApplicationDtos;
+using ResearchCruiseApp_API.Application.SharedServices.CruiseApplications;
 using ResearchCruiseApp_API.Application.SharedServices.Cruises;
 using ResearchCruiseApp_API.Application.SharedServices.Factories.ContractDtos;
 using ResearchCruiseApp_API.Application.SharedServices.Factories.FormADtos;
@@ -23,6 +24,7 @@ public static class DependencyInjection
         
         services
             .AddScoped<ICruisesService, CruisesService>()
+            .AddScoped<ICruiseApplicationsService, CruiseApplicationsService>()
             .AddScoped<ICruiseApplicationDtosService, CruiseApplicationDtosService>()
             .AddScoped<IUserPermissionVerifier, UserPermissionVerifier>();
     }

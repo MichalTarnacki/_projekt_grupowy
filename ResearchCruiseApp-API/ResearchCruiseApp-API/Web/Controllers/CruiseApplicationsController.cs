@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
+using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AcceptCruiseApplicationBySupervisor;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AddCruiseApplication;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetAllCruiseApplications;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetCruiseApplicationById;
@@ -59,11 +60,23 @@ public class CruiseApplicationsController(IMediator mediator) : ControllerBase
     
     [AllowAnonymous]
     [HttpGet("{cruiseApplicationId:guid}/formAForAcceptance")]
-    public async Task<IActionResult> GetFormAForAcceptance(Guid cruiseApplicationId, [FromQuery] string supervisorCode)
+    public async Task<IActionResult> GetFormAForSupervisor(Guid cruiseApplicationId, [FromQuery] string supervisorCode)
     {
-        var result = await mediator.Send(new GetFormAForAcceptanceQuery(cruiseApplicationId, supervisorCode));
+        var result = await mediator.Send(new GetFormAForSupervisorQuery(cruiseApplicationId, supervisorCode));
         return result.Error is null
             ? Ok(result.Data)
+            : this.CreateError(result);
+    }
+    
+    [AllowAnonymous]
+    [HttpPatch("{cruiseApplicationId:guid}/supervisorAcceptance")]
+    public async Task<IActionResult> AcceptCruiseApplicationBySupervisor(
+        Guid cruiseApplicationId, [FromQuery] string supervisorCode)
+    {
+        var result = await mediator
+            .Send(new AcceptCruiseApplicationBySupervisorCommand(cruiseApplicationId, supervisorCode));
+        return result.Error is null
+            ? NoContent()
             : this.CreateError(result);
     }
 }

@@ -5,4 +5,4 @@ using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
 namespace ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetFormAForAcceptance;
 
 
-public record GetFormAForAcceptanceQuery(Guid CruiseApplicationId, string SupervisorCode) : IRequest<Result<FormADto>>;
+public record GetFormAForSupervisorQuery(Guid CruiseApplicationId, string SupervisorCode) : IRequest<Result<FormADto>>;

@@ -102,7 +102,7 @@ public class AddCruiseApplicationHandler(
             FormC = null,
             //EvaluatedApplication = evaluatedCruiseApplication,
             Points = 0,
-            Status = CruiseApplicationStatus.WaitingForSupervisorAcceptance,
+            Status = CruiseApplicationStatus.WaitingForSupervisor,
             SupervisorCode = randomGenerator.CreateSecureCodeBytes()
         };
 
