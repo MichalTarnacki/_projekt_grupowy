@@ -48,7 +48,7 @@ public class AddCruiseApplicationHandler(
             IsolationLevel.Serializable,
             cancellationToken);
         
-        await SendRequestToSupervisor(newCruiseApplication);
+        await SendRequestToSupervisor(newCruiseApplication, request.FormADto.SupervisorEmail);
 
         return Result.Empty;
     }
@@ -109,13 +109,13 @@ public class AddCruiseApplicationHandler(
         return newCruiseApplication;
     }
 
-    private async Task SendRequestToSupervisor(CruiseApplication cruiseApplication)
+    private async Task SendRequestToSupervisor(CruiseApplication cruiseApplication, string supervisorEmail)
     {
         var cruiseManagerId = cruiseApplication.FormA?.CruiseManagerId ?? Guid.Empty;
         var supervisorCode = Base64UrlEncoder.Encode(cruiseApplication.SupervisorCode);
         var cruiseManager = (await identityService.GetUserDtoById(cruiseManagerId))!;
         
         await emailSender.SendRequestToSupervisorMessage(
-            cruiseApplication.Id, supervisorCode, cruiseManager, "mateuszxxxxxxxxx@gmail.com");
+            cruiseApplication.Id, supervisorCode, cruiseManager, supervisorEmail);
     }
 }
