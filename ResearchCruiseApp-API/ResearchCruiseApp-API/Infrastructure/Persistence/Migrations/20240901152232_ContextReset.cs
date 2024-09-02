@@ -56,51 +56,7 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Cruises",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Number = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
-                    MainCruiseManagerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    MainDeputyManagerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cruises", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FormsA",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CruiseManagerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DeputyManagerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Year = table.Column<int>(type: "int", nullable: false),
-                    AcceptablePeriodBeg = table.Column<int>(type: "int", nullable: false),
-                    AcceptablePeriodEnd = table.Column<int>(type: "int", nullable: false),
-                    OptimalPeriodBeg = table.Column<int>(type: "int", nullable: false),
-                    OptimalPeriodEnd = table.Column<int>(type: "int", nullable: false),
-                    CruiseHours = table.Column<int>(type: "int", nullable: false),
-                    PeriodNotes = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
-                    ShipUsage = table.Column<int>(type: "int", nullable: false),
-                    DifferentUsage = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
-                    PermissionsRequired = table.Column<int>(type: "int", nullable: false),
-                    Permissions = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
-                    ResearchArea = table.Column<int>(type: "int", nullable: false),
-                    ResearchAreaInfo = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
-                    CruiseGoal = table.Column<int>(type: "int", nullable: false),
-                    CruiseGoalDescription = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FormsA", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FormsB",
+                name: "FormB",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -122,11 +78,11 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FormsB", x => x.Id);
+                    table.PrimaryKey("PK_FormB", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "FormsC",
+                name: "FormC",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -148,7 +104,32 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FormsC", x => x.Id);
+                    table.PrimaryKey("PK_FormC", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GuestUnit",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GuestUnit", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UgUnit",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UgUnit", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -258,7 +239,7 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Contracts",
+                name: "Contract",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -269,102 +250,53 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                     Description = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
                     ScanName = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
                     ScanContent = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    FormAId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     FormBId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     FormCId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Contracts", x => x.Id);
+                    table.PrimaryKey("PK_Contract", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Contracts_FormsA_FormAId",
-                        column: x => x.FormAId,
-                        principalTable: "FormsA",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Contracts_FormsB_FormBId",
+                        name: "FK_Contract_FormB_FormBId",
                         column: x => x.FormBId,
-                        principalTable: "FormsB",
+                        principalTable: "FormB",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Contracts_FormsC_FormCId",
+                        name: "FK_Contract_FormC_FormCId",
                         column: x => x.FormCId,
-                        principalTable: "FormsC",
+                        principalTable: "FormC",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "CruiseApplications",
+                name: "CruiseApplication",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Number = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Number = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
                     Date = table.Column<DateOnly>(type: "date", nullable: false),
-                    FormAId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     FormBId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     FormCId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Points = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    CruiseId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    SupervisorCode = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CruiseApplications", x => x.Id);
+                    table.PrimaryKey("PK_CruiseApplication", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CruiseApplications_Cruises_CruiseId",
-                        column: x => x.CruiseId,
-                        principalTable: "Cruises",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_CruiseApplications_FormsA_FormAId",
-                        column: x => x.FormAId,
-                        principalTable: "FormsA",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_CruiseApplications_FormsB_FormBId",
+                        name: "FK_CruiseApplication_FormB_FormBId",
                         column: x => x.FormBId,
-                        principalTable: "FormsB",
+                        principalTable: "FormB",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_CruiseApplications_FormsC_FormCId",
+                        name: "FK_CruiseApplication_FormC_FormCId",
                         column: x => x.FormCId,
-                        principalTable: "FormsC",
+                        principalTable: "FormC",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "GuestTeams",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Institution = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
-                    NoOfPersons = table.Column<int>(type: "int", nullable: false),
-                    FormAId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    FormBId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    FormCId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GuestTeams", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_GuestTeams_FormsA_FormAId",
-                        column: x => x.FormAId,
-                        principalTable: "FormsA",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_GuestTeams_FormsB_FormBId",
-                        column: x => x.FormBId,
-                        principalTable: "FormsB",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_GuestTeams_FormsC_FormCId",
-                        column: x => x.FormCId,
-                        principalTable: "FormsC",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Publications",
+                name: "Publication",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -375,32 +307,26 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                     Magazine = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
                     Year = table.Column<int>(type: "int", nullable: false),
                     MinisterialPoints = table.Column<int>(type: "int", nullable: false),
-                    FormAId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     FormBId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     FormCId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Publications", x => x.Id);
+                    table.PrimaryKey("PK_Publication", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Publications_FormsA_FormAId",
-                        column: x => x.FormAId,
-                        principalTable: "FormsA",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Publications_FormsB_FormBId",
+                        name: "FK_Publication_FormB_FormBId",
                         column: x => x.FormBId,
-                        principalTable: "FormsB",
+                        principalTable: "FormB",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Publications_FormsC_FormCId",
+                        name: "FK_Publication_FormC_FormCId",
                         column: x => x.FormCId,
-                        principalTable: "FormsC",
+                        principalTable: "FormC",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "ResearchTasks",
+                name: "ResearchTask",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -413,125 +339,279 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                     EndDate = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
                     FinancingAmount = table.Column<double>(type: "float", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
-                    FormAId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     FormBId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     FormCId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ResearchTasks", x => x.Id);
+                    table.PrimaryKey("PK_ResearchTask", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ResearchTasks_FormsA_FormAId",
-                        column: x => x.FormAId,
-                        principalTable: "FormsA",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_ResearchTasks_FormsB_FormBId",
+                        name: "FK_ResearchTask_FormB_FormBId",
                         column: x => x.FormBId,
-                        principalTable: "FormsB",
+                        principalTable: "FormB",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_ResearchTasks_FormsC_FormCId",
+                        name: "FK_ResearchTask_FormC_FormCId",
                         column: x => x.FormCId,
-                        principalTable: "FormsC",
+                        principalTable: "FormC",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "SpubTasks",
+                name: "SpubTask",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     YearFrom = table.Column<int>(type: "int", nullable: false),
                     YearTo = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
-                    FormAId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     FormBId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     FormCId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SpubTasks", x => x.Id);
+                    table.PrimaryKey("PK_SpubTask", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SpubTasks_FormsA_FormAId",
-                        column: x => x.FormAId,
-                        principalTable: "FormsA",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_SpubTasks_FormsB_FormBId",
+                        name: "FK_SpubTask_FormB_FormBId",
                         column: x => x.FormBId,
-                        principalTable: "FormsB",
+                        principalTable: "FormB",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_SpubTasks_FormsC_FormCId",
+                        name: "FK_SpubTask_FormC_FormCId",
                         column: x => x.FormCId,
-                        principalTable: "FormsC",
+                        principalTable: "FormC",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Theses",
+                name: "FormA",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Category = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
-                    Author = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
-                    Promoter = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
+                    CruiseManagerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DeputyManagerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Year = table.Column<int>(type: "int", nullable: false),
-                    FormAId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    AcceptablePeriodBeg = table.Column<int>(type: "int", nullable: false),
+                    AcceptablePeriodEnd = table.Column<int>(type: "int", nullable: false),
+                    OptimalPeriodBeg = table.Column<int>(type: "int", nullable: false),
+                    OptimalPeriodEnd = table.Column<int>(type: "int", nullable: false),
+                    CruiseHours = table.Column<int>(type: "int", nullable: false),
+                    PeriodNotes = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
+                    ShipUsage = table.Column<int>(type: "int", nullable: false),
+                    DifferentUsage = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
+                    ResearchArea = table.Column<int>(type: "int", nullable: false),
+                    ResearchAreaInfo = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
+                    CruiseGoal = table.Column<int>(type: "int", nullable: false),
+                    CruiseGoalDescription = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FormA", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FormA_CruiseApplication_Id",
+                        column: x => x.Id,
+                        principalTable: "CruiseApplication",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ContractFormA",
+                columns: table => new
+                {
+                    ContractsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FormsAId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContractFormA", x => new { x.ContractsId, x.FormsAId });
+                    table.ForeignKey(
+                        name: "FK_ContractFormA_Contract_ContractsId",
+                        column: x => x.ContractsId,
+                        principalTable: "Contract",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ContractFormA_FormA_FormsAId",
+                        column: x => x.FormsAId,
+                        principalTable: "FormA",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FormAGuestUnit",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FormAId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GuestUnitId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NoOfPersons = table.Column<int>(type: "int", nullable: false),
                     FormBId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     FormCId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Theses", x => x.Id);
+                    table.PrimaryKey("PK_FormAGuestUnit", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Theses_FormsA_FormAId",
+                        name: "FK_FormAGuestUnit_FormA_FormAId",
                         column: x => x.FormAId,
-                        principalTable: "FormsA",
-                        principalColumn: "Id");
+                        principalTable: "FormA",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Theses_FormsB_FormBId",
+                        name: "FK_FormAGuestUnit_FormB_FormBId",
                         column: x => x.FormBId,
-                        principalTable: "FormsB",
+                        principalTable: "FormB",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Theses_FormsC_FormCId",
+                        name: "FK_FormAGuestUnit_FormC_FormCId",
                         column: x => x.FormCId,
-                        principalTable: "FormsC",
+                        principalTable: "FormC",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_FormAGuestUnit_GuestUnit_GuestUnitId",
+                        column: x => x.GuestUnitId,
+                        principalTable: "GuestUnit",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "UgTeams",
+                name: "FormAPublication",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Unit = table.Column<int>(type: "int", nullable: false),
+                    FormAId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PublicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Points = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FormAPublication", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FormAPublication_FormA_FormAId",
+                        column: x => x.FormAId,
+                        principalTable: "FormA",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FormAPublication_Publication_PublicationId",
+                        column: x => x.PublicationId,
+                        principalTable: "Publication",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FormAResearchTask",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FormAId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ResearchTaskId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Points = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FormAResearchTask", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FormAResearchTask_FormA_FormAId",
+                        column: x => x.FormAId,
+                        principalTable: "FormA",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FormAResearchTask_ResearchTask_ResearchTaskId",
+                        column: x => x.ResearchTaskId,
+                        principalTable: "ResearchTask",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FormASpubTask",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FormAId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SpubTaskId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Points = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FormASpubTask", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FormASpubTask_FormA_FormAId",
+                        column: x => x.FormAId,
+                        principalTable: "FormA",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FormASpubTask_SpubTask_SpubTaskId",
+                        column: x => x.SpubTaskId,
+                        principalTable: "SpubTask",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FormAUgUnit",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FormAId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UgUnitId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     NoOfEmployees = table.Column<int>(type: "int", nullable: false),
                     NoOfStudents = table.Column<int>(type: "int", nullable: false),
-                    FormAId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     FormBId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     FormCId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UgTeams", x => x.Id);
+                    table.PrimaryKey("PK_FormAUgUnit", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UgTeams_FormsA_FormAId",
+                        name: "FK_FormAUgUnit_FormA_FormAId",
                         column: x => x.FormAId,
-                        principalTable: "FormsA",
-                        principalColumn: "Id");
+                        principalTable: "FormA",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UgTeams_FormsB_FormBId",
+                        name: "FK_FormAUgUnit_FormB_FormBId",
                         column: x => x.FormBId,
-                        principalTable: "FormsB",
+                        principalTable: "FormB",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_UgTeams_FormsC_FormCId",
+                        name: "FK_FormAUgUnit_FormC_FormCId",
                         column: x => x.FormCId,
-                        principalTable: "FormsC",
+                        principalTable: "FormC",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_FormAUgUnit_UgUnit_UgUnitId",
+                        column: x => x.UgUnitId,
+                        principalTable: "UgUnit",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Permission",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
+                    Executive = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
+                    ScanName = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
+                    ScanContent = table.Column<byte[]>(type: "varbinary(1024)", maxLength: 1024, nullable: false),
+                    FormAId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Permission", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Permission_FormA_FormAId",
+                        column: x => x.FormAId,
+                        principalTable: "FormA",
                         principalColumn: "Id");
                 });
 
@@ -575,128 +655,133 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Contracts_FormAId",
-                table: "Contracts",
-                column: "FormAId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Contracts_FormBId",
-                table: "Contracts",
+                name: "IX_Contract_FormBId",
+                table: "Contract",
                 column: "FormBId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Contracts_FormCId",
-                table: "Contracts",
+                name: "IX_Contract_FormCId",
+                table: "Contract",
                 column: "FormCId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CruiseApplications_CruiseId",
-                table: "CruiseApplications",
-                column: "CruiseId");
+                name: "IX_ContractFormA_FormsAId",
+                table: "ContractFormA",
+                column: "FormsAId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CruiseApplications_FormAId",
-                table: "CruiseApplications",
-                column: "FormAId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CruiseApplications_FormBId",
-                table: "CruiseApplications",
+                name: "IX_CruiseApplication_FormBId",
+                table: "CruiseApplication",
                 column: "FormBId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CruiseApplications_FormCId",
-                table: "CruiseApplications",
+                name: "IX_CruiseApplication_FormCId",
+                table: "CruiseApplication",
                 column: "FormCId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GuestTeams_FormAId",
-                table: "GuestTeams",
+                name: "IX_FormAGuestUnit_FormAId",
+                table: "FormAGuestUnit",
                 column: "FormAId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GuestTeams_FormBId",
-                table: "GuestTeams",
+                name: "IX_FormAGuestUnit_FormBId",
+                table: "FormAGuestUnit",
                 column: "FormBId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GuestTeams_FormCId",
-                table: "GuestTeams",
+                name: "IX_FormAGuestUnit_FormCId",
+                table: "FormAGuestUnit",
                 column: "FormCId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Publications_FormAId",
-                table: "Publications",
+                name: "IX_FormAGuestUnit_GuestUnitId",
+                table: "FormAGuestUnit",
+                column: "GuestUnitId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FormAPublication_FormAId",
+                table: "FormAPublication",
                 column: "FormAId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Publications_FormBId",
-                table: "Publications",
+                name: "IX_FormAPublication_PublicationId",
+                table: "FormAPublication",
+                column: "PublicationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FormAResearchTask_FormAId",
+                table: "FormAResearchTask",
+                column: "FormAId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FormAResearchTask_ResearchTaskId",
+                table: "FormAResearchTask",
+                column: "ResearchTaskId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FormASpubTask_FormAId",
+                table: "FormASpubTask",
+                column: "FormAId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FormASpubTask_SpubTaskId",
+                table: "FormASpubTask",
+                column: "SpubTaskId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FormAUgUnit_FormAId",
+                table: "FormAUgUnit",
+                column: "FormAId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FormAUgUnit_FormBId",
+                table: "FormAUgUnit",
                 column: "FormBId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Publications_FormCId",
-                table: "Publications",
+                name: "IX_FormAUgUnit_FormCId",
+                table: "FormAUgUnit",
                 column: "FormCId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ResearchTasks_FormAId",
-                table: "ResearchTasks",
+                name: "IX_FormAUgUnit_UgUnitId",
+                table: "FormAUgUnit",
+                column: "UgUnitId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Permission_FormAId",
+                table: "Permission",
                 column: "FormAId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ResearchTasks_FormBId",
-                table: "ResearchTasks",
+                name: "IX_Publication_FormBId",
+                table: "Publication",
                 column: "FormBId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ResearchTasks_FormCId",
-                table: "ResearchTasks",
+                name: "IX_Publication_FormCId",
+                table: "Publication",
                 column: "FormCId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SpubTasks_FormAId",
-                table: "SpubTasks",
-                column: "FormAId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SpubTasks_FormBId",
-                table: "SpubTasks",
+                name: "IX_ResearchTask_FormBId",
+                table: "ResearchTask",
                 column: "FormBId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SpubTasks_FormCId",
-                table: "SpubTasks",
+                name: "IX_ResearchTask_FormCId",
+                table: "ResearchTask",
                 column: "FormCId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Theses_FormAId",
-                table: "Theses",
-                column: "FormAId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Theses_FormBId",
-                table: "Theses",
+                name: "IX_SpubTask_FormBId",
+                table: "SpubTask",
                 column: "FormBId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Theses_FormCId",
-                table: "Theses",
-                column: "FormCId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UgTeams_FormAId",
-                table: "UgTeams",
-                column: "FormAId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UgTeams_FormBId",
-                table: "UgTeams",
-                column: "FormBId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UgTeams_FormCId",
-                table: "UgTeams",
+                name: "IX_SpubTask_FormCId",
+                table: "SpubTask",
                 column: "FormCId");
         }
 
@@ -719,28 +804,25 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Contracts");
+                name: "ContractFormA");
 
             migrationBuilder.DropTable(
-                name: "CruiseApplications");
+                name: "FormAGuestUnit");
 
             migrationBuilder.DropTable(
-                name: "GuestTeams");
+                name: "FormAPublication");
 
             migrationBuilder.DropTable(
-                name: "Publications");
+                name: "FormAResearchTask");
 
             migrationBuilder.DropTable(
-                name: "ResearchTasks");
+                name: "FormASpubTask");
 
             migrationBuilder.DropTable(
-                name: "SpubTasks");
+                name: "FormAUgUnit");
 
             migrationBuilder.DropTable(
-                name: "Theses");
-
-            migrationBuilder.DropTable(
-                name: "UgTeams");
+                name: "Permission");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -749,16 +831,34 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Cruises");
+                name: "Contract");
 
             migrationBuilder.DropTable(
-                name: "FormsA");
+                name: "GuestUnit");
 
             migrationBuilder.DropTable(
-                name: "FormsB");
+                name: "Publication");
 
             migrationBuilder.DropTable(
-                name: "FormsC");
+                name: "ResearchTask");
+
+            migrationBuilder.DropTable(
+                name: "SpubTask");
+
+            migrationBuilder.DropTable(
+                name: "UgUnit");
+
+            migrationBuilder.DropTable(
+                name: "FormA");
+
+            migrationBuilder.DropTable(
+                name: "CruiseApplication");
+
+            migrationBuilder.DropTable(
+                name: "FormB");
+
+            migrationBuilder.DropTable(
+                name: "FormC");
         }
     }
 }

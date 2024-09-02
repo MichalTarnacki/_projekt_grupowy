@@ -13,12 +13,12 @@ internal class CruiseApplicationsRepository : Repository<CruiseApplication>, ICr
     { }
 
 
-    public Task<List<CruiseApplication>> GetAll(CancellationToken cancellationToken)
+    public Task<List<CruiseApplication>> GetAllWithForms(CancellationToken cancellationToken)
     {
         return GetCruiseApplicationsQuery().ToListAsync(cancellationToken);
     }
 
-    public Task<CruiseApplication?> GetById(Guid id, CancellationToken cancellationToken)
+    public Task<CruiseApplication?> GetByIdWithForms(Guid id, CancellationToken cancellationToken)
     {
         return GetCruiseApplicationsQuery()
             .SingleOrDefaultAsync(cruiseApplication => cruiseApplication.Id == id, cancellationToken);
@@ -30,11 +30,6 @@ internal class CruiseApplicationsRepository : Repository<CruiseApplication>, ICr
             .Include(cruiseApplication => cruiseApplication.FormA)
             .IncludeFormAContent()
             .SingleOrDefaultAsync(cruiseApplication => cruiseApplication.Id == id, cancellationToken);
-    }
-    
-    public async Task Add(CruiseApplication cruiseApplication, CancellationToken cancellationToken)
-    {
-        await DbContext.CruiseApplications.AddAsync(cruiseApplication, cancellationToken);
     }
     
     public Task<List<CruiseApplication>> GetManyByIds(List<Guid> ids, CancellationToken cancellationToken)

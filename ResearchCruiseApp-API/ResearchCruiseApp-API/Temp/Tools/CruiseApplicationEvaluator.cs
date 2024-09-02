@@ -69,11 +69,11 @@ public class CruiseApplicationEvaluator : ICruiseApplicationEvaluator
     {
         var evaluatedApplication = new EvaluatedCruiseApplication();
 
-        if (formA.ResearchTasks.Count != 0)
+        if (formA.FormAResearchTasks.Count != 0)
         {
-            foreach (var researchTask in formA.ResearchTasks)
+            foreach (var researchTask in formA.FormAResearchTasks)
             {
-                evaluatedApplication.ResearchTasks.Add(EvaluateResearchTask(researchTask));
+                //evaluatedApplication.ResearchTasks.Add(EvaluateResearchTask(researchTask));
             }
         }
 
@@ -86,22 +86,22 @@ public class CruiseApplicationEvaluator : ICruiseApplicationEvaluator
         }
 
         var emptyTeams = 0;
-        foreach (var ugTeam in formA.UgTeams)
+        foreach (var ugTeam in formA.FormAUgUnits)
         {
             if (ugTeam.NoOfEmployees <= 0 && ugTeam.NoOfStudents <= 0)
                 emptyTeams++;
         }
 
-        if (formA.UgTeams.Count - emptyTeams >= 3)
+        if (formA.FormAUgUnits.Count - emptyTeams >= 3)
             evaluatedApplication.UgTeamsPoints = UgTeamPointsFromAtLeast3Units;
-        else if (formA.UgTeams.Count - emptyTeams >= 2)
+        else if (formA.FormAUgUnits.Count - emptyTeams >= 2)
             evaluatedApplication.UgTeamsPoints = UgTeamPointsFromAtLeast2Units;
         else
             evaluatedApplication.UgTeamsPoints = DefaultPoints;
 
-        foreach (var publication in formA.Publications)
+        foreach (var publication in formA.FormAPublications)
         {
-            evaluatedApplication.Publications.Add(EvaluatePublication(publication));
+            //evaluatedApplication.Publications.Add(EvaluatePublication(publication));
         }
 
         foreach (var cruiseEffect in cruiseEffects)
@@ -109,9 +109,9 @@ public class CruiseApplicationEvaluator : ICruiseApplicationEvaluator
              evaluatedApplication.CruiseEffects.Add(EvaluateResearchTask(cruiseEffect));   
         }
 
-        foreach (var spubTask in formA.SpubTasks)
+        foreach (var spubTask in formA.FormASpubTasks)
         {
-            evaluatedApplication.SpubTasks.Add(EvaluateSpubTask(spubTask));
+            //evaluatedApplication.SpubTasks.Add(EvaluateSpubTask(spubTask));
         }
 
         return evaluatedApplication;

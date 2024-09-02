@@ -20,7 +20,7 @@ public class CruisesService(
             {
                 cruise.Number = await yearBasedKeyGenerator.GenerateKey(cruisesRepository, cancellationToken);
 
-                await cruisesRepository.AddCruise(cruise, cancellationToken);
+                await cruisesRepository.Add(cruise, cancellationToken);
                 await unitOfWork.Complete(cancellationToken);
             },
             System.Data.IsolationLevel.Serializable,

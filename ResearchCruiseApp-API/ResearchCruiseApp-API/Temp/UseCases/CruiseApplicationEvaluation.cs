@@ -61,18 +61,4 @@ public class CruiseApplicationEvaluation(
     //
     //     return evaluatedApplicationModel;
     // }
-    
-    
-    private IIncludableQueryable<FormA, List<SpubTask>>GetFormsQuery()
-    {
-        // TODO include appropriate entities
-        return applicationDbContext.FormsA
-            .Include(o => o.Contracts)
-            .Include(o => o.Publications)
-            .Include(o => o.Theses)
-            .Include(o => o.GuestTeams)
-            .Include(o => o.ResearchTasks)
-            .Include(o => o.UgTeams)
-            .Include(o => o.SpubTasks);
-    }
 }

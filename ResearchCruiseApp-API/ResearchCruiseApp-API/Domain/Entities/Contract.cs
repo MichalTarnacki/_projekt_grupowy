@@ -4,11 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace ResearchCruiseApp_API.Domain.Entities;
 
 
-public class Contract
+public class Contract : Entity
 {
-      [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-      public Guid Id { get; set; }
-
       [StringLength(1024)]
       public string Category { get; set; } = null!;
       
@@ -28,4 +25,6 @@ public class Contract
       public string ScanName { get; set; } = null!;
 
       public byte[] ScanContent { get; set; } = [];
+
+      public List<FormA> FormsA { get; set; } = [];
 }

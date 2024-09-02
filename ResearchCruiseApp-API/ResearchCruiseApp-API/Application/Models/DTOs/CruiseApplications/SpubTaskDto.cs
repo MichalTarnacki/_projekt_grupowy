@@ -15,8 +15,14 @@ public class SpubTaskDto
     {
         public MapProfile()
         {
-            CreateMap<SpubTask, SpubTaskDto>()
-                .ReverseMap();
+            CreateMap<SpubTaskDto, SpubTask>()
+                .ForMember(
+                    dest => dest.Id,
+                    options => options.Ignore())
+                .ForMember(dest => dest.FormASpubTasks,
+                    options => options.Ignore());
+
+            CreateMap<SpubTask, SpubTaskDto>();
         }
     }
 }

@@ -19,55 +19,51 @@ public class ResearchTaskDto
                 .ForMember(
                     dest => dest.Values,
                     options =>
-                        options.MapFrom(src =>
-                            src));
-
+                        options.MapFrom(src => src));
+    
             CreateMap<ResearchTaskDto, ResearchTask>()
                 .ForMember(
                     dest => dest.Title,
                     options =>
-                        options.MapFrom(src =>
-                            src.Values.Title))
+                        options.MapFrom(src => src.Values.Title))
                 .ForMember(
                     dest => dest.Author,
                     options =>
-                        options.MapFrom(src =>
-                            src.Values.Author))
+                        options.MapFrom(src => src.Values.Author))
                 .ForMember(
                     dest => dest.Institution,
                     options =>
-                        options.MapFrom(src =>
-                            src.Values.Institution))
+                        options.MapFrom(src => src.Values.Institution))
                 .ForMember(
                     dest => dest.Date,
                     options =>
-                        options.MapFrom(src =>
-                            src.Values.Date))
+                        options.MapFrom(src => src.Values.Date))
                 .ForMember(
                     dest => dest.StartDate,
                     options =>
-                        options.MapFrom(src =>
-                            src.Values.Time.HasValue ? src.Values.Time.Value.Start : null))
+                        options.MapFrom(src => src.Values.Time.HasValue
+                            ? src.Values.Time.Value.Start
+                            : null))
                 .ForMember(
                     dest => dest.EndDate,
                     options =>
-                        options.MapFrom(src =>
-                            src.Values.Time.HasValue ? src.Values.Time.Value.End : null))
+                        options.MapFrom(src => src.Values.Time.HasValue
+                            ? src.Values.Time.Value.End
+                            : null))
                 .ForMember(
                     dest => dest.EndDate,
                     options =>
-                        options.MapFrom(src =>
-                            src.Values.Time.HasValue ? src.Values.Time.Value.End : null))
+                        options.MapFrom(src => src.Values.Time.HasValue
+                            ? src.Values.Time.Value.End
+                            : null))
                 .ForMember(
                     dest => dest.FinancingAmount,
                     options =>
-                        options.MapFrom(src =>
-                            src.Values.FinancingAmount))
+                        options.MapFrom(src => src.Values.FinancingAmount))
                 .ForMember(
                     dest => dest.Description,
                     options =>
-                        options.MapFrom(src =>
-                            src.Values.Description));
+                        options.MapFrom(src => src.Values.Description));
         }
     }
 }

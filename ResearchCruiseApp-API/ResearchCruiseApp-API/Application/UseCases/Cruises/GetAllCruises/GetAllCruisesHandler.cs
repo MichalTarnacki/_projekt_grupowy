@@ -12,7 +12,7 @@ public class GetAllCruisesHandler(ICruiseDtosFactory cruiseDtosFactory, ICruises
 {
     public async Task<Result<List<CruiseDto>>> Handle(GetAllCruisesQuery request, CancellationToken cancellationToken)
     {
-        var cruises = await cruisesRepository.GetAllCruises(cancellationToken);
+        var cruises = await cruisesRepository.GetAllWithCruiseApplications(cancellationToken);
 
         var cruisesDtos = new List<CruiseDto>();
         foreach (var cruise in cruises)

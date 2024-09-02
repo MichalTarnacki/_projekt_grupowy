@@ -31,17 +31,15 @@ public class AddCruiseApplicationHandler(
         if (!validationResult.IsValid)
             return validationResult.ToApplicationResult();
         
-        var formA = await formsAFactory.Create(request.FormADto);
-        await formsARepository.AddFormA(formA, cancellationToken);
-
-        //var calculatedPoints = cruiseApplicationEvaluator.CalculateSumOfPoints(evaluatedCruiseApplication);
+        var formA = await formsAFactory.Create(request.FormADto, cancellationToken);
+        await formsARepository.Add(formA, cancellationToken);
 
         var newCruiseApplication = await unitOfWork.ExecuteIsolated(
             () => GetNewPersistedCruiseApplication(formA, cancellationToken),
             IsolationLevel.Serializable,
             cancellationToken);
         
-        await SendRequestToSupervisor(newCruiseApplication, request.FormADto.SupervisorEmail);
+        await SendRequestToSupervisor(newCruiseApplication, request.FormADto.SupervisorEmail!);
 
         return Result.Empty;
     }
@@ -63,7 +61,7 @@ public class AddCruiseApplicationHandler(
         var supervisorCode = Base64UrlEncoder.Encode(cruiseApplication.SupervisorCode);
         var cruiseManager = (await identityService.GetUserDtoById(cruiseManagerId))!;
         
-        await emailSender.SendRequestToSupervisorMessage(
-            cruiseApplication.Id, supervisorCode, cruiseManager, supervisorEmail);
+        await emailSender
+            .SendRequestToSupervisorMessage(cruiseApplication.Id, supervisorCode, cruiseManager, supervisorEmail);
     }
 }

@@ -11,10 +11,10 @@ public class EvaluatedCruiseApplicationDto
     
     public List<EvaluatedContractDto> Contracts { get; set; }  = [];
     
-    public List<UgTeamDto> UgTeams { get; set; } = [];
+    public List<UgUnitDto> UgTeams { get; set; } = [];
     public int UgTeamsPoints { get; set; }
 
-    public List<GuestTeamDto> GuestTeams { get; set; } = [];
+    public List<GuestUnitDto> GuestTeams { get; set; } = [];
 
     public List<EvaluatedPublicationDto> Publications { get; set; } = [];
 

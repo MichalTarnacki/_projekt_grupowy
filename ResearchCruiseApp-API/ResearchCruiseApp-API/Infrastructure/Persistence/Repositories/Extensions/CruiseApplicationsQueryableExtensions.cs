@@ -19,13 +19,13 @@ internal static class CruiseApplicationsQueryableExtensions
     public static IIncludableQueryable<CruiseApplication, List<SpubTask>> IncludeFormAContent(
         this IQueryable<CruiseApplication> query)
     {
-        return query
-            .Include(cruiseApplication => cruiseApplication.FormA!.Contracts)
-            .Include(cruiseApplication => cruiseApplication.FormA!.Publications)
-            .Include(cruiseApplication => cruiseApplication.FormA!.Theses)
-            .Include(cruiseApplication => cruiseApplication.FormA!.GuestTeams)
-            .Include(cruiseApplication => cruiseApplication.FormA!.ResearchTasks)
-            .Include(cruiseApplication => cruiseApplication.FormA!.UgTeams)
-            .Include(cruiseApplication => cruiseApplication.FormA!.SpubTasks);
+        throw new NotImplementedException();
+        // return query
+        //     .Include(cruiseApplication => cruiseApplication.FormA!.Contracts)
+        //     .Include(cruiseApplication => cruiseApplication.FormA!.FormAPublications)
+        //     .Include(cruiseApplication => cruiseApplication.FormA!.FormAGuestUnits)
+        //     .Include(cruiseApplication => cruiseApplication.FormA!.FormAResearchTasks)
+        //     .Include(cruiseApplication => cruiseApplication.FormA!.FormAUgUnits)
+        //     .Include(cruiseApplication => cruiseApplication.FormA!.FormASpubTasks);
     }
 }

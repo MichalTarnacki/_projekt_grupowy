@@ -6,5 +6,5 @@ namespace ResearchCruiseApp_API.Application.SharedServices.Factories.FormsA;
 
 public interface IFormsAFactory
 {
-    Task<FormA> Create(FormADto formADto);
+    Task<FormA> Create(FormADto formADto, CancellationToken cancellationToken);
 }

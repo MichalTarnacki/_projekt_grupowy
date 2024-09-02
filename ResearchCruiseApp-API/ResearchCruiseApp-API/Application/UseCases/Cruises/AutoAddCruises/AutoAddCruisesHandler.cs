@@ -15,7 +15,7 @@ public class AutoAddCruisesHandler(
     public async Task<Result> Handle(AutoAddCruisesCommand request, CancellationToken cancellationToken)
     {
         var cruiseApplications =
-            await cruiseApplicationsRepository.GetAll(cancellationToken);
+            await cruiseApplicationsRepository.GetAllWithForms(cancellationToken);
         
         foreach (var cruiseApplication in cruiseApplications)
         {

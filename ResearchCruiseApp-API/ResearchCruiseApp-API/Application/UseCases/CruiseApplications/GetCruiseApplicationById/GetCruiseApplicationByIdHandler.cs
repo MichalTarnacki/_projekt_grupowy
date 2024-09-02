@@ -19,7 +19,7 @@ public class GetCruiseApplicationByIdHandler(
         CancellationToken cancellationToken)
     {
         var cruiseApplication =
-            await cruiseApplicationsRepository.GetById(request.Id, cancellationToken);
+            await cruiseApplicationsRepository.GetByIdWithForms(request.Id, cancellationToken);
 
         if (cruiseApplication is null)
             return Error.NotFound();

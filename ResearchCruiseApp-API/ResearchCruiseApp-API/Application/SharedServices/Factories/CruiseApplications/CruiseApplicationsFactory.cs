@@ -21,8 +21,6 @@ internal class CruiseApplicationsFactory(
             FormA = formA,
             FormB = null,
             FormC = null,
-            //EvaluatedApplication = evaluatedCruiseApplication,
-            Points = 0,
             Status = CruiseApplicationStatus.WaitingForSupervisor,
             SupervisorCode = randomGenerator.CreateSecureCodeBytes()
         };

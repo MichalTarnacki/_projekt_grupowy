@@ -1,14 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ResearchCruiseApp_API.Domain.Entities;
 
 
-public class FormA
+public class FormA : Entity
 {
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public Guid Id { get; set; }
-
     public Guid CruiseManagerId { get; set; }
 
     public Guid DeputyManagerId { get; set; }
@@ -32,11 +28,8 @@ public class FormA
 
     [StringLength(1024)]
     public string? DifferentUsage { get; set; }
-    
-    public int PermissionsRequired { get; set; }
-    
-    [StringLength(1024)]
-    public string? Permissions { get; set; }
+
+    public List<Permission> Permissions { get; set; } = [];
     
     public int ResearchArea { get; set; } 
     
@@ -48,17 +41,17 @@ public class FormA
     [MaxLength(1024)]
     public string? CruiseGoalDescription { get; set; }
 
-    public List<ResearchTask> ResearchTasks { get; set; } = [];
+    public List<FormAResearchTask> FormAResearchTasks { get; set; } = [];
 
     public List<Contract> Contracts { get; set; } = [];
 
-    public List<UgTeam> UgTeams { get; set; } = [];
+    public List<FormAUgUnit> FormAUgUnits { get; set; } = [];
 
-    public List<GuestTeam> GuestTeams { get; set; } = [];
+    public int UgUnitsPoints { get; set; }
+    
+    public List<FormAGuestUnit> FormAGuestUnits { get; set; } = [];
 
-    public List<Publication> Publications { get; set; } = [];
-
-    public List<Thesis> Theses { get; set; } = [];
-
-    public List<SpubTask> SpubTasks { get; set; } = [];
+    public List<FormAPublication> FormAPublications { get; set; } = [];
+    
+    public List<FormASpubTask> FormASpubTasks { get; set; } = [];
 }

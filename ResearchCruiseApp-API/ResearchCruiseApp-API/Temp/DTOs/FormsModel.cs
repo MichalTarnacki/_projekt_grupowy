@@ -6,16 +6,16 @@ using ResearchCruiseApp_API.Temp.Entities;
 namespace ResearchCruiseApp_API.Temp.DTOs;
 
 
-public class EvaluatedResearchTaskDto : ResearchTaskDto , IEvaluatedField
+public class EvaluatedResearchTaskDto : ResearchTaskDto , IEvaluated
 {
     public Guid Id;
     public ResearchTaskDto ResearchTask { get; set; }
-    public int CalculatedPoints { get; set; }
+    public int Points { get; set; }
 
     public EvaluatedResearchTaskDto(ResearchTaskDto taskDto, int calculatedPoints)
     {
         ResearchTask = taskDto;
-        CalculatedPoints = calculatedPoints;
+        Points = calculatedPoints;
     }
 
 
@@ -37,16 +37,16 @@ public class EvaluatedResearchTaskDto : ResearchTaskDto , IEvaluatedField
     }
 }
 
-public class EvaluatedContractDto : ContractDto, IEvaluatedField
+public class EvaluatedContractDto : ContractDto, IEvaluated
 {
     public Guid Id;
-    public int CalculatedPoints { get; set; }
+    public int Points { get; set; }
     public ContractDto ContractDto { get; set; }
 
     public EvaluatedContractDto(ContractDto contractDto, int calculatedPoints)
     {
         this.ContractDto = contractDto;
-        this.CalculatedPoints = calculatedPoints;
+        this.Points = calculatedPoints;
     }
 
 
@@ -60,16 +60,16 @@ public class EvaluatedContractDto : ContractDto, IEvaluatedField
     }
 }
 
-public class EvaluatedPublicationDto : PublicationDto, IEvaluatedField
+public class EvaluatedPublicationDto : PublicationDto, IEvaluated
 {
     public Guid Id;
     public PublicationDto Publication { get; set; }
-    public int CalculatedPoints { get; set; }
+    public int Points { get; set; }
 
     public EvaluatedPublicationDto(PublicationDto publicationDto, int calculatedPoints)
     {
         this.Publication = publicationDto;
-        this.CalculatedPoints = calculatedPoints;
+        this.Points = calculatedPoints;
     }
 
 
@@ -83,16 +83,16 @@ public class EvaluatedPublicationDto : PublicationDto, IEvaluatedField
     }
 }
 
-public class EvaluatedSpubTaskDto : SpubTaskDto, IEvaluatedField
+public class EvaluatedSpubTaskDto : SpubTaskDto, IEvaluated
 {
     public Guid Id;
     public SpubTaskDto SpubTask { get; set; }
-    public int CalculatedPoints { get; set; }
+    public int Points { get; set; }
 
     public EvaluatedSpubTaskDto(SpubTaskDto spubTaskDto, int calculatedPoints)
     {
         this.SpubTask = spubTaskDto;
-        this.CalculatedPoints = calculatedPoints;
+        this.Points = calculatedPoints;
     }
 
 
