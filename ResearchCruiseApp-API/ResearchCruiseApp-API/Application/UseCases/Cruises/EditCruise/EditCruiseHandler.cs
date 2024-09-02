@@ -5,7 +5,7 @@ using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
 using ResearchCruiseApp_API.Application.ExternalServices;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
-using ResearchCruiseApp_API.Application.SharedServices.Cruises;
+using ResearchCruiseApp_API.Application.Services.Cruises;
 using ResearchCruiseApp_API.Domain.Entities;
 
 namespace ResearchCruiseApp_API.Application.UseCases.Cruises.EditCruise;

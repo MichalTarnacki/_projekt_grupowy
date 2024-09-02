@@ -128,7 +128,7 @@ public class FormADto
                     options =>
                         options.Ignore()) // /member requires complex logic
                 .ForMember(
-                    dest => dest.Contracts,
+                    dest => dest.FormAContracts,
                     options =>
                         options.Ignore()) // /member requires complex logic
                 .ForMember(

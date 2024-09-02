@@ -1,12 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ResearchCruiseApp_API.Domain.Common.Enums;
 
 namespace  ResearchCruiseApp_API.Domain.Entities;
 
 
 public class ResearchTask : Entity
 {
-    public int Type { get; init; }
+    public ResearchTaskType Type { get; init; }
 
     [StringLength(1024)]
     public string? Title { get; init; }
@@ -31,6 +32,8 @@ public class ResearchTask : Entity
     [StringLength(1024)]
     public string? Description { get; init; }
 
+    public bool FinancingApproved { get; init; }
+    
     public List<FormAResearchTask> FormAResearchTasks { get; set; } = [];
 
 
@@ -49,7 +52,8 @@ public class ResearchTask : Entity
                otherResearchTask.StartDate == StartDate &&
                otherResearchTask.EndDate == EndDate &&
                Equals(otherResearchTask.FinancingAmount, FinancingAmount) &&
-               otherResearchTask.Description == Description;
+               otherResearchTask.Description == Description &&
+               otherResearchTask.FinancingApproved == FinancingApproved;
     }
 
     public override int GetHashCode()
@@ -62,6 +66,7 @@ public class ResearchTask : Entity
             StartDate?.GetHashCode() ?? 0 +
             EndDate?.GetHashCode() ?? 0 +
             FinancingAmount?.GetHashCode() ?? 0 +
-            Description?.GetHashCode() ?? 0;
+            Description?.GetHashCode() ?? 0 +
+            FinancingApproved.GetHashCode();
     }
 }

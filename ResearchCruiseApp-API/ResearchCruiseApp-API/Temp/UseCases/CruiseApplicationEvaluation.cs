@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using ResearchCruiseApp_API.Application.ExternalServices;
+using ResearchCruiseApp_API.Application.Services.CruiseApplicationEvaluator;
 using ResearchCruiseApp_API.Domain.Entities;
 using ResearchCruiseApp_API.Infrastructure.Persistence;
 using ResearchCruiseApp_API.Infrastructure.Services.Identity;
-using ResearchCruiseApp_API.Temp.Tools;
 
 namespace ResearchCruiseApp_API.Temp.UseCases;
 

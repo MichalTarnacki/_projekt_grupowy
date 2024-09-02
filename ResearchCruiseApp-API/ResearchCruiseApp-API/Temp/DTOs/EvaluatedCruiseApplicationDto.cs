@@ -1,6 +1,4 @@
-using AutoMapper;
 using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
-using ResearchCruiseApp_API.Temp.Entities;
 
 namespace ResearchCruiseApp_API.Temp.DTOs;
 
@@ -21,14 +19,4 @@ public class EvaluatedCruiseApplicationDto
     public List<EvaluatedResearchTaskDto> CruiseEffects { get; set; } = [];
 
     public List<EvaluatedSpubTaskDto> SpubTasks { get; set; } = [];
-
-
-    private class MapProfile : Profile
-    {
-        public MapProfile()
-        {
-            CreateMap<EvaluatedCruiseApplicationDto, EvaluatedCruiseApplication>()
-                .ReverseMap();
-        }
-    }
 }

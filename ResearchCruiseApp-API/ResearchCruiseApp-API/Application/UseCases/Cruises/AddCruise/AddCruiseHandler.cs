@@ -2,8 +2,8 @@ using MediatR;
 using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
-using ResearchCruiseApp_API.Application.SharedServices.Cruises;
-using ResearchCruiseApp_API.Application.SharedServices.Factories.Cruises;
+using ResearchCruiseApp_API.Application.Services.Cruises;
+using ResearchCruiseApp_API.Application.Services.Factories.Cruises;
 
 namespace ResearchCruiseApp_API.Application.UseCases.Cruises.AddCruise;
 

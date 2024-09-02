@@ -1,16 +1,16 @@
 ﻿using System.Reflection;
 using FluentValidation;
-using ResearchCruiseApp_API.Application.SharedServices.CruiseApplications;
-using ResearchCruiseApp_API.Application.SharedServices.Cruises;
-using ResearchCruiseApp_API.Application.SharedServices.Factories.ContractDtos;
-using ResearchCruiseApp_API.Application.SharedServices.Factories.Contracts;
-using ResearchCruiseApp_API.Application.SharedServices.Factories.CruiseApplicationDtos;
-using ResearchCruiseApp_API.Application.SharedServices.Factories.CruiseApplications;
-using ResearchCruiseApp_API.Application.SharedServices.Factories.CruiseDtos;
-using ResearchCruiseApp_API.Application.SharedServices.Factories.Cruises;
-using ResearchCruiseApp_API.Application.SharedServices.Factories.FormADtos;
-using ResearchCruiseApp_API.Application.SharedServices.Factories.FormsA;
-using ResearchCruiseApp_API.Application.SharedServices.UserPermissionVerifier;
+using ResearchCruiseApp_API.Application.Services.CruiseApplications;
+using ResearchCruiseApp_API.Application.Services.Cruises;
+using ResearchCruiseApp_API.Application.Services.Factories.ContractDtos;
+using ResearchCruiseApp_API.Application.Services.Factories.Contracts;
+using ResearchCruiseApp_API.Application.Services.Factories.CruiseApplicationDtos;
+using ResearchCruiseApp_API.Application.Services.Factories.CruiseApplications;
+using ResearchCruiseApp_API.Application.Services.Factories.CruiseDtos;
+using ResearchCruiseApp_API.Application.Services.Factories.Cruises;
+using ResearchCruiseApp_API.Application.Services.Factories.FormADtos;
+using ResearchCruiseApp_API.Application.Services.Factories.FormsA;
+using ResearchCruiseApp_API.Application.Services.UserPermissionVerifier;
 
 namespace ResearchCruiseApp_API.Application;
 

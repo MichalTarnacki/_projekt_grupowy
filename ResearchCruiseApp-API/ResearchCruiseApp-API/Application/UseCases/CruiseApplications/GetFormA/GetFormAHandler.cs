@@ -4,8 +4,7 @@ using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
 using ResearchCruiseApp_API.Application.ExternalServices;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
 using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
-using ResearchCruiseApp_API.Application.SharedServices.Factories.ContractDtos;
-using ResearchCruiseApp_API.Application.SharedServices.Factories.FormADtos;
+using ResearchCruiseApp_API.Application.Services.Factories.FormADtos;
 using ResearchCruiseApp_API.Domain.Entities;
 
 namespace ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetFormA;

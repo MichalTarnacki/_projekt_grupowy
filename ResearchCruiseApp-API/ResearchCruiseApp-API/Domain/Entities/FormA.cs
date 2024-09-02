@@ -43,7 +43,7 @@ public class FormA : Entity
 
     public List<FormAResearchTask> FormAResearchTasks { get; set; } = [];
 
-    public List<Contract> Contracts { get; set; } = [];
+    public List<FormAContract> FormAContracts { get; set; } = [];
 
     public List<FormAUgUnit> FormAUgUnits { get; set; } = [];
 

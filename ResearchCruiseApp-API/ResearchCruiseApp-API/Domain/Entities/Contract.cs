@@ -26,5 +26,5 @@ public class Contract : Entity
 
       public byte[] ScanContent { get; set; } = [];
 
-      public List<FormA> FormsA { get; set; } = [];
+      public List<FormAContract> FormAContracts { get; set; } = [];
 }

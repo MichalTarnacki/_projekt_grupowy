@@ -7,8 +7,8 @@ using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
 using ResearchCruiseApp_API.Application.ExternalServices;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
-using ResearchCruiseApp_API.Application.SharedServices.Factories.CruiseApplications;
-using ResearchCruiseApp_API.Application.SharedServices.Factories.FormsA;
+using ResearchCruiseApp_API.Application.Services.Factories.CruiseApplications;
+using ResearchCruiseApp_API.Application.Services.Factories.FormsA;
 using ResearchCruiseApp_API.Domain.Entities;
 
 namespace ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AddCruiseApplication;
