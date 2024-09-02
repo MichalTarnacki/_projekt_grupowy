@@ -39,10 +39,8 @@ internal class FormsAFactory(
         foreach (var researchTaskDto in formADto.ResearchTasks)
         {
             var researchTask = GetUniqueResearchTask(researchTaskDto, allResearchTasks);
-            var formAResearchTask = new FormAResearchTask();
-
+            var formAResearchTask = new FormAResearchTask { ResearchTask = researchTask };
             formA.FormAResearchTasks.Add(formAResearchTask);
-            researchTask.FormAResearchTasks.Add(formAResearchTask);
         }
     }
     
@@ -56,7 +54,7 @@ internal class FormsAFactory(
 
     private async Task AddFormAUgUnits(FormA formA, FormADto formADto, CancellationToken cancellationToken)
     {
-        foreach (var ugUnitDto in formADto.UgTeams)
+        foreach (var ugUnitDto in formADto.UgUnits)
         {
             var ugUnit = await ugUnitsRepository.GetById(ugUnitDto.UgUnitId, cancellationToken);
             if (ugUnit is null)
@@ -64,12 +62,11 @@ internal class FormsAFactory(
 
             var formAUgUnit = new FormAUgUnit
             {
+                UgUnit = ugUnit,
                 NoOfEmployees = ugUnitDto.NoOfEmployees,
                 NoOfStudents = ugUnitDto.NoOfStudents
             };
-            
             formA.FormAUgUnits.Add(formAUgUnit);
-            ugUnit.FormAUgUnits.Add(formAUgUnit);
         }
     }
 
@@ -77,16 +74,15 @@ internal class FormsAFactory(
     {
         var allGuestUnits = await guestUnitsRepository.GetAll(cancellationToken);
 
-        foreach (var guestUnitDto in formADto.GuestTeams)
+        foreach (var guestUnitDto in formADto.GuestUnits)
         {
             var guestUnit = GetUniqueGuestUnit(guestUnitDto, allGuestUnits);
             var formAGuestUnit = new FormAGuestUnit
             {
+                GuestUnit = guestUnit,
                 NoOfPersons = guestUnitDto.NoOfPersons
             };
-            
             formA.FormAGuestUnits.Add(formAGuestUnit);
-            guestUnit.FormAGuestUnits.Add(formAGuestUnit);
         }
     }
 
@@ -97,10 +93,8 @@ internal class FormsAFactory(
         foreach (var publicationDto in formADto.Publications)
         {
             var publication = GetUniquePublication(publicationDto, allPublications);
-            var formAPublication = new FormAPublication();
-
+            var formAPublication = new FormAPublication { Publication = publication };
             formA.FormAPublications.Add(formAPublication);
-            publication.FormAPublications.Add(formAPublication);
         }
     }
 
@@ -111,10 +105,8 @@ internal class FormsAFactory(
         foreach (var spubTaskDto in formADto.SpubTasks)
         {
             var spubTask = GetUniqueSpubTask(spubTaskDto, allSpubTasks);
-            var formASpubTask = new FormASpubTask();
-            
+            var formASpubTask = new FormASpubTask { SpubTask = spubTask };
             formA.FormASpubTasks.Add(formASpubTask);
-            spubTask.FormASpubTasks.Add(formASpubTask);
         }
     }
     

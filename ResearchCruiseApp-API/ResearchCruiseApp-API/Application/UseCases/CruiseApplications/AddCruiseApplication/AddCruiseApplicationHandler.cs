@@ -32,7 +32,6 @@ public class AddCruiseApplicationHandler(
             return validationResult.ToApplicationResult();
         
         var formA = await formsAFactory.Create(request.FormADto, cancellationToken);
-        await formsARepository.Add(formA, cancellationToken);
 
         var newCruiseApplication = await unitOfWork.ExecuteIsolated(
             () => GetNewPersistedCruiseApplication(formA, cancellationToken),

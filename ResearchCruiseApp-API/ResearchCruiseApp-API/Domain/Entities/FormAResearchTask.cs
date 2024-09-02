@@ -5,9 +5,9 @@ namespace ResearchCruiseApp_API.Domain.Entities;
 
 public class FormAResearchTask : Entity, IEvaluated
 {
-    public FormA FormA { get; set; } = null!;
+    public FormA FormA { get; init; } = null!;
 
-    public ResearchTask ResearchTask { get; set; } = null!;
+    public ResearchTask ResearchTask { get; init; } = null!;
     
     public int Points { get; set; }
 }

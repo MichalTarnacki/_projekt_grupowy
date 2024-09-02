@@ -5,11 +5,11 @@ namespace ResearchCruiseApp_API.Domain.Entities;
 
 public class FormAUgUnit : Entity
 {
-    public FormA FormA { get; set; } = null!;
+    public FormA FormA { get; init; } = null!;
 
-    public UgUnit UgUnit { get; set; } = null!;
+    public UgUnit UgUnit { get; init; } = null!;
     
-    public int NoOfEmployees { get; set; }
+    public int NoOfEmployees { get; init; }
     
-    public int NoOfStudents { get; set; }
+    public int NoOfStudents { get; init; }
 }

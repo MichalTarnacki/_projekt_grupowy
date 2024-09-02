@@ -55,9 +55,9 @@ public class FormADto
 
     public List<ContractDto> Contracts { get; init; } = [];
 
-    public List<UgUnitDto> UgTeams { get; init; } = [];
+    public List<UgUnitDto> UgUnits { get; init; } = [];
 
-    public List<GuestUnitDto> GuestTeams { get; init; } = [];
+    public List<GuestUnitDto> GuestUnits { get; init; } = [];
 
     public List<PublicationDto> Publications { get; init; } = [];
 

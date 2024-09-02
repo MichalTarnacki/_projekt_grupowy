@@ -22,7 +22,7 @@ internal class Repository<T> : IRepository<T>
 
     public async Task<T?> GetById(Guid id, CancellationToken cancellationToken)
     {
-        var keyValues = new object?[] { id.ToString() };
+        var keyValues = new object?[] { id };
         
         return await DbContext.Set<T>().FindAsync(keyValues, cancellationToken);
     }
