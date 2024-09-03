@@ -18,7 +18,7 @@ public class AnswerAsSupervisorHandler(
     public async Task<Result> Handle(AnswerAsSupervisorCommand request, CancellationToken cancellationToken)
     {
         var cruiseApplication = await cruiseApplicationsRepository
-            .GetByIdWithForms(request.CruiseApplicationId, cancellationToken);
+            .GetByIdWithFormsAndFormAContent(request.CruiseApplicationId, cancellationToken);
         if (cruiseApplication is null)
             return Error.NotFound();
         

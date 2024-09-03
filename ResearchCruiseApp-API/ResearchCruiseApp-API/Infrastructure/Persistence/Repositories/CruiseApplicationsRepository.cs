@@ -24,10 +24,11 @@ internal class CruiseApplicationsRepository : Repository<CruiseApplication>, ICr
             .ToListAsync(cancellationToken);
     }
 
-    public Task<CruiseApplication?> GetByIdWithForms(Guid id, CancellationToken cancellationToken)
+    public Task<CruiseApplication?> GetByIdWithFormsAndFormAContent(Guid id, CancellationToken cancellationToken)
     {
         return CruiseApplicationsQuery
             .IncludeForms()
+            .IncludeFormAContent()
             .SingleOrDefaultAsync(cruiseApplication => cruiseApplication.Id == id, cancellationToken);
     }
 
