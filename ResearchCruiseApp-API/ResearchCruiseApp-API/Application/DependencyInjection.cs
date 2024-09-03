@@ -6,9 +6,11 @@ using ResearchCruiseApp_API.Application.Services.Cruises;
 using ResearchCruiseApp_API.Application.Services.Factories.ContractDtos;
 using ResearchCruiseApp_API.Application.Services.Factories.Contracts;
 using ResearchCruiseApp_API.Application.Services.Factories.CruiseApplicationDtos;
+using ResearchCruiseApp_API.Application.Services.Factories.CruiseApplicationEvaluationDetailsDtos;
 using ResearchCruiseApp_API.Application.Services.Factories.CruiseApplications;
 using ResearchCruiseApp_API.Application.Services.Factories.CruiseDtos;
 using ResearchCruiseApp_API.Application.Services.Factories.Cruises;
+using ResearchCruiseApp_API.Application.Services.Factories.FormAContractDtos;
 using ResearchCruiseApp_API.Application.Services.Factories.FormADtos;
 using ResearchCruiseApp_API.Application.Services.Factories.FormsA;
 using ResearchCruiseApp_API.Application.Services.UserPermissionVerifier;
@@ -43,8 +45,10 @@ public static class DependencyInjection
             .AddScoped<IFormADtosFactory, FormADtosFactory>()
             .AddScoped<IContractsFactory, ContractsFactory>()
             .AddScoped<IContractDtosFactory, ContractDtosFactory>()
+            .AddScoped<IFormAContractDtosFactory, FormAContractDtosFactory>()
             .AddScoped<ICruiseApplicationsFactory, CruiseApplicationsFactory>()
             .AddScoped<ICruiseApplicationDtosFactory, CruiseApplicationDtosFactory>()
+            .AddScoped<ICruiseApplicationEvaluationDetailsDtosFactory, CruiseApplicationEvaluationDetailsDtosFactory>()
             .AddScoped<ICruisesFactory, CruisesFactory>()
             .AddScoped<ICruiseDtosFactory, CruiseDtosFactory>();
     }

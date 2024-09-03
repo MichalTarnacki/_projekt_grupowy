@@ -34,6 +34,8 @@ public class PublicationDto
                     dest => dest.FormAPublications,
                     options =>
                         options.Ignore());
+
+            CreateMap<Publication, PublicationDto>();
             
             CreateMap<FormAPublication, PublicationDto>()
                 .ForMember(

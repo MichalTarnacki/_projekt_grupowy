@@ -22,6 +22,8 @@ public class SpubTaskDto
                 .ForMember(dest => dest.FormASpubTasks,
                     options => options.Ignore());
 
+            CreateMap<SpubTask, SpubTaskDto>();
+            
             CreateMap<FormASpubTask, SpubTaskDto>()
                 .ForMember(
                     dest => dest.YearFrom,

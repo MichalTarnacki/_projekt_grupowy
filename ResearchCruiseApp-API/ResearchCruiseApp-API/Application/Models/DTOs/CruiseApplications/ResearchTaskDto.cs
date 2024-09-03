@@ -71,6 +71,8 @@ public class ResearchTaskDto
                     options =>
                         options.MapFrom(src => src.ResearchTask.FinancingApproved));
 
+            CreateMap<ResearchTask, ResearchTaskDto>();
+            
             CreateMap<ResearchTaskDto, ResearchTask>()
                 .ForMember(
                     dest => dest.StartDate,
