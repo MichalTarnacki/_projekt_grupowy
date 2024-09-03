@@ -16,7 +16,7 @@ internal class CruisesFactory(
         // New cruise cruiseApplications team are not auto-mapped
         var newCruise = mapper.Map<Cruise>(cruiseFormDto);
         var newCruiseApplications = await cruiseApplicationsRepository
-            .GetManyByIds(cruiseFormDto.CruiseApplicationsIds, cancellationToken);
+            .GetAllByIds(cruiseFormDto.CruiseApplicationsIds, cancellationToken);
         
         newCruise.CruiseApplications = newCruiseApplications;
         

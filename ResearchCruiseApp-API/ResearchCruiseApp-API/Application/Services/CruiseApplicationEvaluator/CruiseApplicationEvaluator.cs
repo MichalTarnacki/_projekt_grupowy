@@ -22,6 +22,24 @@ public class CruiseApplicationEvaluator : ICruiseApplicationEvaluator
         EvaluateSpubTasks(cruiseApplication);
     }
 
+    public int GetPointsSum(CruiseApplication cruiseApplication)
+    {
+        var formA = cruiseApplication.FormA;
+        if (formA is null)
+            return 0;
+
+        var researchTaskPoints = formA.FormAResearchTasks
+            .Sum(formAResearchTask => formAResearchTask.Points);
+        var contractsPoints = formA.FormAContracts
+            .Sum(formAContract => formAContract.Points);
+        var publicationsPoints = formA.FormAPublications
+            .Sum(formAPublication => formAPublication.Points);
+        var spubTasksPoints = formA.FormASpubTasks
+            .Sum(formASpubTask => formASpubTask.Points);
+
+        return researchTaskPoints + contractsPoints + formA.UgUnitsPoints + publicationsPoints + spubTasksPoints;
+    }
+    
 
     private static void EvaluateResearchTasks(CruiseApplication cruiseApplication)
     {
@@ -122,23 +140,5 @@ public class CruiseApplicationEvaluator : ICruiseApplicationEvaluator
         {
             formASpubTask.Points = EvaluationConstants.PointsForSpubTask;
         }
-    }
-
-    public int GetPointsSum(CruiseApplication cruiseApplication)
-    {
-        var formA = cruiseApplication.FormA;
-        if (formA is null)
-            return 0;
-
-        var researchTaskPoints = formA.FormAResearchTasks
-            .Sum(formAResearchTask => formAResearchTask.Points);
-        var contractsPoints = formA.FormAContracts
-            .Sum(formAContract => formAContract.Points);
-        var publicationsPoints = formA.FormAPublications
-            .Sum(formAPublication => formAPublication.Points);
-        var spubTasksPoints = formA.FormASpubTasks
-            .Sum(formASpubTask => formASpubTask.Points);
-
-        return researchTaskPoints + contractsPoints + formA.UgUnitsPoints + publicationsPoints + spubTasksPoints;
     }
 }

@@ -66,7 +66,7 @@ public class EditCruiseHandler(
         Cruise cruise, EditCruiseCommand request, CancellationToken cancellationToken)
     {
         var newCruiseApplications = await cruiseApplicationsRepository
-            .GetManyByIds(request.CruiseFormModel.CruiseApplicationsIds, cancellationToken);
+            .GetAllByIds(request.CruiseFormModel.CruiseApplicationsIds, cancellationToken);
 
         // Cruises that already contain any of newCruiseApplications. The application will be deleted from them
         // since an application cannot be assigned to more than one cruise

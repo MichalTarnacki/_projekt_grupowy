@@ -9,18 +9,25 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Repositories;
 
 internal class CruiseApplicationsRepository : Repository<CruiseApplication>, ICruiseApplicationsRepository
 {
+    private IQueryable<CruiseApplication> CruiseApplicationsQuery => DbContext.CruiseApplications.AsQueryable();
+    
+    
     public CruiseApplicationsRepository(ApplicationDbContext dbContext) : base(dbContext)
     { }
 
 
-    public Task<List<CruiseApplication>> GetAllWithForms(CancellationToken cancellationToken)
+    public Task<List<CruiseApplication>> GetAllWithFormsAndFormAContent(CancellationToken cancellationToken)
     {
-        return GetCruiseApplicationsQuery().ToListAsync(cancellationToken);
+        return CruiseApplicationsQuery
+            .IncludeForms()
+            .IncludeFormAContent()
+            .ToListAsync(cancellationToken);
     }
 
     public Task<CruiseApplication?> GetByIdWithForms(Guid id, CancellationToken cancellationToken)
     {
-        return GetCruiseApplicationsQuery()
+        return CruiseApplicationsQuery
+            .IncludeForms()
             .SingleOrDefaultAsync(cruiseApplication => cruiseApplication.Id == id, cancellationToken);
     }
 
@@ -32,7 +39,7 @@ internal class CruiseApplicationsRepository : Repository<CruiseApplication>, ICr
             .SingleOrDefaultAsync(cruiseApplication => cruiseApplication.Id == id, cancellationToken);
     }
     
-    public Task<List<CruiseApplication>> GetManyByIds(List<Guid> ids, CancellationToken cancellationToken)
+    public Task<List<CruiseApplication>> GetAllByIds(List<Guid> ids, CancellationToken cancellationToken)
     {
         return DbContext.CruiseApplications
             .Where(cruiseApplication => ids.Contains(cruiseApplication.Id))
@@ -47,13 +54,5 @@ internal class CruiseApplicationsRepository : Repository<CruiseApplication>, ICr
             .Where(cruiseApplication => cruiseApplication.Id == id)
             .Select(cruiseApplication => cruiseApplication.FormA)
             .SingleOrDefaultAsync(cancellationToken);
-    }
-
-
-    private IIncludableQueryable<CruiseApplication, FormC?> GetCruiseApplicationsQuery()
-    {
-        return DbContext.CruiseApplications
-            .AsQueryable()
-            .IncludeForms();
     }
 }

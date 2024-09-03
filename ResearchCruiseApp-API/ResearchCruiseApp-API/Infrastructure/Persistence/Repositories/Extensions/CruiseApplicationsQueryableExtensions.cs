@@ -16,16 +16,16 @@ internal static class CruiseApplicationsQueryableExtensions
             .Include(cruiseApplication => cruiseApplication.FormC);
     }
 
-    public static IIncludableQueryable<CruiseApplication, List<SpubTask>> IncludeFormAContent(
+    public static IIncludableQueryable<CruiseApplication, List<FormASpubTask>> IncludeFormAContent(
         this IQueryable<CruiseApplication> query)
     {
-        throw new NotImplementedException();
-        // return query
-        //     .Include(cruiseApplication => cruiseApplication.FormA!.Contracts)
-        //     .Include(cruiseApplication => cruiseApplication.FormA!.FormAPublications)
-        //     .Include(cruiseApplication => cruiseApplication.FormA!.FormAGuestUnits)
-        //     .Include(cruiseApplication => cruiseApplication.FormA!.FormAResearchTasks)
-        //     .Include(cruiseApplication => cruiseApplication.FormA!.FormAUgUnits)
-        //     .Include(cruiseApplication => cruiseApplication.FormA!.FormASpubTasks);
+        return query
+            .Include(cruiseApplication => cruiseApplication.FormA!.Permissions)
+            .Include(cruiseApplication => cruiseApplication.FormA!.FormAResearchTasks)
+            .Include(cruiseApplication => cruiseApplication.FormA!.FormAContracts)
+            .Include(cruiseApplication => cruiseApplication.FormA!.FormAUgUnits)
+            .Include(cruiseApplication => cruiseApplication.FormA!.FormAGuestUnits)
+            .Include(cruiseApplication => cruiseApplication.FormA!.FormAPublications)
+            .Include(cruiseApplication => cruiseApplication.FormA!.FormASpubTasks);
     }
 }

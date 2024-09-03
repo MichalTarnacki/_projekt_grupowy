@@ -6,5 +6,5 @@ namespace ResearchCruiseApp_API.Application.Services.CruiseApplicationEvaluator;
 public interface ICruiseApplicationEvaluator
 {
     void Evaluate(CruiseApplication cruiseApplication);
-    public int GetPointsSum(CruiseApplication cruiseApplication);
+    int GetPointsSum(CruiseApplication cruiseApplication);
 }
