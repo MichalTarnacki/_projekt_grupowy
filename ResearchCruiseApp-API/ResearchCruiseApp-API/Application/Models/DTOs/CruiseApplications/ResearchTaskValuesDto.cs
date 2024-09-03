@@ -32,10 +32,9 @@ public class ResearchTaskValuesDto
                 .ForMember(
                     dest => dest.Time,
                     options =>
-                        options.MapFrom(src =>
-                            src.StartDate != null && src.EndDate != null
-                                ? new StringRangeDto{ Start = src.StartDate, End = src.EndDate }
-                                : (StringRangeDto?)null));
+                        options.MapFrom(src => src.StartDate != null && src.EndDate != null
+                            ? new StringRangeDto{ Start = src.StartDate, End = src.EndDate }
+                            : (StringRangeDto?)null));
         }
     }
 }

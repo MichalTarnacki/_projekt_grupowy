@@ -8,16 +8,16 @@ namespace ResearchCruiseApp_API.Application.Services.Factories.FormADtos;
 
 internal class FormADtosFactory(IMapper mapper, IContractDtosFactory contractDtosFactory) : IFormADtosFactory
 {
-    public Task<FormADto> Create(FormA formA)
+    public async Task<FormADto> Create(FormA formA)
     {
-        throw new NotImplementedException();
-        // var formADto = mapper.Map<FormADto>(formA);
-        //
-        // foreach (var contract in formA.FormAContracts)
-        // {
-        //     formADto.Contracts.Add(await contractDtosFactory.Create(contract));
-        // }
-        //
-        // return formADto;
+        var formADto = mapper.Map<FormADto>(formA);
+        
+        foreach (var formAContract in formA.FormAContracts)
+        {
+            var contract = formAContract.Contract;
+            formADto.Contracts.Add(await contractDtosFactory.Create(contract));
+        }
+        
+        return formADto;
     }
 }

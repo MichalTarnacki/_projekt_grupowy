@@ -6,8 +6,8 @@ namespace ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
 
 public class GuestUnitDto
 {
-    public string Name { get; set; } = null!;
-    public int NoOfPersons { get; set; }
+    public string Name { get; init; } = null!;
+    public int NoOfPersons { get; init; }
 
 
     private class MapProfile : Profile
@@ -23,6 +23,12 @@ public class GuestUnitDto
                     dest => dest.FormAGuestUnits,
                     options =>
                         options.Ignore());
+
+            CreateMap<FormAGuestUnit, GuestUnitDto>()
+                .ForMember(
+                    dest => dest.Name,
+                    options =>
+                        options.MapFrom(src => src.GuestUnit.Name));
         }
     }
 }
