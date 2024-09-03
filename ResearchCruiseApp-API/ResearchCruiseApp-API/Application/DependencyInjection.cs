@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using FluentValidation;
+using ResearchCruiseApp_API.Application.Services.CruiseApplicationEvaluator;
 using ResearchCruiseApp_API.Application.Services.CruiseApplications;
 using ResearchCruiseApp_API.Application.Services.Cruises;
 using ResearchCruiseApp_API.Application.Services.Factories.ContractDtos;
@@ -28,8 +29,9 @@ public static class DependencyInjection
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         
         services
-            .AddScoped<ICruisesService, CruisesService>()
             .AddScoped<ICruiseApplicationsService, CruiseApplicationsService>()
+            .AddScoped<ICruiseApplicationEvaluator, CruiseApplicationEvaluator>()
+            .AddScoped<ICruisesService, CruisesService>()
             .AddScoped<IUserPermissionVerifier, UserPermissionVerifier>();
     }
 

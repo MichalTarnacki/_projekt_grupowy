@@ -7,6 +7,7 @@ using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
 using ResearchCruiseApp_API.Application.ExternalServices;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
+using ResearchCruiseApp_API.Application.Services.CruiseApplicationEvaluator;
 using ResearchCruiseApp_API.Application.Services.Factories.CruiseApplications;
 using ResearchCruiseApp_API.Application.Services.Factories.FormsA;
 using ResearchCruiseApp_API.Domain.Entities;
@@ -16,12 +17,12 @@ namespace ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AddCruis
 
 public class AddCruiseApplicationHandler(
     IValidator<AddCruiseApplicationCommand> validator,
-    IEmailSender emailSender,
     IFormsAFactory formsAFactory,
     ICruiseApplicationsFactory cruiseApplicationsFactory,
-    IUnitOfWork unitOfWork,
-    IFormsARepository formsARepository,
     ICruiseApplicationsRepository cruiseApplicationsRepository,
+    IUnitOfWork unitOfWork,
+    ICruiseApplicationEvaluator cruiseApplicationEvaluator,
+    IEmailSender emailSender,
     IIdentityService identityService)
     : IRequestHandler<AddCruiseApplicationCommand, Result>
 {
@@ -31,12 +32,14 @@ public class AddCruiseApplicationHandler(
         if (!validationResult.IsValid)
             return validationResult.ToApplicationResult();
         
-        var formA = await formsAFactory.Create(request.FormADto, cancellationToken);
-
+        var newFormA = await formsAFactory.Create(request.FormADto, cancellationToken);
         var newCruiseApplication = await unitOfWork.ExecuteIsolated(
-            () => GetNewPersistedCruiseApplication(formA, cancellationToken),
+            () => GetNewPersistedCruiseApplication(newFormA, cancellationToken),
             IsolationLevel.Serializable,
             cancellationToken);
+        
+        cruiseApplicationEvaluator.Evaluate(newCruiseApplication);
+        await unitOfWork.Complete(cancellationToken);
         
         await SendRequestToSupervisor(newCruiseApplication, request.FormADto.SupervisorEmail!);
 

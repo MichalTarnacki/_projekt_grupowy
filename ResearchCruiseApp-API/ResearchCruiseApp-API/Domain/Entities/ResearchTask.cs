@@ -32,7 +32,7 @@ public class ResearchTask : Entity
     [StringLength(1024)]
     public string? Description { get; init; }
 
-    public bool FinancingApproved { get; init; }
+    public bool? FinancingApproved { get; init; }
     
     public List<FormAResearchTask> FormAResearchTasks { get; set; } = [];
 

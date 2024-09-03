@@ -63,7 +63,11 @@ public class ResearchTaskDto
                 .ForMember(
                     dest => dest.Description,
                     options =>
-                        options.MapFrom(src => src.Values.Description));
+                        options.MapFrom(src => src.Values.Description))
+                .ForMember(
+                    dest => dest.FinancingApproved,
+                    options =>
+                        options.MapFrom(src => src.Values.FinancingApproved));
         }
     }
 }

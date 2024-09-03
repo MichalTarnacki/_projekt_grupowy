@@ -7,19 +7,21 @@ namespace ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
 
 public class ResearchTaskValuesDto
 {
-    public string? Title { get; set; }
+    public string? Title { get; init; }
         
-    public string? Author { get; set; }
+    public string? Author { get; init; }
         
-    public string? Institution { get; set; }
+    public string? Institution { get; init; }
         
-    public string? Date { get; set; }
+    public string? Date { get; init; }
         
-    public StringRangeDto? Time { get; set; }
+    public StringRangeDto? Time { get; init; }
         
-    public double? FinancingAmount { get; set; }
+    public double? FinancingAmount { get; init; }
         
-    public string? Description { get; set; }
+    public string? Description { get; init; }
+
+    public bool? FinancingApproved { get; init; }
     
     
     private class MapProfile : Profile
