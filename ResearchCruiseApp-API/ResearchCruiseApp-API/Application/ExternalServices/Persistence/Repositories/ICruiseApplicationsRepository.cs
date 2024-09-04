@@ -6,6 +6,7 @@ namespace ResearchCruiseApp_API.Application.ExternalServices.Persistence.Reposit
 public interface ICruiseApplicationsRepository : IRepository<CruiseApplication>
 {
     Task<List<CruiseApplication>> GetAllWithFormsAndFormAContent(CancellationToken cancellationToken);
+    Task<CruiseApplication?> GetByIdWithFormA(Guid id, CancellationToken cancellationToken);
     Task<CruiseApplication?> GetByIdWithFormsAndFormAContent(Guid id, CancellationToken cancellationToken);
     Task<CruiseApplication?> GetByIdWithFormAContent(Guid id, CancellationToken cancellationToken);
     Task<List<CruiseApplication>> GetAllByIds(List<Guid> ids, CancellationToken cancellationToken);

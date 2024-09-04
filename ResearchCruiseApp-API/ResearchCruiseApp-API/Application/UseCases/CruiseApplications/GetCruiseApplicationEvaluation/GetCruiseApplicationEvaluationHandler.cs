@@ -4,16 +4,16 @@ using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositorie
 using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
 using ResearchCruiseApp_API.Application.Services.Factories.CruiseApplicationEvaluationDetailsDtos;
 
-namespace ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetCruiseApplicationEvaluationDetails;
+namespace ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetCruiseApplicationEvaluation;
 
 
-public class GetCruiseApplicationEvaluationDetailsHandler(
+public class GetCruiseApplicationEvaluationHandler(
     ICruiseApplicationsRepository cruiseApplicationsRepository,
     ICruiseApplicationEvaluationDetailsDtosFactory cruiseApplicationEvaluationDetailsDtosFactory)
-    : IRequestHandler<GetCruiseApplicationEvaluationDetailsQuery, Result<CruiseApplicationEvaluationDetailsDto>>
+    : IRequestHandler<GetCruiseApplicationEvaluationQuery, Result<CruiseApplicationEvaluationDetailsDto>>
 {
     public async Task<Result<CruiseApplicationEvaluationDetailsDto>> Handle(
-        GetCruiseApplicationEvaluationDetailsQuery request, CancellationToken cancellationToken)
+        GetCruiseApplicationEvaluationQuery request, CancellationToken cancellationToken)
     {
         var cruiseApplication = await cruiseApplicationsRepository
             .GetByIdWithFormsAndFormAContent(request.Id, cancellationToken);

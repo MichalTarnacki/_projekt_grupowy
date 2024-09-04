@@ -18,17 +18,4 @@ public class CruiseApplicationEvaluationDetailsDto
     public List<FormAPublicationDto> FormAPublications { get; init; } = [];
     
     public List<FormASpubTaskDto> FormASpubTasks { get; init; } = [];
-
-
-    // private class MapProfile : Profile
-    // {
-    //     public MapProfile()
-    //     {
-    //         CreateMap<CruiseApplication, CruiseApplicationEvaluationDetailsDto>()
-    //             .ForMember(
-    //                 dest => dest.FormAResearchTasks,
-    //                 options =>
-    //                     options.MapFrom(src => src.FormA))
-    //     }
-    // }
 }

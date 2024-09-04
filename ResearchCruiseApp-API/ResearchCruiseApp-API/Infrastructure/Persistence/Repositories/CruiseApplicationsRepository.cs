@@ -24,6 +24,13 @@ internal class CruiseApplicationsRepository : Repository<CruiseApplication>, ICr
             .ToListAsync(cancellationToken);
     }
 
+    public Task<CruiseApplication?> GetByIdWithFormA(Guid id, CancellationToken cancellationToken)
+    {
+        return DbContext.CruiseApplications
+            .Include(cruiseApplication => cruiseApplication.FormA)
+            .SingleOrDefaultAsync(cruiseApplication => cruiseApplication.Id == id, cancellationToken);
+    }
+    
     public Task<CruiseApplication?> GetByIdWithFormsAndFormAContent(Guid id, CancellationToken cancellationToken)
     {
         return CruiseApplicationsQuery
