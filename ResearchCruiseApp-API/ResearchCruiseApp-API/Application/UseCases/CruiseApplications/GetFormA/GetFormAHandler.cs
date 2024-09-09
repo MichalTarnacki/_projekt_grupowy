@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
 using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;

@@ -8,6 +8,7 @@ using ResearchCruiseApp_API.Application.ExternalServices.Persistence;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
 using ResearchCruiseApp_API.Domain.Entities;
 using ResearchCruiseApp_API.Infrastructure.Persistence;
+using ResearchCruiseApp_API.Infrastructure.Persistence.Initialization;
 using ResearchCruiseApp_API.Infrastructure.Persistence.Repositories;
 using ResearchCruiseApp_API.Infrastructure.Services;
 using ResearchCruiseApp_API.Infrastructure.Services.Identity;
@@ -83,6 +84,8 @@ public static class DependencyInjection
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("ResearchCruiseApp-DB")));
 
+        services.AddScoped<ApplicationDbContextInitializer>();
+        
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services
             .AddScoped<IFormsARepository, FormsARepository>()

@@ -29,9 +29,10 @@ public static class DependencyInjection
         
         services.AddFactories();
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-        
+
         services
             .AddScoped<ICruiseApplicationsService, CruiseApplicationsService>()
+            .AddScoped<ICruiseApplicationEvaluator, CruiseApplicationEvaluator>()
             .AddScoped<ICruiseApplicationEvaluator, CruiseApplicationEvaluator>()
             .AddScoped<ICruisesService, CruisesService>()
             .AddScoped<IUserPermissionVerifier, UserPermissionVerifier>();

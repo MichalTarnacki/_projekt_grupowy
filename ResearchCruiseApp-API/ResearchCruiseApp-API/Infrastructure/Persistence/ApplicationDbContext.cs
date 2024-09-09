@@ -7,7 +7,7 @@ using ResearchCruiseApp_API.Infrastructure.Services.Identity;
 namespace ResearchCruiseApp_API.Infrastructure.Persistence;
 
 
-public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<User>(options)
+internal class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<User>(options)
 {
     public DbSet<CruiseApplication> CruiseApplications { get; init; } = null!;
     public DbSet<Cruise> Cruises { get; init; } = null!;

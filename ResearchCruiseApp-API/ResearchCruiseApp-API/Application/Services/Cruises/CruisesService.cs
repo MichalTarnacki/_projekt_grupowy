@@ -7,7 +7,7 @@ using ResearchCruiseApp_API.Infrastructure.Persistence;
 namespace ResearchCruiseApp_API.Application.Services.Cruises;
 
 
-public class CruisesService(
+internal class CruisesService(
     IYearBasedKeyGenerator yearBasedKeyGenerator,
     ICruisesRepository cruisesRepository,
     IUnitOfWork unitOfWork,
