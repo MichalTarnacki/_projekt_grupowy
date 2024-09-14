@@ -8,6 +8,7 @@ namespace ResearchCruiseApp_API.Application.Services.Factories.FormsA;
 
 
 internal class FormsAFactory(
+    IResearchAreasRepository researchAreasRepository,
     IResearchTasksRepository researchTasksRepository,
     IUgUnitsRepository ugUnitsRepository,
     IGuestUnitsRepository guestUnitsRepository,
@@ -21,6 +22,7 @@ internal class FormsAFactory(
     {
         var formA = mapper.Map<FormA>(formADto);
 
+        await AddResearchArea(formA, formADto, cancellationToken);
         await AddFormAResearchTasks(formA, formADto, cancellationToken);
         await AddFormAContracts(formA, formADto);
         await AddFormAUgUnits(formA, formADto, cancellationToken);
@@ -32,6 +34,15 @@ internal class FormsAFactory(
     }
 
 
+    private async Task AddResearchArea(FormA formA, FormADto formADto, CancellationToken cancellationToken)
+    {
+        var researchArea = await researchAreasRepository.GetById(formADto.ResearchAreaId, cancellationToken);
+        if (researchArea is null)
+            return;
+
+        formA.ResearchArea = researchArea;
+    }
+    
     private async Task AddFormAResearchTasks(FormA formA, FormADto formADto, CancellationToken cancellationToken)
     {
         var allResearchTasks = await researchTasksRepository.GetAll(cancellationToken);
