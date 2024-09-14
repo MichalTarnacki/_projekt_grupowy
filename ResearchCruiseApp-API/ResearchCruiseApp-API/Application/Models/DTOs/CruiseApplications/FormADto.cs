@@ -50,7 +50,7 @@ public class FormADto
 
     public List<ContractDto> Contracts { get; init; } = [];
 
-    public List<UgUnitDto> UgUnits { get; init; } = [];
+    public List<UgTeamDto> UgTeams { get; init; } = [];
 
     public List<GuestUnitDto> GuestUnits { get; init; } = [];
 
@@ -90,7 +90,7 @@ public class FormADto
                     options =>
                         options.Ignore()) // Member requires complex logic
                 .ForMember(
-                    dest => dest.UgUnits,
+                    dest => dest.UgTeams,
                     options =>
                         options.MapFrom(src => src.FormAUgUnits))
                 .ForMember(

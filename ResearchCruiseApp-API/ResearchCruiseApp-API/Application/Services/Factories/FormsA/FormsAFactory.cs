@@ -67,7 +67,7 @@ internal class FormsAFactory(
 
     private async Task AddFormAUgUnits(FormA formA, FormADto formADto, CancellationToken cancellationToken)
     {
-        foreach (var ugUnitDto in formADto.UgUnits)
+        foreach (var ugUnitDto in formADto.UgTeams)
         {
             var ugUnit = await ugUnitsRepository.GetById(ugUnitDto.UgUnitId, cancellationToken);
             if (ugUnit is null)
