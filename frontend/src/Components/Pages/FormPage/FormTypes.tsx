@@ -1,6 +1,6 @@
 import {FormUser} from "./Inputs/UserSelect";
 import {ResearchArea} from "./Inputs/ClickableMap";
-import {Task} from "./Inputs/TaskTable/TaskTable";
+import {ResearchTask} from "./Inputs/TaskTable/TaskTable";
 import {Contract} from "./Inputs/ContractsTable/ContractsTable";
 import {UgTeam, UgUnit} from "./Inputs/UgTeamsTable/UgTeamsTable";
 import {GuestsTeam} from "./Inputs/GuestTeamsTable/GuestTeamsTable";
@@ -15,7 +15,7 @@ export type FormAInitValues = {
     shipUsages: string[],
     researchAreas: ResearchArea[],
     cruiseGoals: string[],
-    historicalTasks: Task[]
+    historicalResearchTasks: ResearchTask[]
     ugUnits:UgUnit[]
 }
 
@@ -36,7 +36,7 @@ export type FormAFields = {
     researchAreaInfo?: string
     cruiseGoal: string
     cruiseGoalDescription?: string
-    researchTasks: Task[]
+    researchTasks: ResearchTask[]
     contracts: Contract[]
     ugTeams: UgTeam[]
     guestTeams: GuestsTeam[]
