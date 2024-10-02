@@ -11,7 +11,6 @@ import {FieldProps} from "../FormRadio";
 import {CellTools, OrdinalNumber} from "../TableParts";
 import {FIntField} from "../CellFormFields";
 import {FieldForKey, ResearchTask, taskTypes, taskTypesDefaultValues} from "./TaskTable";
-import {InitContext} from "../UgTeamsTable/EvaluatedUgTeamsTable";
 
 registerLocale("pl", pl);
 
