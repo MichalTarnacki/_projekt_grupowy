@@ -77,7 +77,8 @@ export const FStringValueField = () => {
 
     return(
         <>
-            {initContext && initContext.find((unit:UgUnit)=>unit.id == cellValue)?.name}
+            {!displayContext && initContext && initContext.find((unit:UgUnit)=>unit.id == cellValue)?.name}
+            {displayContext && cellValue}
         </>
     )
 }
@@ -97,7 +98,6 @@ function UgTeamsTable(props: Props) {
     const formContext = useContext(FormContext)
     const unitIds = formContext?.getValues(props.fieldName)?.map((row:UgTeam)=>row.ugUnitId)
     const filteredInitValues = unitIds && props.initValues?.filter((unit)=> !unitIds?.includes(unit.id))
-    console.log(filteredInitValues)
     const selectOptions =  filteredInitValues?.map((ugUnit:UgUnit)=>
             ({label:ugUnit.name, value: {ugUnitId:ugUnit.id, noOfEmployees: "0", noOfStudents: "0"}})) ?? []
 

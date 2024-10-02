@@ -67,7 +67,7 @@ export const taskTypesDefaultValues: ReseachTask[] = [
     {type: "0", author: "", title: ""},
     {type: "1", author: "", title: ""},
     {type: "2", author: "", title: ""},
-    {type: "3", title: "", date: "", name: "", financingApproved: "false"},
+    {type: "3", title: "", date: "", financingApproved: "false"},
     {type: "4", title: "", financingAmount: "0.00", startDate: "", endDate: "", securedAmount: "0.00"},
     {type: "5", title: "", financingAmount: "0.00", startDate: "", endDate: "", securedAmount: "0.00"},
     {type: "6", title: "", financingAmount: "0.00", startDate: "", endDate: "", securedAmount: "0.00"},
@@ -128,7 +128,6 @@ export const FieldForKey = () => {
 const FieldsCell = () => {
     const displayContext = useContext(DisplayContext)
     const {rowValue} = CellFormTools()
-    console.log(rowValue)
     return (
         <div className="d-flex flex-wrap flex-row justify-content-center align-items-center w-100">
             {rowValue && rowValue.type && Object.keys(taskTypesDefaultValues[rowValue.type]).map((key, index) =>
@@ -214,7 +213,6 @@ export const TasksTable = (props: TaskTableProps) => {
             }
         },
         render: ({field}: FieldValues) => {
-            console.log(field.value)
             return(
                 <FieldContext.Provider value={field}>
                     <Render/>
