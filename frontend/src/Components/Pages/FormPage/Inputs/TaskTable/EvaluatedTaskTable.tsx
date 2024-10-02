@@ -11,7 +11,6 @@ import {FieldProps} from "../FormRadio";
 import {CellTools, OrdinalNumber} from "../TableParts";
 import {FIntField} from "../CellFormFields";
 import {FieldForKey, ReseachTask, taskTypes, taskTypesDefaultValues} from "./TaskTable";
-import {InitContext} from "../UgTeamsTable/EvaluatedUgTeamsTable";
 
 registerLocale("pl", pl);
 
@@ -98,7 +97,6 @@ export const EvaluatedTasksTable = (props: EvaluatedTableProps) => {
     const emptyText = "Nie dodano żadnego zadania"
     const {Render} = FieldTableWrapper(colTitle, mdColWidths, mdColTitles,taskTableContent,
         null, emptyText, props.evaluatedReseachTasks)
-    console.log(props.evaluatedReseachTasks)
     const idAndPoints = props.evaluatedReseachTasks?.map((value) =>
         ({id:value.id, points:value.points}))
     const displayValue = props.evaluatedReseachTasks?.map((value) =>
