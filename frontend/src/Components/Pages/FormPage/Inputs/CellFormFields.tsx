@@ -224,7 +224,7 @@ export const TextField = (props: { className?: string }) => {
 export const FormBoolField = (props: { className?: string }) => {
     const {cellValue, setCellValue, field} = CellFormTools()
     const readOnlyContext = useContext(ReadOnlyContext)
-    const isTrue = CustomConverter.stringToBoolean(cellValue)
+    const isTrue= CustomConverter.stringToBoolean(cellValue)
     return (
         <div className={"d-flex flex-row w-100"}>
             <div className={" field-common col-6 " + (isTrue ? " bg-primary text-white" : "")}

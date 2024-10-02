@@ -56,28 +56,29 @@ function FormTemplate(props: Props) {
     }, []);
 
 
-    const initEndpoint = (_formType: FormTypeValues) => {
-        switch (_formType){
+    const initEndpoint = (_formType: FormTypeValues)=> {
+        switch (_formType) {
             case formType.A:
                 return '/Forms/InitValues/A'
             case formType.ApplicationDetails:
                 return `/api/CruiseApplications/${location?.state?.cruiseApplication.id}/evaluation`
-            default:
-                return ''
         }
     }
 
     const [formInitValues, setFormInitValues] =
         useState<FormAInitValues | undefined>(undefined)
     useEffect(() => {
+        const initValuesPath = initEndpoint(props.type)
+        if (!initValuesPath)
+            return
+
         Api
-            .get(initEndpoint(props.type))
+            .get(initValuesPath)
             .then(response => {
                 console.log(response?.data)
                 setFormInitValues(response?.data)
                 form.reset()
             })
-
     },[]);
 
     const form = useForm({
