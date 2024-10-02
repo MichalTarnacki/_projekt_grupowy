@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.SignalR.Protocol;
 using ResearchCruiseApp_API.Application.Common.Models.DTOs;
 using ResearchCruiseApp_API.Application.ExternalServices;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
@@ -6,6 +7,7 @@ using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
 using ResearchCruiseApp_API.Application.Models.DTOs.Forms;
 using ResearchCruiseApp_API.Application.Services.Factories.ContractDtos;
 using ResearchCruiseApp_API.Application.Services.Factories.FormUserDtos;
+using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetAllCruiseApplications;
 using ResearchCruiseApp_API.Domain.Entities;
 
 namespace ResearchCruiseApp_API.Application.Services.Factories.FormAInitValuesDtosFactory;
@@ -25,11 +27,7 @@ public class FormAInitValuesDtosFactory(
     public async Task<FormAInitValuesDto> Create(CancellationToken cancellationToken)
     {
         var allUserDtos = await identityService.GetAllUsersDtos(cancellationToken);
-        var userId = currentUserService.GetId();
-        var cruiseApplications = userId is null
-            ? []
-            : await cruiseApplicationsRepository
-                .GetAllByUserIdWithFormA(userId.Value, cancellationToken);
+        var cruiseApplications = await GetAllCruiseApplicationsForUser(cancellationToken);
         
         var result = new FormAInitValuesDto
         {
@@ -41,13 +39,26 @@ public class FormAInitValuesDtosFactory(
             CruiseGoals = GetCruiseGoals(),
             HistoricalResearchTasks = GetHistoricalResearchTasks(cruiseApplications),
             HistoricalContracts = await GetHistoricalContracts(cruiseApplications),
-            UgUnits = await GetUgUnits(cancellationToken)
+            UgUnits = await GetUgUnits(cancellationToken),
+            HistoricalGuestInstitutions = GetHistoricalInstitutions(cruiseApplications),
+            HistoricalSpubTasks = GetHistoricalSpubTasks(cruiseApplications)
         };
 
         return result;
     }
 
 
+    private async Task<List<CruiseApplication>> GetAllCruiseApplicationsForUser(CancellationToken cancellationToken)
+    {
+        var userId = currentUserService.GetId();
+        var cruiseApplications = userId is null
+            ? []
+            : await cruiseApplicationsRepository
+                .GetAllByUserIdWithFormA(userId.Value, cancellationToken);
+
+        return cruiseApplications;
+    }
+    
     private List<FormUserDto> GetCruiseManagers(IEnumerable<UserDto> allUserDtos)
     {
         return allUserDtos
@@ -135,5 +146,28 @@ public class FormAInitValuesDtosFactory(
             .ToList();
 
         return historicalTasks;
+    }
+
+    private static List<string> GetHistoricalInstitutions(IEnumerable<CruiseApplication> cruiseApplications)
+    {
+        var historicalGuestTeams = cruiseApplications
+            .SelectMany(cruiseApplication =>
+                cruiseApplication.FormA?.FormAGuestUnits.Select(formAGuestUnit => formAGuestUnit.GuestUnit.Name)
+                ?? [])
+            .Distinct()
+            .ToList();
+
+        return historicalGuestTeams;
+    }
+
+    private List<SpubTaskDto> GetHistoricalSpubTasks(IEnumerable<CruiseApplication> cruiseApplications)
+    {
+        return cruiseApplications
+            .SelectMany(cruiseApplication =>
+                cruiseApplication.FormA?.FormASpubTasks.Select(formASpubTask => formASpubTask.SpubTask)
+                ?? [])
+            .Distinct()
+            .Select(mapper.Map<SpubTaskDto>)
+            .ToList();
     }
 }

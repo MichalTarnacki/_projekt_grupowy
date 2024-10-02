@@ -15,8 +15,11 @@ export type FormAInitValues = {
     shipUsages: string[],
     researchAreas: ResearchArea[],
     cruiseGoals: string[],
-    historicalResearchTasks: ResearchTask[]
-    ugUnits:UgUnit[]
+    historicalResearchTasks: ResearchTask[],
+    historicalContracts: Contract[],
+    ugUnits: UgUnit[],
+    historicalGuestInstitutions: string[],
+    historicalSpubTasks: SpubTask[]
 }
 
 export type FormAFields = {

@@ -11,19 +11,19 @@ import {extendedUseLocation} from "../FormPage";
 
 type Props = {
     type: string,
-    readOnly?:boolean,
-    sections:FormSectionType[],
-    initValues?:FormAInitValues,
-    defaultValues?:any,
-    BottomOptionBar?:React.JSXElementConstructor<any>
+    readOnly?: boolean,
+    sections: FormSectionType[],
+    initValues?: FormAInitValues,
+    defaultValues?: any,
+    BottomOptionBar?: React.JSXElementConstructor<any>
 }
 
 export type ExtendedUseFormReturn = UseFormReturn & {
-    type:string,
-    readOnly?:boolean,
-    setReadOnly: (state:boolean) => void,
-    sections:FormSectionType[],
-    initValues?:FormAInitValues
+    type: string,
+    readOnly?: boolean,
+    setReadOnly: (state: boolean) => void,
+    sections: FormSectionType[],
+    initValues?: FormAInitValues
 }
 
 

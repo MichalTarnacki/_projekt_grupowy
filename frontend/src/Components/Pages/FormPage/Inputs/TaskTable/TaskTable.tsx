@@ -129,7 +129,6 @@ export const FieldForKey = () => {
 const FieldsCell = () => {
     const displayContext = useContext(DisplayContext)
     const {rowValue} = CellFormTools()
-    console.log(rowValue)
     return (
         <div className="d-flex flex-wrap flex-row justify-content-center align-items-center w-100">
             {rowValue && rowValue.type && Object.keys(taskTypesDefaultValues[rowValue.type]).map((key, index) =>
