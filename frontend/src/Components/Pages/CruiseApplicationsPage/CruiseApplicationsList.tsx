@@ -46,8 +46,8 @@ export default function CruiseApplicationsList(props: Props) {
         = useState([])
     const applicationsContext = useContext(CruiseApplicationsContext)
     useEffect(() => {
-        if(fetchedCruiseApplications.length<=0)
-            if(applicationsContext)
+        if (fetchedCruiseApplications.length <= 0)
+            if (applicationsContext)
                 setFetchedCruiseApplications(applicationsContext)
             else
                 Api.get('/api/CruiseApplications').then(response =>
@@ -89,7 +89,7 @@ export default function CruiseApplicationsList(props: Props) {
     }
 
     const rowShouldBeShown = RowShouldBeShown(props.mode)
-    const applicationsToDisplay = fetchedCruiseApplications.filter(rowShouldBeShown).filter(applyFilters)
+    const applicationsToDisplay = fetchedCruiseApplications?.filter(rowShouldBeShown).filter(applyFilters)
 
     const mdColWidths = [14, 10, 21,  12,12,15, 16]
     const mdColTitles = ["Numer/data", "Rok rejsu", "Kierownik", "Formularze", "Punkty", "Status", "Akcje", ]
