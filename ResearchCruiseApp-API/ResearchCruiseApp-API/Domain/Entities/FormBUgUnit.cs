@@ -1,11 +1,10 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ResearchCruiseApp_API.Domain.Entities;
 
-
-public class FormAUgUnit : Entity
+public class FormBUgUnit : Entity
 {
-    public FormA FormA { get; init; } = null!;
+    public FormB FormB { get; init; } = null!;
 
     public UgUnit UgUnit { get; init; } = null!;
 
