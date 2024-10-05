@@ -9,6 +9,8 @@ import api from "./Api";
 import {_} from "react-hook-form/dist/__typetest__/__fixtures__";
 import {useNavigate} from "react-router-dom";
 import {Path} from "./Path";
+import userDataManager from "../CommonComponents/UserDataManager";
+import userBasedAccess from "../UserBasedAccess";
 
 const SupervisorMenu = () => {
     const location = extendedUseLocation()
@@ -115,13 +117,14 @@ export const BottomOptionBar = () => {
         </>
     )
 
-    const ReadonlyFormButtons = () => (
-        <>
+    const ReadonlyFormButtons = () => {
+        const {UserHasCruiseManagerAccess, UserHasShipownerAccess, UserHasAdminAccess} = userBasedAccess()
+        return(<>
             <PrintButton/>
-            <ResendButton/>
-            <DownloadButtonDefault/>
-        </>
-    )
+            {UserHasCruiseManagerAccess() && <ResendButton/> }
+            {(UserHasShipownerAccess() || UserHasAdminAccess()) && <DownloadButtonDefault/>}
+        </>)
+    }
 
     const DefaultMenu = () => (
         <>

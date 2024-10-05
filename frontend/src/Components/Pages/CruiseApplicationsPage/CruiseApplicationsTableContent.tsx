@@ -8,6 +8,7 @@ import {ApplicationsContext, CruiseApplicationListMode, ListModeContext} from ".
 import LinkWithState from "../../CommonComponents/LinkWithState";
 import {Path} from "../../Tools/Path";
 import {CruiseApplicationsContext} from "../CruiseFormPage/CruiseFormPage";
+import userBasedAccess from "../../UserBasedAccess";
 
 export const ApplicationTools = () => {
     const cellContext = useContext(CellContext)
@@ -85,7 +86,7 @@ export const Points = () => {
 export const Status = () => {
     const {application} = ApplicationTools()
     const listModeContext = useContext(ListModeContext)
-
+    const {UserHasCruiseManagerAccess} = userBasedAccess()
     return (
         <div className={"task-field-input"}>
             <label className={"table-field-input-label"}>
@@ -94,9 +95,9 @@ export const Status = () => {
             <i>{application!.status}</i>
             {!listModeContext?.mode &&
                 <>
-                    {application!.status == CruiseApplicationStatus.WaitingForSupervisor &&
+                    {application!.status == CruiseApplicationStatus.WaitingForSupervisor && UserHasCruiseManagerAccess() &&
                         <LinkWithState to={Path.Form} state={{formType:"B", cruiseApplication:application}} label={"Wypełnij"}/>}
-                    {application!.status == CruiseApplicationStatus.Undertaken &&
+                    {application!.status == CruiseApplicationStatus.Undertaken && UserHasCruiseManagerAccess() &&
                         <LinkWithState to={Path.Form} state={{formType:"C"}} label={"Wypełnij raport"}/>}
                 </>
             }

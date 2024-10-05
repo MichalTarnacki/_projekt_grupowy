@@ -7,6 +7,7 @@ import {CruiseApplicationStatus} from "../Pages/CruiseApplicationsPage/CruiseApp
 import {extendedUseLocation} from "../Pages/FormPage/FormPage";
 import {useNavigate} from "react-router-dom";
 import {Path} from "./Path";
+import userBasedAccess from "../UserBasedAccess";
 
 const SendButton = () => {
     const formContext = useContext(FormContext)
@@ -86,6 +87,7 @@ const AcceptedBySupervisorMenu = () => {
 
 export const BottomOptionBar = () => {
     const formContext = useContext(FormContext)
+    const {UserHasShipownerAccess, UserHasAdminAccess} = userBasedAccess()
     const EditableFormButtons = () => (
         <>
             <CancelButton/>
@@ -162,15 +164,21 @@ export const BottomOptionBar = () => {
     )
 
     return(
-    <div className="form-page-option-bar">
-        {/*{applicationContext!.status == CruiseApplicationStatus.WaitingForSupervisor && <WaitingForSupervisorMenu/>}*/}
-        {applicationContext!.status == CruiseApplicationStatus.AcceptedBySupervisor && <AcceptedBySupervisorMenu/>}
-        {applicationContext!.status == CruiseApplicationStatus.WaitingForSupervisor && <EditPointsMenu/>}
-        {applicationContext!.status == CruiseApplicationStatus.FormBRequired && <FormBRequired/>}
-        {applicationContext!.status == CruiseApplicationStatus.FormBFilled && <FormBFilled/>}
-        {applicationContext!.status == CruiseApplicationStatus.CruiseBegan && <CruiseBegan/>}
-        {applicationContext!.status == CruiseApplicationStatus.Undertaken && <UnderTaken/>}
-        {applicationContext!.status == CruiseApplicationStatus.Reported && <Reported/>}
-    </div>
+        <>
+            {(UserHasShipownerAccess() || UserHasAdminAccess()) &&
+                <div className="form-page-option-bar">
+                    {/*{applicationContext!.status == CruiseApplicationStatus.WaitingForSupervisor && <WaitingForSupervisorMenu/>}*/}
+                    {applicationContext!.status == CruiseApplicationStatus.AcceptedBySupervisor &&
+                        <AcceptedBySupervisorMenu/>}
+                    {applicationContext!.status == CruiseApplicationStatus.WaitingForSupervisor && <EditPointsMenu/>}
+                    {applicationContext!.status == CruiseApplicationStatus.FormBRequired && <FormBRequired/>}
+                    {applicationContext!.status == CruiseApplicationStatus.FormBFilled && <FormBFilled/>}
+                    {applicationContext!.status == CruiseApplicationStatus.CruiseBegan && <CruiseBegan/>}
+                    {applicationContext!.status == CruiseApplicationStatus.Undertaken && <UnderTaken/>}
+                    {applicationContext!.status == CruiseApplicationStatus.Reported && <Reported/>}
+                </div>
+            }
+        </>
+
     )
 }

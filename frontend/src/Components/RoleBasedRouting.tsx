@@ -51,7 +51,7 @@ const RoleBasedRouting = () => {
         return (
             <>
                 <Route path={Path.SavedApplications} element={<SavedFormPage />} />
-                <Route path={Path.NewForm} element={<NewFormPage />} />
+                {/*<Route path={Path.NewForm} element={<NewFormPage />} />*/}
                 <Route path={Path.Form} element={<FormPage />} />
                 <Route path={Path.ManageUsers} element={<ManageUsersPage />} />
                 <Route path={Path.Any} element={<AdminPanel />} />
@@ -67,9 +67,12 @@ const RoleBasedRouting = () => {
     const CruiseManagerRoute = () => {
         return (
             <>
-                <Route path={Path.NewForm} element={<NewFormPage />} />
+                {/*<Route path={Path.NewForm} element={<NewFormPage />} />*/}
                 <Route path={Path.Form} element={<FormPage />} />
                 <Route path={Path.Any} element={<ManagerPanel />} />
+                <Route path={Path.CruiseApplications} element={<CruiseApplicationsPage />} />
+                <Route path={Path.CruiseApplicationDetails} element={<CruiseApplicationDetailsPage />} />
+                <Route path={Path.Cruises} element={<CruisesPage />} />
             </>
         )
     }
