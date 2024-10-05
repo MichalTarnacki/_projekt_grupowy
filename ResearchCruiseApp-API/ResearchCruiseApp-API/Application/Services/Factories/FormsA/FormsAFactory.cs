@@ -90,13 +90,13 @@ internal class FormsAFactory(
     {
         var allGuestUnits = await guestUnitsRepository.GetAll(cancellationToken);
 
-        foreach (var guestUnitDto in formADto.GuestUnits)
+        foreach (var guestTeamDto in formADto.GuestTeams)
         {
-            var guestUnit = GetUniqueGuestUnit(guestUnitDto, allGuestUnits);
+            var guestUnit = GetUniqueGuestUnit(guestTeamDto, allGuestUnits);
             var formAGuestUnit = new FormAGuestUnit
             {
                 GuestUnit = guestUnit,
-                NoOfPersons = guestUnitDto.NoOfPersons
+                NoOfPersons = guestTeamDto.NoOfPersons
             };
             formA.FormAGuestUnits.Add(formAGuestUnit);
         }
@@ -154,9 +154,9 @@ internal class FormsAFactory(
         return contract;
     }
         
-    private GuestUnit GetUniqueGuestUnit(GuestUnitDto guestUnitDto, List<GuestUnit> allGuestUnits)
+    private GuestUnit GetUniqueGuestUnit(GuestTeamDto guestTeamDto, List<GuestUnit> allGuestUnits)
     {
-        var guestUnit = mapper.Map<GuestUnit>(guestUnitDto);
+        var guestUnit = mapper.Map<GuestUnit>(guestTeamDto);
         var alreadyPersistedGuestUnit = allGuestUnits
             .Find(gu => gu.Equals(guestUnit));
 
