@@ -12,5 +12,11 @@ public class ResearchEquipment : Entity
 
     public List<FormBLongResearchEquipment> FormBLongResearchEquipments { get; init; } = [];
 
-    public List<FormBResearchEquipment> FormBResearchEquipments { get; set; } = [];
+    public List<FormBResearchEquipment> FormBResearchEquipments { get; init; } = [];
+
+    public List<FormCShortResearchEquipment> FormCShortResearchEquipments { get; init; } = [];
+
+    public List<FormCLongResearchEquipment> FormCLongResearchEquipments { get; init; } = [];
+
+    public List<FormCResearchEquipment> FormCResearchEquipments { get; init; } = [];
 }

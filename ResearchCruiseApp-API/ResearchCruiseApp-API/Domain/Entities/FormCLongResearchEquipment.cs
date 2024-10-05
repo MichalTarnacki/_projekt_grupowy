@@ -4,9 +4,9 @@ using ResearchCruiseApp_API.Domain.Common.Enums;
 namespace ResearchCruiseApp_API.Domain.Entities;
 
 
-public class FormBLongResearchEquipment : Entity
+public class FormCLongResearchEquipment : Entity
 {
-    public FormB FormB { get; init; } = null!;
+    public FormC FormC { get; init; } = null!;
 
     public ResearchEquipment ResearchEquipment { get; init; } = null!;
 

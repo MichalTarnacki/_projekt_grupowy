@@ -1,13 +1,17 @@
-﻿namespace ResearchCruiseApp_API.Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ResearchCruiseApp_API.Domain.Entities;
 
 
 public class FormBShortResearchEquipment : Entity
 {
-    public FormB FormB { get; set; } = null!;
+    public FormB FormB { get; init; } = null!;
     
-    public ResearchEquipment ResearchEquipment { get; set; } = null!;
+    public ResearchEquipment ResearchEquipment { get; init; } = null!;
 
-    public string StartDate { get; set; } = null!;
+    [StringLength(1024)]
+    public string StartDate { get; init; } = null!;
 
-    public string EndDate { get; set; } = null!;
+    [StringLength(1024)]
+    public string EndDate { get; init; } = null!;
 }

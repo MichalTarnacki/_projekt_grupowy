@@ -14,4 +14,6 @@ public class UgUnit : Entity, IDbDictionary
     public List<FormAUgUnit> FormAUgUnits { get; init; } = [];
 
     public List<FormBUgUnit> FormBUgUnits { get; init; } = [];
+    
+    public List<FormCUgUnit> FormCUgUnits { get; init; } = [];
 }

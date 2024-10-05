@@ -3,9 +3,9 @@
 namespace ResearchCruiseApp_API.Domain.Entities;
 
 
-public class FormBUgUnit : Entity
+public class FormCUgUnit : Entity
 {
-    public FormB FormB { get; init; } = null!;
+    public FormC FormC { get; init; } = null!;
 
     public UgUnit UgUnit { get; init; } = null!;
 
