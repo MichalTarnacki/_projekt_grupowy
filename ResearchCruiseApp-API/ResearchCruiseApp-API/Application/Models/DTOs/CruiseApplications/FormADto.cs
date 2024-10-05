@@ -52,7 +52,7 @@ public class FormADto
 
     public List<UgTeamDto> UgTeams { get; init; } = [];
 
-    public List<GuestUnitDto> GuestUnits { get; init; } = [];
+    public List<GuestTeamDto> GuestTeams { get; init; } = [];
 
     public List<PublicationDto> Publications { get; init; } = [];
     
@@ -94,7 +94,7 @@ public class FormADto
                     options =>
                         options.MapFrom(src => src.FormAUgUnits))
                 .ForMember(
-                    dest => dest.GuestUnits,
+                    dest => dest.GuestTeams,
                     options =>
                         options.MapFrom(src => src.FormAGuestUnits))
                 .ForMember(
