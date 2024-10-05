@@ -13,6 +13,8 @@ public class SpubTask : Entity
     public string Name { get; init; } = null!;
     
     public List<FormASpubTask> FormASpubTasks { get; init; } = [];
+    
+    public List<FormCSpubTask> FormCSpubTasks { get; init; } = [];
 
 
     public override bool Equals(object? other)

@@ -3,15 +3,15 @@
 namespace ResearchCruiseApp_API.Domain.Entities;
 
 
-public class FormBResearchEquipment : Entity
+public class FormCShortResearchEquipment : Entity
 {
-    public FormB FormB { get; init; } = null!;
-
+    public FormC FormC { get; init; } = null!;
+    
     public ResearchEquipment ResearchEquipment { get; init; } = null!;
 
     [StringLength(1024)]
-    public string Insurance { get; init; } = null!;
+    public string StartDate { get; init; } = null!;
 
     [StringLength(1024)]
-    public string Permission { get; init; } = null!;
+    public string EndDate { get; init; } = null!;
 }

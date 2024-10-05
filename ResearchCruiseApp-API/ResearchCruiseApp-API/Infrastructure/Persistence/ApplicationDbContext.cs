@@ -40,4 +40,16 @@ internal class ApplicationDbContext(DbContextOptions<ApplicationDbContext> optio
     public DbSet<Port> Ports { get; init; } = null!;
     public DbSet<CruiseDayDetails> CruiseDaysDetails { get; init; } = null!;
     public DbSet<ShipEquipment> ShipEquipments { get; set; } = null!;
+
+    public DbSet<FormCUgUnit> FormCUgUnits { get; init; } = null!;
+    public DbSet<FormCGuestUnit> FormGuestUnits { get; init; } = null!;
+    public DbSet<FormCResearchTask> FormCResearchTasks { get; init; } = null!;
+    public DbSet<FormCSpubTask> FormCSpubTasks { get; init; } = null!;
+    public DbSet<FormCShortResearchEquipment> FormCShortResearchEquipments { get; init; } = null!;
+    public DbSet<FormCLongResearchEquipment> FormCLongResearchEquipments { get; init; } = null!;
+    public DbSet<FormCPort> FormCPorts { get; init; } = null!;
+    public DbSet<FormCResearchEquipment> FormCResearchEquipments { get; init; } = null!;
+    public DbSet<CollectedSample> CollectedSamples { get; init; } = null!;
+    public DbSet<Photo> Photos { get; init; } = null!;
+    public DbSet<CruiseApplicationEffect> CruiseApplicationEffects { get; set; } = null!;
 }

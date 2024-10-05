@@ -10,15 +10,17 @@ public class CruiseApplication : Entity, IYearBasedNumbered
     [StringLength(1024)]
     public string Number { get; set; } = null!;
     
-    public DateOnly Date { get; set; }
+    public DateOnly Date { get; init; }
     
-    public FormA? FormA { get; set; }
+    public FormA? FormA { get; init; }
     
-    public FormB? FormB { get; set; }
+    public FormB? FormB { get; init; }
     
-    public FormC? FormC { get; set; }
+    public FormC? FormC { get; init; }
     
     public CruiseApplicationStatus Status { get; set; }
     
-    public byte[] SupervisorCode { get; set; } = [];
+    public byte[] SupervisorCode { get; init; } = [];
+
+    public List<CruiseApplicationEffect> CruiseApplicationEffects { get; set; } = [];
 }

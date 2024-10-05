@@ -12,6 +12,8 @@ public class GuestUnit : Entity
 
     public List<FormBGuestUnit> FormBGuestUnits { get; init; } = [];
     
+    public List<FormCGuestUnit> FormCGuestUnits { get; init; } = [];
+    
     
     public override bool Equals(object? other)
     {

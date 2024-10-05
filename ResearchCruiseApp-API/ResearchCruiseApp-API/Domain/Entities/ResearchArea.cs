@@ -12,4 +12,6 @@ public class ResearchArea : Entity, IDbDictionary
     public bool IsActive { get; set; }
     
     public List<FormA> FormsA { get; init; } = [];
+
+    public List<FormB> FormsB { get; init; } = [];
 }
