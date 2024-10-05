@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AcceptCruiseApplication;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AddCruiseApplication;
+using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AddFormB;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AnswerAsSupervisor;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.EditCruiseApplicationEvaluation;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetAllCruiseApplications;
@@ -43,7 +44,7 @@ public class CruiseApplicationsController(IMediator mediator) : ControllerBase
 
     [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.Shipowner}, {RoleName.CruiseManager}")]
     [HttpPost]
-    public async Task<IActionResult> AddCruiseApplication(FormADto formADto)
+    public async Task<IActionResult> AddCruiseApplication([FromBody] FormADto formADto)
     {
         var result = await mediator.Send(new AddCruiseApplicationCommand(formADto));
         return result.IsSuccess
@@ -64,12 +65,22 @@ public class CruiseApplicationsController(IMediator mediator) : ControllerBase
     [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.Shipowner}")]
     [HttpPatch("{id:guid}/evaluation")]
     public async Task<IActionResult> EditCruiseApplicationEvaluation(
-        Guid id, CruiseApplicationEvaluationsEditsDto cruiseApplicationEvaluationsEditsDto)
+        Guid id, [FromBody] CruiseApplicationEvaluationsEditsDto cruiseApplicationEvaluationsEditsDto)
     {
         var result = await mediator
             .Send(new EditCruiseApplicationEvaluationCommand(id, cruiseApplicationEvaluationsEditsDto));
         return result.IsSuccess
             ? NoContent()
+            : this.CreateError(result);
+    }
+    
+    [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.CruiseManager}")]
+    [HttpPost("{id:guid}/FormB")]
+    public async Task<IActionResult> AddFormB(Guid id, [FromBody] FormBDto formBDto)
+    {
+        var result = await mediator.Send(new AddFormBCommand(id, formBDto));
+        return result.IsSuccess
+            ? Created()
             : this.CreateError(result);
     }
     

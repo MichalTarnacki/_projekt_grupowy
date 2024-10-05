@@ -46,8 +46,8 @@ export default function CruiseApplicationsList(props: Props) {
         = useState([])
     const applicationsContext = useContext(CruiseApplicationsContext)
     useEffect(() => {
-        if(fetchedCruiseApplications.length<=0)
-            if(applicationsContext)
+        if (fetchedCruiseApplications.length <= 0)
+            if (applicationsContext)
                 setFetchedCruiseApplications(applicationsContext)
             else
                 Api.get('/api/CruiseApplications').then(response =>

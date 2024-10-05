@@ -6,7 +6,7 @@ namespace ResearchCruiseApp_API.Domain.Entities;
 public class FormB : Entity
 {
     [StringLength(1024)]
-    public string CruiseManagerPresent { get; init; } = null!;
+    public string IsCruiseManagerPresent { get; init; } = null!;
 
     public List<Permission> Permissions { get; init; } = [];
 

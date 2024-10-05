@@ -9,6 +9,7 @@ namespace ResearchCruiseApp_API.Application.Services.Factories.FormsA;
 
 internal class FormsAFactory(
     IResearchAreasRepository researchAreasRepository,
+    IContractsRepository contractsRepository,
     IResearchTasksRepository researchTasksRepository,
     IUgUnitsRepository ugUnitsRepository,
     IGuestUnitsRepository guestUnitsRepository,
@@ -24,7 +25,7 @@ internal class FormsAFactory(
 
         await AddResearchArea(formA, formADto, cancellationToken);
         await AddFormAResearchTasks(formA, formADto, cancellationToken);
-        await AddFormAContracts(formA, formADto);
+        await AddFormAContracts(formA, formADto, cancellationToken);
         await AddFormAUgUnits(formA, formADto, cancellationToken);
         await AddFormAGuestUnits(formA, formADto, cancellationToken);
         await AddFormAPublications(formA, formADto, cancellationToken);
@@ -55,11 +56,13 @@ internal class FormsAFactory(
         }
     }
     
-    private async Task AddFormAContracts(FormA formA, FormADto formADto)
+    private async Task AddFormAContracts(FormA formA, FormADto formADto, CancellationToken cancellationToken)
     {
+        var allContracts = await contractsRepository.GetAll(cancellationToken);
+        
         foreach (var contractDto in formADto.Contracts)
         {
-            var contract = await contractsFactory.Create(contractDto);
+            var contract = await GetUniqueContract(contractDto, allContracts);
             var formAContract = new FormAContract { Contract = contract };
             formA.FormAContracts.Add(formAContract);
         }
@@ -136,7 +139,21 @@ internal class FormsAFactory(
 
         return researchTask;
     }
-    
+
+    private async Task<Contract> GetUniqueContract(ContractDto contractDto, List<Contract> allContracts)
+    {
+        var contract = await contractsFactory.Create(contractDto);
+        var alreadyPersistedContract = allContracts
+            .Find(c => c.Equals(contract));
+
+        if (alreadyPersistedContract is not null)
+            contract = alreadyPersistedContract;
+        else
+            allContracts.Add(contract);
+
+        return contract;
+    }
+        
     private GuestUnit GetUniqueGuestUnit(GuestUnitDto guestUnitDto, List<GuestUnit> allGuestUnits)
     {
         var guestUnit = mapper.Map<GuestUnit>(guestUnitDto);

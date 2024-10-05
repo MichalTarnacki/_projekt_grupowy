@@ -90,6 +90,7 @@ public static class DependencyInjection
         services
             .AddScoped<IFormsARepository, FormsARepository>()
             .AddScoped<IResearchAreasRepository, ResearchAreasRepository>()
+            .AddScoped<IContractsRepository, ContractsRepository>()
             .AddScoped<IResearchTasksRepository, ResearchTasksRepository>()
             .AddScoped<IPublicationsRepository, PublicationsRepository>()
             .AddScoped<IUgUnitsRepository, UgUnitsRepository>()
