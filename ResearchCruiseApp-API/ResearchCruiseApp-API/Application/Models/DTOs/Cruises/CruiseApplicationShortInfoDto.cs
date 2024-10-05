@@ -10,14 +10,18 @@ public class CruiseApplicationShortInfoDto
 
     public string Number { get; set; } = null!;
     
-    public int Points { get; set; }
+    public string Points { get; set; } = null!;
 
 
     private class MapProfile : Profile
     {
         public MapProfile()
         {
-            CreateMap<CruiseApplication, CruiseApplicationShortInfoDto>();
+            CreateMap<CruiseApplication, CruiseApplicationShortInfoDto>()
+                .ForMember(
+                dest => dest.Points,
+                options=>
+                    options.Ignore());
         }
     }
 }   

@@ -51,7 +51,7 @@ export const DisplayWrapper = (Element:React.JSXElementConstructor<any>) => () =
 }
 export const PointsField = () => {
     return(
-        <KeyContext.Provider value={"points"}>
+        <KeyContext.Provider value={"newPoints"}>
             <div className={"task-field-input"}>
                 <label className={"table-field-input-label"}>
                     Przyznane punkty
@@ -79,12 +79,11 @@ export const DisplayContext = createContext<any>(null);
 export const DisplayValueContext = createContext<any>(null)
 
 type Evaluated = {
-    points:string
+    newPoints:string
 }
 
-export const pointsNotEmpty = <T extends Evaluated>(value:FieldValues) => value.some((row:T) => row.points == "")
+export const pointsNotEmpty = <T extends Evaluated>(value:FieldValues) => value.length <= 0 || !value.some((row:T) => (row.evaluationId && row.newPoints == ""))
 export const pointFieldRules = {
-    required: "Pole wymagane",
     validate: { notEmptyArray: pointsNotEmpty }
 }
 export const EvaluatedTasksTable = (props: EvaluatedTableProps) => {
@@ -98,7 +97,7 @@ export const EvaluatedTasksTable = (props: EvaluatedTableProps) => {
     const {Render} = FieldTableWrapper(colTitle, mdColWidths, mdColTitles,taskTableContent,
         null, emptyText, props.evaluatedReseachTasks)
     const idAndPoints = props.evaluatedReseachTasks?.map((value) =>
-        ({id:value.id, points:value.points}))
+        ({evaluationId:value.id, newPoints:value.points}))
     const displayValue = props.evaluatedReseachTasks?.map((value) =>
         ({...value.researchTask}))
 

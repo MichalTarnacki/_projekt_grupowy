@@ -4,12 +4,23 @@ import { handleSave} from "./FormButtonsHandlers";
 import Api from "./Api";
 import {CruiseApplicationContext} from "../Pages/CruiseApplicationDetailsPage/CruiseApplicationDetailsPage";
 import {CruiseApplicationStatus} from "../Pages/CruiseApplicationsPage/CruiseApplicationsPage";
+import {extendedUseLocation} from "../Pages/FormPage/FormPage";
+import {useNavigate} from "react-router-dom";
+import {Path} from "./Path";
 
 const SendButton = () => {
     const formContext = useContext(FormContext)
-    const handleSubmit = () => Api.post("/api/CruiseApplications/", formContext?.getValues()).then(()=>formContext!.setReadOnly(true))
+    const location = extendedUseLocation()
+    const navigate = useNavigate()
+    const getUpdatedApplication = ()=>Api.get(`/api/CruiseApplications/${location?.state.cruiseApplication.id}`)
+        .then((response)=>
+            navigate(Path.CruiseApplicationDetails,{state:{cruiseApplication: response.data, readOnly:true}}))
+    const handleSubmit = () => Api.patch(`/api/CruiseApplications/${location?.state.cruiseApplication.id}/evaluation`, formContext?.getValues())
+        .then(getUpdatedApplication).finally(()=>formContext!.setReadOnly(true))
     const onClickAction = formContext!.handleSubmit(handleSubmit)
-    return ( <button onClick={handleSubmit} className="form-page-option-button-default"> Zapisz punkty </button> )
+
+
+    return ( <button onClick={onClickAction} className="form-page-option-button-default"> Zapisz punkty </button> )
 }
 
 const CancelButton = () => {
