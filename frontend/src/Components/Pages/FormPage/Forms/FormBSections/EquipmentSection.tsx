@@ -18,7 +18,7 @@ export const EquipementSection = () => SectionWrapper(
             <EquipmentTable
                 className={"single-field"}
                 fieldName={equipmentSectionFieldNames.equipment}
-                fieldLabel={"Sprzeęt"}
+                fieldLabel={"Lista sprzętu i aparatury badawczej"}
             />
         </>
     }
