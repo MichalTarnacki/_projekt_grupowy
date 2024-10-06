@@ -38,7 +38,7 @@ public class AcceptCruiseApplicationHandler(
             cruiseApplication.Status != CruiseApplicationStatus.Accepted &&
             cruiseApplication.Status != CruiseApplicationStatus.FormBRequired
             )
-            return Error.BadRequest("Czas na zmianę decyzji minął");
+            return Error.Forbidden("Czas na zmianę decyzji minął");
         
         cruiseApplication.Status = accept
             ? CruiseApplicationStatus.Accepted
