@@ -110,7 +110,7 @@ public class FormADto
                 .ForMember(
                     dest => dest.Id,
                     options =>
-                        options.Ignore()) // Member requires complex logic
+                        options.Ignore()) // Member auto-generated
                 .ForMember(
                     dest => dest.AcceptablePeriodBeg,
                     options =>
@@ -142,11 +142,11 @@ public class FormADto
                 .ForMember(
                     dest => dest.FormAResearchTasks,
                     options =>
-                        options.Ignore()) // /member requires complex logic
+                        options.Ignore()) // Member requires complex logic
                 .ForMember(
                     dest => dest.FormAContracts,
                     options =>
-                        options.Ignore()) // /member requires complex logic
+                        options.Ignore()) // Member requires complex logic
                 .ForMember(
                     dest => dest.FormAUgUnits,
                     options =>

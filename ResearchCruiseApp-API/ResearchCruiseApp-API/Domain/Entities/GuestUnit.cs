@@ -17,10 +17,8 @@ public class GuestUnit : Entity
     
     public override bool Equals(object? other)
     {
-        if (other is null)
+        if (other is not GuestUnit otherGuestUnit)
             return false;
-
-        var otherGuestUnit = (GuestUnit)other;
 
         return otherGuestUnit.Name == Name;
     }

@@ -19,4 +19,18 @@ public class ResearchEquipment : Entity
     public List<FormCLongResearchEquipment> FormCLongResearchEquipments { get; init; } = [];
 
     public List<FormCResearchEquipment> FormCResearchEquipments { get; init; } = [];
+
+
+    public override bool Equals(object? other)
+    {
+        if (other is not ResearchEquipment otherResearchEquipment)
+            return false;
+
+        return otherResearchEquipment.Name == Name;
+    }
+
+    public override int GetHashCode()
+    {
+        return Name.GetHashCode();
+    }
 }

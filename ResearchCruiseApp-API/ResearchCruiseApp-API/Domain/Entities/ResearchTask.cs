@@ -47,10 +47,8 @@ public class ResearchTask : Entity
     
     public override bool Equals(object? other)
     {
-        if (other is null)
+        if (other is not ResearchTask otherResearchTask)
             return false;
-
-        var otherResearchTask = (ResearchTask)other;
 
         return otherResearchTask.Type == Type &&
                otherResearchTask.Title == Title &&

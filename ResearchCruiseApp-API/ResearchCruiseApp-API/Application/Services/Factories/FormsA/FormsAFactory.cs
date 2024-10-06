@@ -2,17 +2,18 @@
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
 using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
 using ResearchCruiseApp_API.Application.Services.Factories.Contracts;
+using ResearchCruiseApp_API.Application.Services.FormsFields;
 using ResearchCruiseApp_API.Domain.Entities;
 
 namespace ResearchCruiseApp_API.Application.Services.Factories.FormsA;
 
 
 internal class FormsAFactory(
+    IFormsFieldsService formsFieldsService,
     IResearchAreasRepository researchAreasRepository,
     IContractsRepository contractsRepository,
     IResearchTasksRepository researchTasksRepository,
     IUgUnitsRepository ugUnitsRepository,
-    IGuestUnitsRepository guestUnitsRepository,
     IPublicationsRepository publicationsRepository,
     ISpubTasksRepository spubTasksRepository,
     IMapper mapper,
@@ -70,17 +71,17 @@ internal class FormsAFactory(
 
     private async Task AddFormAUgUnits(FormA formA, FormADto formADto, CancellationToken cancellationToken)
     {
-        foreach (var ugUnitDto in formADto.UgTeams)
+        foreach (var ugTeamDto in formADto.UgTeams)
         {
-            var ugUnit = await ugUnitsRepository.GetById(ugUnitDto.UgUnitId, cancellationToken);
+            var ugUnit = await ugUnitsRepository.GetById(ugTeamDto.UgUnitId, cancellationToken);
             if (ugUnit is null)
                 continue;
 
             var formAUgUnit = new FormAUgUnit
             {
                 UgUnit = ugUnit,
-                NoOfEmployees = ugUnitDto.NoOfEmployees,
-                NoOfStudents = ugUnitDto.NoOfStudents
+                NoOfEmployees = ugTeamDto.NoOfEmployees,
+                NoOfStudents = ugTeamDto.NoOfStudents
             };
             formA.FormAUgUnits.Add(formAUgUnit);
         }
@@ -88,11 +89,9 @@ internal class FormsAFactory(
 
     private async Task AddFormAGuestUnits(FormA formA, FormADto formADto, CancellationToken cancellationToken)
     {
-        var allGuestUnits = await guestUnitsRepository.GetAll(cancellationToken);
-
         foreach (var guestTeamDto in formADto.GuestTeams)
         {
-            var guestUnit = GetUniqueGuestUnit(guestTeamDto, allGuestUnits);
+            var guestUnit = await formsFieldsService.GetUniqueGuestUnit(guestTeamDto, cancellationToken);
             var formAGuestUnit = new FormAGuestUnit
             {
                 GuestUnit = guestUnit,
@@ -152,20 +151,6 @@ internal class FormsAFactory(
             allContracts.Add(contract);
 
         return contract;
-    }
-        
-    private GuestUnit GetUniqueGuestUnit(GuestTeamDto guestTeamDto, List<GuestUnit> allGuestUnits)
-    {
-        var guestUnit = mapper.Map<GuestUnit>(guestTeamDto);
-        var alreadyPersistedGuestUnit = allGuestUnits
-            .Find(gu => gu.Equals(guestUnit));
-
-        if (alreadyPersistedGuestUnit is not null)
-            guestUnit = alreadyPersistedGuestUnit;
-        else
-            allGuestUnits.Add(guestUnit);
-
-        return guestUnit;
     }
     
     private Publication GetUniquePublication(PublicationDto publicationDto, List<Publication> allPublications)

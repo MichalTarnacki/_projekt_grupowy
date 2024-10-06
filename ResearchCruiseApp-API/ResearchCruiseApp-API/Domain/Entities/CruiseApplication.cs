@@ -14,9 +14,9 @@ public class CruiseApplication : Entity, IYearBasedNumbered
     
     public FormA? FormA { get; init; }
     
-    public FormB? FormB { get; init; }
+    public FormB? FormB { get; set; }
     
-    public FormC? FormC { get; init; }
+    public FormC? FormC { get; set; }
     
     public CruiseApplicationStatus Status { get; set; }
     

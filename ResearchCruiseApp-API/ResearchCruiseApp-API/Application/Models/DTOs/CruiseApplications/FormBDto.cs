@@ -13,30 +13,21 @@ public class FormBDto
     public List<UgTeamDto> UgTeams { get; init; } = [];
 
     public List<GuestTeamDto> GuestTeams { get; init; } = [];
-    
-    //(?) opcjonalnie opis. 
-    [Range(0,20)]
-    public int? ResearchArea { get; set; }
-    
-    
-    //Cel rejsu (opis max. 100 słów):
-    public int? CruiseGoal { get; set; }
-    
-    [MaxLength(200)]
-    public string? CruiseGoalDescription { get; set; }
 
-    
-    //Zadania
-    public List<ResearchTaskDto>? ResearchTasks { get; set; }
+    public List<CrewMemberDto> CrewMembers { get; init; } = [];
 
+    public List<ShortResearchEquipmentDto> ShortResearchEquipments { get; init; } = [];
+
+    public List<LongResearchEquipmentDto> LongResearchEquipments { get; init; } = [];
+
+    public List<PortDto> Ports { get; init; } = [];
+
+    public List<CruiseDayDetailsDto> CruiseDaysDetails { get; init; } = [];
+
+    public List<ResearchEquipmentDto> ResearchEquipments { get; init; } = [];
+
+    public List<ShipEquipmentDto> ShipEquipments { get; init; } = [];
     
-    //Lista umów
-    public List<ContractDto>? Contracts { get; set; }
     
-    //Publikacje i Prace
-    public List<PublicationDto>? Publications { get; set; }
-    
-    
-    //Zadania SPUB
-    public List<SpubTaskDto> SpubTasks { get; set; } = [];
+    // No AutoMapper map profile because only IsCruiseManagerPresent would be mapped  
 }
