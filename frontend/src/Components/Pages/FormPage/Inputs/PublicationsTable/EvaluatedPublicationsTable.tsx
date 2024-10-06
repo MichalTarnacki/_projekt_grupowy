@@ -4,7 +4,7 @@ import { BottomMenuWithHistory, OrdinalNumber, RemoveRowButton } from "../TableP
 import {FieldProps} from "../FormRadio";
 import {FieldContext, FieldTableWrapper} from "../../Wrappers/FieldTableWrapper";
 import FieldWrapper from "../FieldWrapper";
-import {CategoryPicker, InformationsColumn, MinisterialPointsField, YearField} from "./PublicationsTableFields";
+import {CategoryPicker, InformationColumn, MinisterialPointsField, YearField} from "./PublicationsTableFields";
 import {DisplayValueContext, DisplayWrapper, pointFieldRules, PointsField} from "../TaskTable/EvaluatedTaskTable";
 import {Publication} from "./PublicationsTable";
 
@@ -20,7 +20,7 @@ const PublicationTableContent = () =>
     [
         ()=>(<OrdinalNumber label={"Publikacja"}/>),
         DisplayWrapper(CategoryPicker),
-        DisplayWrapper(InformationsColumn),
+        DisplayWrapper(InformationColumn),
         DisplayWrapper(YearField),
         DisplayWrapper(MinisterialPointsField),
         PointsField,

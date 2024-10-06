@@ -90,7 +90,7 @@ export const MinisterialPointsField = () => {
         </KeyContext.Provider>
     )}
 
-export const InformationsColumn = () => (
+export const InformationColumn = () => (
     <div className={"w-100 d-flex flex-row flex-wrap"}>
         <DoiField/>
         <AuthorsField/>
