@@ -3,13 +3,15 @@ using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
 using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
 using ResearchCruiseApp_API.Application.Services.Factories.CruiseApplicationEvaluationDetailsDtos;
+using ResearchCruiseApp_API.Application.Services.UserPermissionVerifier;
 
 namespace ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetCruiseApplicationEvaluation;
 
 
 public class GetCruiseApplicationEvaluationHandler(
     ICruiseApplicationsRepository cruiseApplicationsRepository,
-    ICruiseApplicationEvaluationDetailsDtosFactory cruiseApplicationEvaluationDetailsDtosFactory)
+    ICruiseApplicationEvaluationDetailsDtosFactory cruiseApplicationEvaluationDetailsDtosFactory,
+    IUserPermissionVerifier userPermissionVerifier)
     : IRequestHandler<GetCruiseApplicationEvaluationQuery, Result<CruiseApplicationEvaluationDetailsDto>>
 {
     public async Task<Result<CruiseApplicationEvaluationDetailsDto>> Handle(
@@ -19,7 +21,8 @@ public class GetCruiseApplicationEvaluationHandler(
             .GetByIdWithFormsAndFormAContent(request.Id, cancellationToken);
         if (cruiseApplication is null)
             return Error.NotFound();
-
-        return await cruiseApplicationEvaluationDetailsDtosFactory.Create(cruiseApplication, cancellationToken);
+        
+        return await userPermissionVerifier.CanCurrentUserViewCruiseApplication(cruiseApplication) 
+            ? await cruiseApplicationEvaluationDetailsDtosFactory.Create(cruiseApplication, cancellationToken):null;
     }
 }

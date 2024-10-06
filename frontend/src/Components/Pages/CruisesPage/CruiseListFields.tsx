@@ -28,7 +28,7 @@ export const TableReadOnlyFieldDate = (props:{fieldLabel:string, fieldKey: keyof
             <label className={"table-field-input-label"}>
                 {props.fieldLabel}
             </label>
-            <ReadOnlyTextInput value={new Date(cruise![props.fieldKey]).toLocaleDateString(undefined,{
+            <ReadOnlyTextInput value={new Date(cruise![props.fieldKey]).toLocaleDateString("pl-PL",{
                 year: 'numeric',
                 month: '2-digit',
                 day: '2-digit',
@@ -81,7 +81,7 @@ export const Actions = () => {
     const {UserHasShipownerAccess, UserHasAdminAccess} = userBasedAccess()
     return (
         <div className="btn-group-vertical">
-            <LinkWithState className="cruises-button" to={Path.CruiseForm} label="Szczegóły" state={{cruise: cruise}}/>
+            <LinkWithState className="cruises-button" to={Path.CruiseForm} label="Szczegóły" state={{cruise: cruise, readOnly: !(UserHasShipownerAccess() || UserHasAdminAccess())}}/>
             {(UserHasShipownerAccess() || UserHasAdminAccess()) &&
                 <button className="cruises-button" onClick={() => handleDeleteCruise(cruise.id)}>
                     Usuń

@@ -25,7 +25,6 @@ const SupervisorMenu = () => {
         .then(_=>setResponse("Zgłoszenie zostało odrzucone")).catch(err=>{})
 
 
-
     const AcceptButton = () => {
         return (<button onClick={accept} className="form-page-option-button-default"> Zaakceptuj zgłoszenie </button>)
     }
@@ -121,7 +120,7 @@ export const BottomOptionBar = () => {
         const {UserHasCruiseManagerAccess, UserHasShipownerAccess, UserHasAdminAccess} = userBasedAccess()
         return(<>
             <PrintButton/>
-            {UserHasCruiseManagerAccess() && <ResendButton/> }
+            <ResendButton/>
             {(UserHasShipownerAccess() || UserHasAdminAccess()) && <DownloadButtonDefault/>}
         </>)
     }

@@ -7,6 +7,8 @@ import {Path} from "../../Tools/Path";
 import {useNavigate} from "react-router-dom";
 import {Buffer} from "buffer";
 import Api from "../../Tools/Api";
+import userDataManager from "../../CommonComponents/UserDataManager";
+import {prop} from "react-data-table-component/dist/DataTable/util";
 
 
 type Props = {
@@ -51,8 +53,14 @@ export function LinkWithStateDownloadApplication(props: LinkWithStateDownloadApp
     )
 }
 
-export default function AssignedCruiseApplicationsList(props: Props) {
+export const CanCurrentUserAccessCruiseApplication = () => {
+    const {userData} = userDataManager()
+    return (cruiseApplication:CruiseApplicationShortInfo)=>cruiseApplication.cruiseManagerId == userData?.id || cruiseApplication.deputyManagerId == userData?.id
+}
 
+export default function AssignedCruiseApplicationsList(props: Props) {
+    const canCurrentUserAccessCruiseApplication = CanCurrentUserAccessCruiseApplication()
+    console.log(props.cruiseApplicationsShortInfo)
     return (
         <>
             {props.cruiseApplicationsShortInfo.length == 0 &&
@@ -63,15 +71,23 @@ export default function AssignedCruiseApplicationsList(props: Props) {
                         key={index}
                         className={`d-flex col-12 ${(index < props.cruiseApplicationsShortInfo.length - 1) && "mb-2"}`}
                     >
-                        <div className="d-flex flex-wrap align-content-center col-6">
+                        <div className="d-flex flex-wrap align-content-center justify-content-center col-6">
                             <div className="d-flex justify-content-center w-100">Numer:</div>
-                            <LinkWithStateDownloadApplication
-                                className="text-center w-100"
-                                to={Path.CruiseApplicationDetails}
-                                label={cruiseApplication.number}
-                                state={{readOnly:true}}
-                                cruiseApplicationId={cruiseApplication.id}
-                            />
+                            {
+                                canCurrentUserAccessCruiseApplication(cruiseApplication) &&
+                                <LinkWithStateDownloadApplication
+                                    className="text-center w-100"
+                                    to={Path.CruiseApplicationDetails}
+                                    label={cruiseApplication.number}
+                                    state={{readOnly:true}}
+                                    cruiseApplicationId={cruiseApplication.id}
+                                />
+                            }
+                            {
+                                !canCurrentUserAccessCruiseApplication(cruiseApplication) &&
+                                <div className={"justify-content-center"}>{cruiseApplication.number}</div>
+                            }
+
                         </div>
                         <div className="d-flex flex-wrap align-content-center col-6 mb-2">
                             <div className="d-flex justify-content-center w-100">Punkty:</div>
