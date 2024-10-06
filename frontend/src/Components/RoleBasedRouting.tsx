@@ -73,6 +73,7 @@ const RoleBasedRouting = () => {
                 <Route path={Path.CruiseApplications} element={<CruiseApplicationsPage />} />
                 <Route path={Path.CruiseApplicationDetails} element={<CruiseApplicationDetailsPage />} />
                 <Route path={Path.Cruises} element={<CruisesPage />} />
+                <Route path={Path.CruiseForm} element={<CruiseFormPage />} />
             </>
         )
     }
