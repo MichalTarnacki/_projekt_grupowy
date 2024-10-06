@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.JavaScript;
 using MediatR;
 using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
@@ -24,9 +25,10 @@ public class GetCruiseApplicationByIdHandler(
         if (cruiseApplication is null)
             return Error.NotFound();
 
+        if (!await userPermissionVerifier.CanCurrentUserViewCruiseApplication(cruiseApplication))
+            return Error.NotFound();
         
-        var cruiseApplicationDto = await userPermissionVerifier.CanCurrentUserViewCruiseApplication(cruiseApplication) 
-            ? await cruiseApplicationDtosFactory.Create(cruiseApplication): null;
+        var cruiseApplicationDto = await cruiseApplicationDtosFactory.Create(cruiseApplication);
         
         return cruiseApplicationDto;
     }

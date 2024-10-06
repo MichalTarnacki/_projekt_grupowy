@@ -21,8 +21,10 @@ public class GetCruiseApplicationEvaluationHandler(
             .GetByIdWithFormsAndFormAContent(request.Id, cancellationToken);
         if (cruiseApplication is null)
             return Error.NotFound();
+
+        if (!await userPermissionVerifier.CanCurrentUserViewCruiseApplication(cruiseApplication))
+            return Error.NotFound();
         
-        return await userPermissionVerifier.CanCurrentUserViewCruiseApplication(cruiseApplication) 
-            ? await cruiseApplicationEvaluationDetailsDtosFactory.Create(cruiseApplication, cancellationToken):null;
+        return await cruiseApplicationEvaluationDetailsDtosFactory.Create(cruiseApplication, cancellationToken);
     }
 }
