@@ -8,6 +8,7 @@ import LinkWithState from "../../CommonComponents/LinkWithState";
 import {Path} from "../../Tools/Path";
 import {HandleDeleteCruises} from "./CruisesPageMisc";
 import userBasedAccess from "../../UserBasedAccess";
+import {CruiseStatus} from "../CruiseFormPage/CruiseFormSections/CruiseBasicInfo";
 
 export const TableReadOnlyField = (props:{fieldLabel:string, fieldKey: keyof Cruise}) => {
     const {cruise} = CruisesTools()
@@ -79,9 +80,11 @@ export const Actions = () => {
     const {cruise} = CruisesTools()
     const handleDeleteCruise = HandleDeleteCruises()
     const {UserHasShipownerAccess, UserHasAdminAccess} = userBasedAccess()
+    console.log(cruise)
+    const navigateToEditable = (cruise.status == CruiseStatus.New && (UserHasShipownerAccess() || UserHasAdminAccess()))
     return (
         <div className="btn-group-vertical">
-            <LinkWithState className="cruises-button" to={Path.CruiseForm} label="Szczegóły" state={{cruise: cruise, readOnly: !(UserHasShipownerAccess() || UserHasAdminAccess())}}/>
+            <LinkWithState className="cruises-button" to={Path.CruiseForm} label="Szczegóły" state={{cruise: cruise, readOnly: !navigateToEditable }}/>
             {(UserHasShipownerAccess() || UserHasAdminAccess()) &&
                 <button className="cruises-button" onClick={() => handleDeleteCruise(cruise.id)}>
                     Usuń

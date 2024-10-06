@@ -3,13 +3,21 @@ import {OrdinalNumber} from "../TableParts";
 import {FieldTableWrapper} from "../../Wrappers/FieldTableWrapper";
 import {FieldLabel} from "../FieldWrapper";
 import {DisplayValueContext, DisplayWrapper} from "../TaskTable/EvaluatedTaskTable";
-import {InitContext, NoOfEmployeesField, NoOfStudentsField, UgTeam, UgUnit, UnitField} from "./UgTeamsTable";
+import {
+    InitContext,
+    NoOfEmployeesField,
+    NoOfStudentsField,
+    UgTeam,
+    UgUnit,
+    UnitField,
+    UnitNameField
+} from "./UgTeamsTable";
 
 
 const ugTeamsTableContent = () =>
     [
         ()=>(<OrdinalNumber label={"Jednostka"}/>),
-        DisplayWrapper(UnitField),
+        DisplayWrapper(UnitNameField),
         DisplayWrapper(NoOfEmployeesField),
         DisplayWrapper(NoOfStudentsField),
     ]

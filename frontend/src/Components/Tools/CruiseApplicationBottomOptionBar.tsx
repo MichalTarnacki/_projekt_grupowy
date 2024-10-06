@@ -51,7 +51,7 @@ const AcceptApplication = (accept:string) => {
     const location = extendedUseLocation()
     console.log(location)
     return () => Api.patch(`/api/CruiseApplications/${location?.state.cruiseApplication.id}
-    /answer?accept=${accept}`).then(refreshApplicationDetailsPage)
+    /answer?accept=${accept}`, null,{raw:true}).then(refreshApplicationDetailsPage)
 }
 
 export const ConfirmApplicationButton = () => {
@@ -64,23 +64,30 @@ export const ConfirmApplicationButton = () => {
 export const CancelApplicationButton = () => {
     const formContext = useContext(FormContext)
     const [confirm, setConfirm] = useState(false)
+    const [errorMessage, setError] = useState<string|null>(null)
     const acceptApplication = AcceptApplication("false")
     const Button = () => (
         <div onClick={()=>setConfirm(true)} className="form-page-option-button bg-danger w-100"> Odrzuć zgłoszenie </div>
     )
     const ConfirmMenu = () => (
         <div className={"d-flex flex-column w-100"}>
-            <div className={"w-100 text-danger text-center mt-1"}>Po odrzuceniu wymagane będzie ponowne złożenie wniosku</div>
-            <div className={"d-flex flex-row w-100"}>
-                <div onClick={() => setConfirm(false)} className="form-page-option-button w-50"> Anuluj </div>
-                <div onClick={acceptApplication} className="form-page-option-button w-50 bg-danger"> Potwierdź odrzucenie </div>
-            </div>
+                <div className={"w-100 text-danger text-center mt-1"}>Po odrzuceniu wymagane będzie ponowne złożenie
+                    wniosku
+                </div>
+                <div className={"d-flex flex-row w-100"}>
+                    <div onClick={() => setConfirm(false)} className="form-page-option-button w-50"> Anuluj</div>
+                    <div onClick={() => acceptApplication().catch(err => setError(err.request.response))}
+                         className="form-page-option-button w-50 bg-danger">
+                        {!errorMessage && "Potwierdź odrzucenie"}
+                        {errorMessage}
+                    </div>
+                </div>
         </div>
 
     )
     return {
-        confirm:confirm,
-        Button:Button,
+        confirm: confirm,
+        Button: Button,
         ConfirmMenu: ConfirmMenu
     }
 }

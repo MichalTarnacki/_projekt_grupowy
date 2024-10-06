@@ -6,6 +6,7 @@ using ResearchCruiseApp_API.Application.Models.DTOs.Cruises;
 using ResearchCruiseApp_API.Application.Models.DTOs.Forms;
 using ResearchCruiseApp_API.Application.UseCases.Cruises.AddCruise;
 using ResearchCruiseApp_API.Application.UseCases.Cruises.AutoAddCruises;
+using ResearchCruiseApp_API.Application.UseCases.Cruises.ConfirmCruise;
 using ResearchCruiseApp_API.Application.UseCases.Cruises.DeleteCruise;
 using ResearchCruiseApp_API.Application.UseCases.Cruises.EditCruise;
 using ResearchCruiseApp_API.Application.UseCases.Cruises.GetAllCruises;
@@ -64,6 +65,16 @@ public class CruisesController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> DeleteCruise([FromRoute] Guid id)
     {
         var result = await mediator.Send(new DeleteCruiseCommand(id));
+        return result.IsSuccess
+            ? NoContent()
+            : this.CreateError(result);
+    }
+    
+    [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.Shipowner}")]
+    [HttpPut("{id:guid}/confirm")]
+    public async Task<IActionResult> ConfirmCruise([FromRoute] Guid id)
+    {
+        var result = await mediator.Send(new ConfirmCruiseCommand(id));
         return result.IsSuccess
             ? NoContent()
             : this.CreateError(result);

@@ -14,6 +14,8 @@ import {CruiseApplication} from "../../../CruiseApplicationsPage/CruiseApplicati
 import UserBasedAccess from "../../../../UserBasedAccess";
 import Api from "../../../../Tools/Api";
 import {CruiseApplicationsContext} from "../../CruiseFormPage";
+import {CruisesContext} from "../../../CruisesPage/CruisesList";
+import {CruiseStatus} from "../CruiseBasicInfo";
 
 export const applicationsSectionFieldNames = {
     applicationsIds:"cruiseApplicationsIds",
@@ -68,19 +70,10 @@ const X = () => {
 
 const AddedApplicationsField = () => {
 
-    const location = extendedUseLocation()
-
-    const [cruiseApplications, setCruiseApplications] = useState<CruiseApplication[]>([])
-    useEffect(() => {
-        if (location?.state?.cruise || cruiseApplications.length<=0)
-            (fetchCruiseApplications)(location.state.cruise.cruiseApplicationsShortInfo, setCruiseApplications)
-    }, []);
-
     const fieldProps = {
         fieldName:applicationsSectionFieldNames.applicationsIds,
         render: render,
         rules: null,
-       defaultValue: cruiseApplications.map(application=>application.id),
     }
 
     return  <FieldWrapper className={"w-100"} {...fieldProps}/>
@@ -88,11 +81,12 @@ const AddedApplicationsField = () => {
 
 export const ApplicationsSection = () => {
     const {UserHasShipownerAccess,UserHasAdminAccess} = UserBasedAccess()
-
+    const location = extendedUseLocation()
+    const cruiseIsNew = location?.state.cruise.status == CruiseStatus.New
     const [fetchedCruiseApplications, setFetchedCruiseApplications] = useState([])
     useEffect(() => {
         if(fetchedCruiseApplications.length<=0){
-            Api.get('/api/CruiseApplications').then(response =>
+            Api.get(cruiseIsNew ? '/api/CruiseApplications/forCruise': '/api/CruiseApplications').then(response =>
                 setFetchedCruiseApplications(response?.data))
         }
 

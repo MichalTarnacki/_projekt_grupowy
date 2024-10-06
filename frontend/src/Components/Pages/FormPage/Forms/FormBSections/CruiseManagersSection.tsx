@@ -10,9 +10,9 @@ import {extendedUseLocation} from "../../FormPage";
 
 
 export const BasicInfo = () => {
-    const locationState = extendedUseLocation()
+    const location = extendedUseLocation()
     return(
-        <CruiseBasicInfo cruise={locationState.state.cruise} />
+        <CruiseBasicInfo cruise={location?.state.cruise} />
     )
 }
 

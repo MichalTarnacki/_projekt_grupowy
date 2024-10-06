@@ -60,6 +60,18 @@ const ugTeamsTableContent = () =>
 
 export const UnitField = () => {
     return  (
+        <KeyContext.Provider value={"ugUnitId"}>
+            <div className={"task-field-input"}>
+                <label className={"table-field-input-label"}>
+                    Jednostka
+                </label>
+                <FStringValueField/>
+            </div>
+        </KeyContext.Provider>)
+}
+
+export const UnitNameField = () => {
+    return  (
         <KeyContext.Provider value={"ugUnitName"}>
             <div className={"task-field-input"}>
                 <label className={"table-field-input-label"}>

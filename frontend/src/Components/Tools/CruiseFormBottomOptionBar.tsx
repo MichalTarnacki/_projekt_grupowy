@@ -53,6 +53,10 @@ export const ClearFormButton = () => {
 export const ConfirmCruiseButton = () => {
     const [toggleConfirm, setToggleConfirm] = useState(false)
     const formContext = useContext(FormContext)
+    const location = extendedUseLocation()
+    const navigate = useNavigate()
+
+    const confirmCruise = ()=>Api.put(`/api/Cruises/${location?.state.cruise.id}/confirm`).then(()=>navigate(Path.CruiseForm, {state:{cruise:location?.state.cruise, readOnly:true}} ))
     const Render = () =>
         <>
             {toggleConfirm &&
@@ -66,7 +70,7 @@ export const ConfirmCruiseButton = () => {
                             setToggleConfirm(!toggleConfirm);
                             formContext?.setReadOnly(!toggleConfirm)
                         }} className="form-page-option-button w-50"> Anuluj</div>
-                        <div onClick={EmptyFunction} className="form-page-option-button w-50 bg-danger"> Potwierdź
+                        <div onClick={confirmCruise} className="form-page-option-button w-50 bg-danger"> Potwierdź
                         </div>
                     </div>
                 </div>
