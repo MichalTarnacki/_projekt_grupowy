@@ -23,7 +23,7 @@ export const CruisePlanSection = () => SectionWrapper(
             <DetailedPlanTable
                 fieldName={cruisePlanSectionFieldNames.detailedPlan}
                 className={"single-field"}
-                fieldLabel={"Szczegółowy plan"}/>
+                fieldLabel={"Szczegółowy plan rejsu"}/>
         </>
     }
 )
