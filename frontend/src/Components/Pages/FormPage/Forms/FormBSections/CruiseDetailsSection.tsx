@@ -1,9 +1,16 @@
 import {SectionWrapper} from "../../Wrappers/FormASections";
 import React from "react";
+import {
+        CruiseDetailsDescription,
+        EquipmentIssuanceField,
+        EquipmentLeaveField,
+        EquipmentOutsideField, PortLeaveField
+} from "./CruiseDetalisSectionFields";
 
 export const cruiseDetailsSectionFieldNames = {
-
-
+        equipmentLeave:"equipmentLeave",
+        equipmentOutside:"equipmentOutside",
+        portLeave:"portLeave"
 }
 
 // TODO: Change this fields
@@ -86,6 +93,11 @@ export const CruiseDetailsSection = () => SectionWrapper(
         shortTitle: "Szczegóły",
         longTitle: "Szczegóły rejsu",
         sectionFieldNames:cruiseDetailsSectionFieldNames,
-        children: <></>
+        children: <>
+                <CruiseDetailsDescription />
+                <EquipmentOutsideField />
+                <EquipmentLeaveField />
+                <PortLeaveField />
+        </>
     }
 )

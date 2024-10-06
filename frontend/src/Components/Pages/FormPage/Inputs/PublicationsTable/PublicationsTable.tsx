@@ -5,7 +5,7 @@ import {FieldProps} from "../FormRadio";
 import {FormContext} from "../../Wrappers/FormTemplate";
 import {FieldContext, FieldTableWrapper} from "../../Wrappers/FieldTableWrapper";
 import FieldWrapper from "../FieldWrapper";
-import {CategoryPicker, InformationsColumn, MinisterialPointsField, YearField} from "./PublicationsTableFields";
+import {CategoryPicker, InformationColumn, MinisterialPointsField, YearField} from "./PublicationsTableFields";
 import {FieldContextWrapper} from "../PermissionsTable/PermissionsTable";
 
 export const notEmptyArray = <T extends object>(value:FieldValues) => {
@@ -67,7 +67,7 @@ const PublicationTableContent = () =>
     [
         ()=>(<OrdinalNumber label={"Publikacja"}/>),
         CategoryPicker,
-        InformationsColumn,
+        InformationColumn,
         YearField,
         MinisterialPointsField,
         RemoveRowButton,
