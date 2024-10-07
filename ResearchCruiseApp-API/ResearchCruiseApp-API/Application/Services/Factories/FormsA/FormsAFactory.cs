@@ -89,9 +89,14 @@ internal class FormsAFactory(
 
     private async Task AddFormAGuestUnits(FormA formA, FormADto formADto, CancellationToken cancellationToken)
     {
+        var alreadyAddedGuestUnits = new HashSet<GuestUnit>();
+        
         foreach (var guestTeamDto in formADto.GuestTeams)
         {
-            var guestUnit = await formsFieldsService.GetUniqueGuestUnit(guestTeamDto, cancellationToken);
+            var guestUnit = await formsFieldsService
+                .GetUniqueGuestUnit(guestTeamDto, alreadyAddedGuestUnits, cancellationToken);
+            alreadyAddedGuestUnits.Add(guestUnit);
+            
             var formAGuestUnit = new FormAGuestUnit
             {
                 GuestUnit = guestUnit,

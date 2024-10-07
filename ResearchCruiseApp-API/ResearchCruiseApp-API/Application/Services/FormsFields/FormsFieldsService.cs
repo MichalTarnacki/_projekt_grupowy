@@ -16,47 +16,68 @@ public class FormsFieldsService(
     ICruiseDaysDetailsRepository cruiseDaysDetailsRepository)
     : IFormsFieldsService
 {
-    public async Task<GuestUnit> GetUniqueGuestUnit(GuestTeamDto guestTeamDto, CancellationToken cancellationToken)
+    public async Task<GuestUnit> GetUniqueGuestUnit(
+        GuestTeamDto guestTeamDto, IEnumerable<GuestUnit> guestUnitsInMemory, CancellationToken cancellationToken)
     {
         var newGuestUnit = mapper.Map<GuestUnit>(guestTeamDto);
-        var alreadyPersistedGuestUnit = await guestUnitsRepository.Get(newGuestUnit, cancellationToken);
+        var oldGuestUnit =
+            Find(newGuestUnit, guestUnitsInMemory) ??
+            await guestUnitsRepository.Get(newGuestUnit, cancellationToken);
 
-        return alreadyPersistedGuestUnit ?? newGuestUnit;
+        return oldGuestUnit ?? newGuestUnit;
     }
 
-    public async Task<CrewMember> GetUniqueCrewMember(CrewMemberDto crewMemberDto, CancellationToken cancellationToken)
+    public async Task<CrewMember> GetUniqueCrewMember(
+        CrewMemberDto crewMemberDto, IEnumerable<CrewMember> crewMembersInMemory, CancellationToken cancellationToken)
     {
         var newCrewMember = mapper.Map<CrewMember>(crewMemberDto);
-        var alreadyPersistedCrewMember = await crewMembersRepository.Get(newCrewMember, cancellationToken);
-
-        return alreadyPersistedCrewMember ?? newCrewMember;
+        var oldCrewMember =
+            Find(newCrewMember, crewMembersInMemory) ??
+            await crewMembersRepository.Get(newCrewMember, cancellationToken);
+        
+        return oldCrewMember ?? newCrewMember;
     }
 
     public async Task<ResearchEquipment> GetUniqueResearchEquipment(
-        IResearchEquipmentDto researchEquipmentDto, CancellationToken cancellationToken)
+        IResearchEquipmentDto researchEquipmentDto,
+        IEnumerable<ResearchEquipment> researchEquipmentsInMemory,
+        CancellationToken cancellationToken)
     {
         var newResearchEquipment = mapper.Map<ResearchEquipment>(researchEquipmentDto);
-        var alreadyPersistedResearchEquipment = await researchEquipmentsRepository
-            .Get(newResearchEquipment, cancellationToken);
+        var alreadyPersistedResearchEquipment =
+            Find(newResearchEquipment, researchEquipmentsInMemory) ?? 
+            await researchEquipmentsRepository.Get(newResearchEquipment, cancellationToken);
 
         return alreadyPersistedResearchEquipment ?? newResearchEquipment;
     }
 
-    public async Task<Port> GetUniquePort(PortDto portDto, CancellationToken cancellationToken)
+    public async Task<Port> GetUniquePort(
+        PortDto portDto, IEnumerable<Port> portsInMemory, CancellationToken cancellationToken)
     {
         var newPort = mapper.Map<Port>(portDto);
-        var alreadyPersistedPort = await portsRepository.Get(newPort, cancellationToken);
+        var oldPort =
+            Find(newPort, portsInMemory) ?? 
+            await portsRepository.Get(newPort, cancellationToken);
 
-        return alreadyPersistedPort ?? newPort;
+        return oldPort ?? newPort;
     }
 
     public async Task<CruiseDayDetails> GetUniqueCruiseDayDetails(
-        CruiseDayDetailsDto cruiseDayDetailsDto, CancellationToken cancellationToken)
+        CruiseDayDetailsDto cruiseDayDetailsDto,
+        IEnumerable<CruiseDayDetails> cruiseDaysDetailsInMemory,
+        CancellationToken cancellationToken)
     {
         var newCruiseDayDetails = mapper.Map<CruiseDayDetails>(cruiseDayDetailsDto);
-        var alreadyPersistedCruiseDayDetails = await cruiseDaysDetailsRepository
-            .Get(newCruiseDayDetails, cancellationToken);
+        var oldCruiseDayDetails =
+            Find(newCruiseDayDetails, cruiseDaysDetailsInMemory) ?? 
+            await cruiseDaysDetailsRepository.Get(newCruiseDayDetails, cancellationToken);
 
-        return alreadyPersistedCruiseDayDetails ?? newCruiseDayDetails;
+        return oldCruiseDayDetails ?? newCruiseDayDetails;
+    }
+
+
+    private static T? Find<T>(T searchedObject, IEnumerable<T> collection) where T : class
+    {
+        return collection.FirstOrDefault(obj => obj.Equals(searchedObject));
     }
 }

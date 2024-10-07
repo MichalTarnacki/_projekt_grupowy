@@ -19,16 +19,18 @@ public class FormsBFactory(
     public async Task<FormB> Create(FormBDto formBDto, CancellationToken cancellationToken)
     {
         var formB = mapper.Map<FormB>(formBDto);
-
+        
         await AddFormBUgUnits(formB, formBDto, cancellationToken);
         await AddFormBGuestUnits(formB, formBDto, cancellationToken);
         await AddCrewMembers(formB, formBDto, cancellationToken);
-        await AddFormBShortResearchEquipments(formB, formBDto, cancellationToken);
-        await AddFormBLongResearchEquipments(formB, formBDto, cancellationToken);
         await AddFormBPorts(formB, formBDto, cancellationToken);
         await AddCruiseDaysDetails(formB, formBDto, cancellationToken);
-        await AddFormBResearchEquipments(formB, formBDto, cancellationToken);
         await AddShipEquipments(formB, formBDto, cancellationToken);
+        
+        var alreadyAddedResearchEquipments = new HashSet<ResearchEquipment>();
+        await AddFormBShortResearchEquipments(formB, formBDto, alreadyAddedResearchEquipments, cancellationToken);
+        await AddFormBLongResearchEquipments(formB, formBDto, alreadyAddedResearchEquipments, cancellationToken);
+        await AddFormBResearchEquipments(formB, formBDto, alreadyAddedResearchEquipments, cancellationToken);
         
         return formB;
     }
@@ -54,9 +56,14 @@ public class FormsBFactory(
     
     private async Task AddFormBGuestUnits(FormB formB, FormBDto formBDto, CancellationToken cancellationToken)
     {
+        var alreadyAddedGuestUnits = new HashSet<GuestUnit>();
+        
         foreach (var guestTeamDto in formBDto.GuestTeams)
         {
-            var guestUnit = await formsFieldsService.GetUniqueGuestUnit(guestTeamDto, cancellationToken);
+            var guestUnit = await formsFieldsService
+                .GetUniqueGuestUnit(guestTeamDto, alreadyAddedGuestUnits, cancellationToken);
+            alreadyAddedGuestUnits.Add(guestUnit);
+
             var formBGuestUnit = new FormBGuestUnit
             {
                 GuestUnit = guestUnit,
@@ -68,20 +75,32 @@ public class FormsBFactory(
 
     private async Task AddCrewMembers(FormB formB, FormBDto formBDto, CancellationToken cancellationToken)
     {
+        var alreadyAddedCrewMembers = new HashSet<CrewMember>();
+        
         foreach (var crewMemberDto in formBDto.CrewMembers)
         {
-            var crewMember = await formsFieldsService.GetUniqueCrewMember(crewMemberDto, cancellationToken);
+            var crewMember = await formsFieldsService
+                .GetUniqueCrewMember(crewMemberDto, alreadyAddedCrewMembers, cancellationToken);
+            alreadyAddedCrewMembers.Add(crewMember);
+            
             formB.CrewMembers.Add(crewMember);
         }
     }
 
     private async Task AddFormBShortResearchEquipments(
-        FormB formB, FormBDto formBDto, CancellationToken cancellationToken)
+        FormB formB,
+        FormBDto formBDto,
+        HashSet<ResearchEquipment> alreadyAddedResearchEquipments,
+        CancellationToken cancellationToken)
     {
         foreach (var shortResearchEquipmentDto in formBDto.ShortResearchEquipments)
         {
-            var researchEquipment = await formsFieldsService
-                .GetUniqueResearchEquipment(shortResearchEquipmentDto, cancellationToken);
+            var researchEquipment = await formsFieldsService.GetUniqueResearchEquipment(
+                shortResearchEquipmentDto,
+                alreadyAddedResearchEquipments,
+                cancellationToken);
+            alreadyAddedResearchEquipments.Add(researchEquipment);
+            
             var formBShortResearchEquipment = new FormBShortResearchEquipment
             {
                 ResearchEquipment = researchEquipment,
@@ -93,12 +112,19 @@ public class FormsBFactory(
     }
 
     private async Task AddFormBLongResearchEquipments(
-        FormB formB, FormBDto formBDto, CancellationToken cancellationToken)
+        FormB formB,
+        FormBDto formBDto,
+        HashSet<ResearchEquipment> alreadyAddedResearchEquipments,
+        CancellationToken cancellationToken)
     {
         foreach (var longResearchEquipmentDto in formBDto.LongResearchEquipments)
         {
-            var researchEquipment = await formsFieldsService
-                .GetUniqueResearchEquipment(longResearchEquipmentDto, cancellationToken);
+            var researchEquipment = await formsFieldsService.GetUniqueResearchEquipment(
+                longResearchEquipmentDto,
+                alreadyAddedResearchEquipments,
+                cancellationToken);
+            alreadyAddedResearchEquipments.Add(researchEquipment);
+            
             var formBLongResearchEquipment = new FormBLongResearchEquipment
             {
                 ResearchEquipment = researchEquipment,
@@ -111,9 +137,13 @@ public class FormsBFactory(
 
     private async Task AddFormBPorts(FormB formB, FormBDto formBDto, CancellationToken cancellationToken)
     {
+        var alreadyAddedPorts = new HashSet<Port>();
+        
         foreach (var portDto in formBDto.Ports)
         {
-            var port = await formsFieldsService.GetUniquePort(portDto, cancellationToken);
+            var port = await formsFieldsService.GetUniquePort(portDto, alreadyAddedPorts, cancellationToken);
+            alreadyAddedPorts.Add(port);
+            
             var formBPort = new FormBPort
             {
                 Port = port,
@@ -126,20 +156,32 @@ public class FormsBFactory(
 
     private async Task AddCruiseDaysDetails(FormB formB, FormBDto formBDto, CancellationToken cancellationToken)
     {
+        var alreadyAddedCruiseDaysDetails = new HashSet<CruiseDayDetails>();
+        
         foreach (var cruiseDayDetailsDto in formBDto.CruiseDaysDetails)
         {
             var cruiseDayDetails = await formsFieldsService
-                .GetUniqueCruiseDayDetails(cruiseDayDetailsDto, cancellationToken);
+                .GetUniqueCruiseDayDetails(cruiseDayDetailsDto, alreadyAddedCruiseDaysDetails, cancellationToken);
+            alreadyAddedCruiseDaysDetails.Add(cruiseDayDetails);
+            
             formB.CruiseDaysDetails.Add(cruiseDayDetails);
         }
     }
     
-    private async Task AddFormBResearchEquipments(FormB formB, FormBDto formBDto, CancellationToken cancellationToken)
+    private async Task AddFormBResearchEquipments(
+        FormB formB,
+        FormBDto formBDto,
+        HashSet<ResearchEquipment> alreadyAddedResearchEquipments,
+        CancellationToken cancellationToken)
     {
         foreach (var researchEquipmentDto in formBDto.ResearchEquipments)
         {
-            var researchEquipment = await formsFieldsService
-                .GetUniqueResearchEquipment(researchEquipmentDto, cancellationToken);
+            var researchEquipment = await formsFieldsService.GetUniqueResearchEquipment(
+                researchEquipmentDto,
+                alreadyAddedResearchEquipments,
+                cancellationToken);
+            alreadyAddedResearchEquipments.Add(researchEquipment);
+            
             var formBResearchEquipment = new FormBResearchEquipment
             {
                 ResearchEquipment = researchEquipment,
