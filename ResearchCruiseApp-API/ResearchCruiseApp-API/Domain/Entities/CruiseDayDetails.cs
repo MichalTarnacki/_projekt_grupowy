@@ -22,4 +22,28 @@ public class CruiseDayDetails : Entity
 
     [StringLength(1024)]
     public string Comment { get; init; } = null!;
+
+    
+    public override bool Equals(object? other)
+    {
+        if (other is not CruiseDayDetails otherCruiseDayDetails)
+            return false;
+
+        return otherCruiseDayDetails.Number == Number &&
+               otherCruiseDayDetails.Hours == Hours &&
+               otherCruiseDayDetails.TaskName == TaskName &&
+               otherCruiseDayDetails.Region == Region &&
+               otherCruiseDayDetails.Position == Position &&
+               otherCruiseDayDetails.Comment == Comment;
+    }
+
+    public override int GetHashCode()
+    {
+        return Number.GetHashCode() + 
+               Hours.GetHashCode() +
+               TaskName.GetHashCode() +
+               Region.GetHashCode() +
+               Position.GetHashCode() +
+               Comment.GetHashCode();
+    }
 }

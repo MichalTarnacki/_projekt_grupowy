@@ -4,8 +4,8 @@ using ResearchCruiseApp_API.Domain.Entities;
 namespace ResearchCruiseApp_API.Infrastructure.Persistence.Repositories;
 
 
-internal class ContractsRepository : Repository<Contract>, IContractsRepository
+internal class PortsRepository : Repository<Port>, IPortsRepository
 {
-    public ContractsRepository(ApplicationDbContext dbContext) : base(dbContext)
+    public PortsRepository(ApplicationDbContext dbContext) : base(dbContext)
     { }
 }

@@ -11,4 +11,18 @@ public class Port : Entity
     public List<FormBPort> FormBPorts { get; init; } = [];
 
     public List<FormCPort> FormCPorts { get; init; } = [];
+
+
+    public override bool Equals(object? other)
+    {
+        if (other is not Port otherPort)
+            return false;
+
+        return otherPort.Name == Name;
+    }
+
+    public override int GetHashCode()
+    {
+        return Name.GetHashCode();
+    }
 }

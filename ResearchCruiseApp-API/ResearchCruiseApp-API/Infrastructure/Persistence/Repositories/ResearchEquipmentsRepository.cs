@@ -6,6 +6,6 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Repositories;
 
 internal class ResearchEquipmentsRepository : Repository<ResearchEquipment>, IResearchEquipmentsRepository
 {
-    protected ResearchEquipmentsRepository(ApplicationDbContext dbContext) : base(dbContext)
+    public ResearchEquipmentsRepository(ApplicationDbContext dbContext) : base(dbContext)
     { }
 }

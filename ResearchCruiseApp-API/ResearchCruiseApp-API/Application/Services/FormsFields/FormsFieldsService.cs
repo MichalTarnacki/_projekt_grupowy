@@ -11,7 +11,9 @@ public class FormsFieldsService(
     IMapper mapper,
     IGuestUnitsRepository guestUnitsRepository,
     ICrewMembersRepository crewMembersRepository,
-    IResearchEquipmentsRepository researchEquipmentsRepository)
+    IResearchEquipmentsRepository researchEquipmentsRepository,
+    IPortsRepository portsRepository,
+    ICruiseDaysDetailsRepository cruiseDaysDetailsRepository)
     : IFormsFieldsService
 {
     public async Task<GuestUnit> GetUniqueGuestUnit(GuestTeamDto guestTeamDto, CancellationToken cancellationToken)
@@ -38,5 +40,23 @@ public class FormsFieldsService(
             .Get(newResearchEquipment, cancellationToken);
 
         return alreadyPersistedResearchEquipment ?? newResearchEquipment;
+    }
+
+    public async Task<Port> GetUniquePort(PortDto portDto, CancellationToken cancellationToken)
+    {
+        var newPort = mapper.Map<Port>(portDto);
+        var alreadyPersistedPort = await portsRepository.Get(newPort, cancellationToken);
+
+        return alreadyPersistedPort ?? newPort;
+    }
+
+    public async Task<CruiseDayDetails> GetUniqueCruiseDayDetails(
+        CruiseDayDetailsDto cruiseDayDetailsDto, CancellationToken cancellationToken)
+    {
+        var newCruiseDayDetails = mapper.Map<CruiseDayDetails>(cruiseDayDetailsDto);
+        var alreadyPersistedCruiseDayDetails = await cruiseDaysDetailsRepository
+            .Get(newCruiseDayDetails, cancellationToken);
+
+        return alreadyPersistedCruiseDayDetails ?? newCruiseDayDetails;
     }
 }

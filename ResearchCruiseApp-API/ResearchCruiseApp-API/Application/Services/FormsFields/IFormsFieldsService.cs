@@ -8,7 +8,14 @@ namespace ResearchCruiseApp_API.Application.Services.FormsFields;
 public interface IFormsFieldsService
 {
     Task<GuestUnit> GetUniqueGuestUnit(GuestTeamDto guestTeamDto, CancellationToken cancellationToken);
+    
     Task<CrewMember> GetUniqueCrewMember(CrewMemberDto crewMemberDto, CancellationToken cancellationToken);
+    
     Task<ResearchEquipment> GetUniqueResearchEquipment(
         IResearchEquipmentDto researchEquipmentDto, CancellationToken cancellationToken);
+    
+    Task<Port> GetUniquePort(PortDto portDto, CancellationToken cancellationToken);
+    
+    Task<CruiseDayDetails> GetUniqueCruiseDayDetails(
+        CruiseDayDetailsDto cruiseDayDetailsDto, CancellationToken cancellationToken);
 }

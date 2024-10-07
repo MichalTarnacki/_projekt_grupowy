@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using AutoMapper;
+using ResearchCruiseApp_API.Domain.Entities;
 
 namespace ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
 
@@ -22,4 +24,13 @@ public class CruiseDayDetailsDto
 
     [StringLength(1024)]
     public string Comment { get; init; } = null!;
+
+
+    private class MapProfile : Profile
+    {
+        public MapProfile()
+        {
+            CreateMap<CruiseDayDetailsDto, CruiseDayDetails>();
+        }
+    }
 }

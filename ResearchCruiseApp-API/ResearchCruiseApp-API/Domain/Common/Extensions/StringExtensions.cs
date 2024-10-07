@@ -8,4 +8,12 @@ public static class StringExtensions
         return string.IsNullOrEmpty(value) &&
                !value.Equals("false", StringComparison.CurrentCultureIgnoreCase);
     }
+
+    public static T ToEnum<T>(this string value) where T : struct
+    {
+        if (!typeof(T).IsEnum)
+            throw new ArgumentException("T must be an enum.");
+
+        return (T)Enum.Parse(typeof(T), value);
+    }
 }

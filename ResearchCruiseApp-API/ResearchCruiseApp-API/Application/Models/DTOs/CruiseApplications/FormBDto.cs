@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using AutoMapper;
+using ResearchCruiseApp_API.Domain.Entities;
 
 namespace ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
 
@@ -27,7 +29,18 @@ public class FormBDto
     public List<ResearchEquipmentDto> ResearchEquipments { get; init; } = [];
 
     public List<ShipEquipmentDto> ShipEquipments { get; init; } = [];
+
     
-    
-    // No AutoMapper map profile because only IsCruiseManagerPresent would be mapped  
+    private class MapProfile : Profile
+    {
+        public MapProfile()
+        {
+            CreateMap<FormBDto, FormB>()
+                .ForAllMembers(options =>
+                {
+                    if (options.DestinationMember.Name != nameof(FormB.IsCruiseManagerPresent))
+                        options.Ignore();
+                });
+        }
+    }
 }

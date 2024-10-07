@@ -4,8 +4,8 @@ using ResearchCruiseApp_API.Domain.Entities;
 namespace ResearchCruiseApp_API.Infrastructure.Persistence.Repositories;
 
 
-internal class ContractsRepository : Repository<Contract>, IContractsRepository
+internal class CruiseDaysDetailsRepository : Repository<CruiseDayDetails>, ICruiseDaysDetailsRepository
 {
-    public ContractsRepository(ApplicationDbContext dbContext) : base(dbContext)
+    public CruiseDaysDetailsRepository(ApplicationDbContext dbContext) : base(dbContext)
     { }
 }
