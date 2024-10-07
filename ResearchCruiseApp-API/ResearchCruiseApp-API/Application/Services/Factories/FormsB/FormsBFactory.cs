@@ -10,7 +10,7 @@ namespace ResearchCruiseApp_API.Application.Services.Factories.FormsB;
 
 
 public class FormsBFactory(
-    Mapper mapper,
+    IMapper mapper,
     IUgUnitsRepository ugUnitsRepository,
     IShipEquipmentsRepository shipEquipmentsRepository,
     IFormsFieldsService formsFieldsService)
