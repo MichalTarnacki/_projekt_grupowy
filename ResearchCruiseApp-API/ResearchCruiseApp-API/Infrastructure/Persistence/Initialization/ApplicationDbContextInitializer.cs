@@ -24,11 +24,8 @@ internal class ApplicationDbContextInitializer(
 
 
     private async Task Migrate()
-    {
-        var pendingMigrations = await applicationDbContext.Database.GetPendingMigrationsAsync();
-        
-        if (pendingMigrations.Any())
-            await applicationDbContext.Database.MigrateAsync();
+    { 
+        await applicationDbContext.Database.MigrateAsync();
     }
 
     private async Task SeedAdministrationData()
