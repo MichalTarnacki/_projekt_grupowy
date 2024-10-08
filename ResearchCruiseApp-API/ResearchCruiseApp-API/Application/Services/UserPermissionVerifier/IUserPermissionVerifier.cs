@@ -5,9 +5,15 @@ namespace ResearchCruiseApp_API.Application.Services.UserPermissionVerifier;
 
 public interface IUserPermissionVerifier
 {
-    public Task<bool> CanCurrentUserAssignRole(string roleName);
-    public Task<bool> CanCurrentUserAccess(Guid otherUserId);
-    public Task<bool> CanCurrentUserViewCruiseApplication(CruiseApplication cruiseApplication);
-    public Task<bool> CanCurrentUserViewCruise(Cruise cruise);
-    public Task<bool> CanCurrentUserAddFormB(CruiseApplication cruiseApplication);
+    Task<bool> CanCurrentUserAssignRole(string roleName);
+    
+    Task<bool> CanCurrentUserAccess(Guid otherUserId);
+    
+    Task<bool> CanCurrentUserViewCruiseApplication(CruiseApplication cruiseApplication);
+    
+    Task<bool> CanCurrentUserViewCruise(Cruise cruise);
+    
+    Task<bool> CanCurrentUserAddFormB(CruiseApplication cruiseApplication);
+
+    Task<bool> CanCurrentUserViewFormB(CruiseApplication cruiseApplication);
 }

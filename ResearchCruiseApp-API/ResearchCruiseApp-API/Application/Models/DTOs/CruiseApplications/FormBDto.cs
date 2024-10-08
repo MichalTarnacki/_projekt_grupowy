@@ -41,6 +41,36 @@ public class FormBDto
                     if (options.DestinationMember.Name != nameof(FormB.IsCruiseManagerPresent))
                         options.Ignore();
                 });
+
+            CreateMap<FormB, FormBDto>()
+                .ForMember(
+                    dest => dest.Permissions,
+                    options =>
+                        options.Ignore()) // In progress
+                .ForMember(
+                    dest => dest.UgTeams,
+                    options =>
+                        options.MapFrom(src => src.FormBUgUnits))
+                .ForMember(
+                    dest => dest.GuestTeams,
+                    options =>
+                        options.MapFrom(src => src.FormBGuestUnits))
+                .ForMember(
+                    dest => dest.ShortResearchEquipments,
+                    options =>
+                        options.MapFrom(src => src.FormBShortResearchEquipments))
+                .ForMember(
+                    dest => dest.LongResearchEquipments,
+                    options =>
+                        options.MapFrom(src => src.FormBLongResearchEquipments))
+                .ForMember(
+                    dest => dest.Ports,
+                    options =>
+                        options.MapFrom(src => src.FormBPorts))
+                .ForMember(
+                    dest => dest.ResearchEquipments,
+                    options =>
+                        options.MapFrom(src => src.FormBResearchEquipments));
         }
     }
 }

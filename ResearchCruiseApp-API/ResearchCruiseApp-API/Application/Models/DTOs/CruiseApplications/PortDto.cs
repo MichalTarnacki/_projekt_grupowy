@@ -27,6 +27,12 @@ public class PortDto
                     if (options.DestinationMember.Name != nameof(Port.Name))
                         options.Ignore();
                 });
+
+            CreateMap<FormBPort, PortDto>()
+                .ForMember(
+                    dest => dest.Name,
+                    options =>
+                        options.MapFrom(src => src.Port.Name));
         }
     }
 }

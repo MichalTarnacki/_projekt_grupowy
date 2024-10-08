@@ -37,6 +37,8 @@ public class CrewMemberDto
         public MapProfile()
         {
             CreateMap<CrewMemberDto, CrewMember>();
+
+            CreateMap<CrewMember, CrewMemberDto>();
         }
     }
 }

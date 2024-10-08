@@ -15,6 +15,7 @@ using ResearchCruiseApp_API.Application.Services.Factories.Cruises;
 using ResearchCruiseApp_API.Application.Services.Factories.FormAContractDtos;
 using ResearchCruiseApp_API.Application.Services.Factories.FormADtos;
 using ResearchCruiseApp_API.Application.Services.Factories.FormAInitValuesDtosFactory;
+using ResearchCruiseApp_API.Application.Services.Factories.FormBDtos;
 using ResearchCruiseApp_API.Application.Services.Factories.FormsA;
 using ResearchCruiseApp_API.Application.Services.Factories.FormsB;
 using ResearchCruiseApp_API.Application.Services.Factories.FormUserDtos;
@@ -62,6 +63,7 @@ public static class DependencyInjection
             .AddScoped<ICruiseApplicationShortInfoDtosFactory, CruiseApplicationShortInfoDtosFactory>()
             .AddScoped<IFormAInitValuesDtosFactory, FormAInitValuesDtosFactory>()
             .AddScoped<IFormUserDtosFactory, FormUserDtosFactory>()
-            .AddScoped<IFormsBFactory, FormsBFactory>();
+            .AddScoped<IFormsBFactory, FormsBFactory>()
+            .AddScoped<IFormBDtosFactory, FormBDtosFactory>();
     }
 }

@@ -31,6 +31,8 @@ public class CruiseDayDetailsDto
         public MapProfile()
         {
             CreateMap<CruiseDayDetailsDto, CruiseDayDetails>();
+            
+            CreateMap<CruiseDayDetails, CruiseDayDetailsDto>();
         }
     }
 }

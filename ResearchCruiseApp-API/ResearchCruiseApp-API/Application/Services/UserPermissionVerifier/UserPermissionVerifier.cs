@@ -106,4 +106,25 @@ public class UserPermissionVerifier(IIdentityService identityService, ICurrentUs
         return cruiseApplication.FormA.CruiseManagerId == currentUserId ||
                cruiseApplication.FormA.DeputyManagerId == currentUserId;
     }
+    
+    public async Task<bool> CanCurrentUserViewFormB(CruiseApplication cruiseApplication)
+    {
+        var currentUserRoles = await identityService.GetCurrentUserRoleNames();
+
+        if (currentUserRoles.Contains(RoleName.Administrator) ||
+            currentUserRoles.Contains(RoleName.Shipowner))
+        {
+            return true;
+        }
+
+        if (cruiseApplication.FormA is null)
+            return false;
+        
+        var currentUserId = currentUserService.GetId();
+        if (currentUserId is null)
+            return false;
+        
+        return cruiseApplication.FormA.CruiseManagerId == currentUserId ||
+               cruiseApplication.FormA.DeputyManagerId == currentUserId;
+    }
 }

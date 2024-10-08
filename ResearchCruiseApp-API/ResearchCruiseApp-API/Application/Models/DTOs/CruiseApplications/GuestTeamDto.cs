@@ -30,6 +30,12 @@ public class GuestTeamDto
                     dest => dest.Name,
                     options =>
                         options.MapFrom(src => src.GuestUnit.Name));
+            
+            CreateMap<FormBGuestUnit, GuestTeamDto>()
+                .ForMember(
+                    dest => dest.Name,
+                    options =>
+                        options.MapFrom(src => src.GuestUnit.Name));
         }
     }
 }
