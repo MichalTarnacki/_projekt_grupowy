@@ -1,66 +1,74 @@
 import React, {useContext, useState} from "react";
 import {FormContext} from "../Pages/FormPage/Wrappers/FormTemplate";
 import Api from "./Api";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {Path} from "./Path";
-import BusyEvent from "../CommonComponents/BusyEvent";
 import {extendedUseLocation} from "../Pages/FormPage/FormPage";
 import UserBasedAccess from "../UserBasedAccess";
-import {Simulate} from "react-dom/test-utils";
-import toggle = Simulate.toggle;
-import {EmptyFunction} from "../Pages/FormPage/Forms/FormA/FormASections/CruiseManagerSectionFields";
-export const SaveButton = () => {
-    const formContext = useContext(FormContext)
-    const locationState = extendedUseLocation()?.state
-    const navigate = useNavigate()
-    const handleAddCruise = () => //console.log(formContext?.getValues())
-        Api
-        .post(
-            `/api/Cruises`,
-            formContext!.getValues()
-        )
-        .then(_ =>
-            navigate(Path.Cruises)
-        )
+import {CruiseStatus} from "../Pages/CruiseFormPage/CruiseFormSections/CruiseBasicInfo";
+export const CruiseLocationData = () => extendedUseLocation()?.state.cruise
 
-    const handleEditCruise = () => {
-        if(locationState?.cruise)
-            Api.patch(
-                `/api/Cruises/${locationState.cruise!.id}`,
-                formContext!.getValues())
-                .then(_ =>
-                    navigate(Path.Cruises)
-                )
-    }
+const Handlers = () => {
+    const formContext = useContext(FormContext)
+    const navigate = useNavigate()
+    const cruise = CruiseLocationData()
+    const refresh = RefreshCruiseFormPage()
+
+    const handleAddCruise = () => Api.post(`/api/Cruises`, formContext!.getValues())
+        .then(_ => navigate(Path.Cruises))
+    const handleEditCruise = () => cruise && Api.patch(`/api/Cruises/${cruise.id}`, formContext!.getValues())
+    .then(()=>formContext!.setReadOnly(true)).then(refresh)
+
+    return {handleAddCruise, handleEditCruise}
+}
+
+const SaveButtonAction = () => {
+    const {handleAddCruise, handleEditCruise} = Handlers()
+    const formContext = useContext(FormContext)
+    const cruise = CruiseLocationData()
+
+    return formContext?.handleSubmit(cruise ? handleEditCruise: handleAddCruise)
+}
+export const SaveButton = () => {
+    const action = SaveButtonAction()
 
     return(
-        <div onClick={formContext?.handleSubmit(locationState?.cruise ? handleEditCruise: handleAddCruise)} className="form-page-option-button w-100"> Zapisz rejs </div>
+        <div onClick={action}
+             className="form-page-option-button w-100">
+            Zapisz rejs
+        </div>
     )
 }
+
 export const ClearFormButton = () => {
-
-
     const formContext = useContext(FormContext)
-    const locationState = extendedUseLocation()?.state
-
-    const resetEditCruiseForm = () => formContext!.reset()
+    const cruise = CruiseLocationData()
+    const action = () => formContext!.reset()
 
     return(
-        <div onClick={ resetEditCruiseForm } className="form-page-option-button w-100"> {locationState?.cruise ? "Cofnij zmiany" : "Wyczyść formularz"} </div>
+        <div onClick={ action } className="form-page-option-button w-100"> {cruise ? "Cofnij zmiany" : "Wyczyść formularz"} </div>
     )
+}
+
+export const RefreshCruiseFormPage = () => {
+    const navigate = useNavigate()
+    const cruise = CruiseLocationData()
+
+    return ()=>Api.get(`/api/Cruises/${cruise.id}`)
+        .then((response)=>
+            response && navigate(Path.CruiseForm,{state:{cruise: response?.data, readOnly:true}}))
 }
 
 export const ConfirmCruiseButton = () => {
     const [toggleConfirm, setToggleConfirm] = useState(false)
     const formContext = useContext(FormContext)
-    const location = extendedUseLocation()
-    const navigate = useNavigate()
+    const cruise = CruiseLocationData()
+    const refreshCruiseFormPage = RefreshCruiseFormPage()
 
-    const confirmCruise = ()=>Api.put(`/api/Cruises/${location?.state.cruise.id}/confirm`).then(()=>navigate(Path.CruiseForm, {state:{cruise:location?.state.cruise, readOnly:true}} ))
+    const confirmCruise = ()=>Api.put(`/api/Cruises/${cruise.id}/confirm`, {raw:true}).catch(()=>{}).then(refreshCruiseFormPage)
     const Render = () =>
         <>
             {toggleConfirm &&
-
                 <div className={"d-flex flex-column w-100"}>
                     <div className={"w-100 text-danger text-center mt-1"}>Uwaga! Po zatwierdzeniu rejsu nie będzie możliwości
                         edycji!
@@ -90,24 +98,113 @@ export const ConfirmCruiseButton = () => {
     return {toggleConfirm, Render}
 }
 
+const EditFormButtons = () => (
+    <>
+        <ClearFormButton/>
+        <SaveButton/>
+    </>
+)
+
+const EditButton = () => {
+    const formContext = useContext(FormContext)
+    return (
+        <div onClick={()=>formContext!.setReadOnly(false)}
+             className="form-page-option-button w-100"> Edytuj </div>
+
+    )
+}
+
+const CancelEditButton = () => {
+    const formContext = useContext(FormContext)
+    return (
+        <div onClick={()=>formContext!.setReadOnly(true)}
+             className="form-page-option-button w-100"> Anuluj </div>
+
+    )
+}
+
+const NewCruiseButtons = () => {
+    const {toggleConfirm, Render} = ConfirmCruiseButton()
+    const formContext = useContext(FormContext)
+
+    return(
+        <>
+            {!formContext!.readOnly &&
+                <>
+                    <CancelEditButton/>
+                    <EditFormButtons/>
+                </> }
+            {formContext!.readOnly &&
+                <>
+                    {!toggleConfirm && <EditButton/>}
+                    <Render/>
+                </>
+            }
+        </>
+
+     )
+}
+
+
+const NoCruiseButtons = () => ( <EditFormButtons/> )
+
+const ConfirmedCruiseButtons = () => {
+
+    const cruise = CruiseLocationData()
+    const refreshCruiseFormPage = RefreshCruiseFormPage()
+    const action = () =>Api.put(`/api/Cruises/${cruise.id}/start`).then(refreshCruiseFormPage)
+
+    return(
+        <div onClick={action}
+             className="form-page-option-button w-100">
+            Rozpocznij rejs
+        </div>
+    )
+}
+
+const StartedCruiseButtons = () => {
+
+    const cruise = CruiseLocationData()
+    const refreshCruiseFormPage = RefreshCruiseFormPage()
+    const action = () =>Api.put(`/api/Cruises/${cruise.id}/end`).then(refreshCruiseFormPage)
+
+    return(
+        <div onClick={action}
+             className="form-page-option-button w-100">
+            Zakończ rejs
+        </div>
+    )
+}
+
+
+const EndedCruiseButtons = () => {
+    return(
+        <div className="p-2 text-center w-100">
+            Rejs zakończony brak dodatkowych akcji
+        </div>
+    )
+}
+
+
+const PermittedUserMenu = () => {
+    const cruise = CruiseLocationData()
+
+    return (
+         <div className="form-page-option-bar">
+             {!cruise && <NoCruiseButtons/>}
+             {cruise?.status == CruiseStatus.New && <NewCruiseButtons/>}
+             {cruise?.status == CruiseStatus.Confirmed && <ConfirmedCruiseButtons/>}
+             {cruise?.status == CruiseStatus.Started && <StartedCruiseButtons/>}
+             {cruise?.status == CruiseStatus.Ended && <EndedCruiseButtons/>}
+         </div>
+     )
+}
 
 export const BottomOptionBar = () => {
     const {UserHasShipownerAccess, UserHasAdminAccess} = UserBasedAccess()
-    const {toggleConfirm, Render} = ConfirmCruiseButton()
-    return(
+
+    return (
         <>
-            {(UserHasShipownerAccess() || UserHasAdminAccess()) &&
-                <div className="form-page-option-bar">
-                    {!toggleConfirm &&
-                        <>
-                            <ClearFormButton/>
-                            <SaveButton/>
-                        </>
-                    }
-                    <Render/>
-
-
-                </div>
-            }
+            {(UserHasShipownerAccess() || UserHasAdminAccess()) && <PermittedUserMenu/>}
         </>)
 }

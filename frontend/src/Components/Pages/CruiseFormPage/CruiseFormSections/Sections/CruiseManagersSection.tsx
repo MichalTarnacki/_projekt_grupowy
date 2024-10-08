@@ -11,7 +11,7 @@ import app from "../../../../App";
 import {useWatch} from "react-hook-form";
 import {ApplicationsContext} from "../../../CruiseApplicationsPage/CruiseApplicationsList";
 import {extendedUseLocation} from "../../../FormPage/FormPage";
-import {EMPTY_GUID} from "../../CruiseFormPage";
+import {CruiseApplicationsContext, EMPTY_GUID} from "../../CruiseFormPage";
 
 export const cruiseManagerSectionFieldNames = {
     mainCruiseManagerId:"managersTeam.mainCruiseManagerId",
@@ -20,11 +20,11 @@ export const cruiseManagerSectionFieldNames = {
 
 const getUsersFromCruiseApplications = (): FormUser[] => {
     const formContext = useContext(FormContext)
-    const applicationsContext = useContext(ApplicationsContext)
+    const applicationsContext = useContext(CruiseApplicationsContext)
 
     const val = useWatch({control:formContext!.control,name:applicationsSectionFieldNames.applicationsIds, exact:true})
 
-    const usersPairs =  applicationsContext.filter(app=>val.includes(app.id))
+    const usersPairs =  applicationsContext!.filter(app=>val.includes(app.id))
         .map(ApplicationToCruiseManagersMapper)
 
 

@@ -80,11 +80,9 @@ export const Actions = () => {
     const {cruise} = CruisesTools()
     const handleDeleteCruise = HandleDeleteCruises()
     const {UserHasShipownerAccess, UserHasAdminAccess} = userBasedAccess()
-    console.log(cruise)
-    const navigateToEditable = (cruise.status == CruiseStatus.New && (UserHasShipownerAccess() || UserHasAdminAccess()))
     return (
         <div className="btn-group-vertical">
-            <LinkWithState className="cruises-button" to={Path.CruiseForm} label="Szczegóły" state={{cruise: cruise, readOnly: !navigateToEditable }}/>
+            <LinkWithState className="cruises-button" to={Path.CruiseForm} label="Szczegóły" state={{cruise: cruise, readOnly: true }}/>
             {(UserHasShipownerAccess() || UserHasAdminAccess()) &&
                 <button className="cruises-button" onClick={() => handleDeleteCruise(cruise.id)}>
                     Usuń

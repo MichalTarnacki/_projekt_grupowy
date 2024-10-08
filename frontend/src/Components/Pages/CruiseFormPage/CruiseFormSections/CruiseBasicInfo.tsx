@@ -9,7 +9,11 @@ type Props = {
 }
 
 export enum CruiseStatus {
-    New="Nowy"
+    New="Nowy",
+    Confirmed="Potwierdzony",
+    Started="Rozpoczęty",
+    Ended="Zakończony",
+    Archive="Archiwalny"
 }
 
 

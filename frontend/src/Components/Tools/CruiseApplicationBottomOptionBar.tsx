@@ -1,6 +1,5 @@
 import React, {useContext, useState} from "react";
 import {FormContext} from "../Pages/FormPage/Wrappers/FormTemplate";
-import { handleSave} from "./FormButtonsHandlers";
 import Api from "./Api";
 import {CruiseApplicationContext} from "../Pages/CruiseApplicationDetailsPage/CruiseApplicationDetailsPage";
 import {CruiseApplicationStatus} from "../Pages/CruiseApplicationsPage/CruiseApplicationsPage";
@@ -25,7 +24,6 @@ const SendButton = () => {
     const handleSubmit = () => Api.patch(`/api/CruiseApplications/${location?.state.cruiseApplication.id}/evaluation`, formContext?.getValues())
         .then(refreshApplicationDetailsPage).finally(()=>formContext!.setReadOnly(true))
     const onClickAction = formContext!.handleSubmit(handleSubmit)
-
 
     return ( <button onClick={onClickAction} className="form-page-option-button-default"> Zapisz punkty </button> )
 }
@@ -61,33 +59,50 @@ export const ConfirmApplicationButton = () => {
     )
 }
 
+export const MenuWarning = (props:{message:string}) => <div className={"w-100 text-danger text-center mt-1"}>{props.message}</div>
+
+export const MenuWithWarning = (props:{children:React.ReactNode, message:string}) => (
+    <div className={"d-flex flex-column w-100"}>
+        <MenuWarning message={"Po odrzuceniu wymagane będzie ponowne złożenie wniosku"}/>
+        <div className={"d-flex flex-row w-100"}>
+            {props.children}
+        </div>
+    </div>
+)
+
+const ToggleButton = (disabledText:string, enabledText:string) => {
+    const [toggle, setToggle] = useState(false)
+    const DisabledRender =  () => (
+        <div onClick={() => setToggle(true)} className="form-page-option-button bg-danger w-100"> Odrzuć
+            zgłoszenie </div>
+    )
+    const EnabledRender = () => (
+        <div onClick={() => setToggle(false)} className="form-page-option-button w-50"> Anuluj</div>
+    )
+    return {toggle, DisabledRender, EnabledRender}
+}
+
 export const CancelApplicationButton = () => {
-    const formContext = useContext(FormContext)
     const [confirm, setConfirm] = useState(false)
-    const [errorMessage, setError] = useState<string|null>(null)
+    const [errorMessage, setError] = useState<string | null>(null)
     const acceptApplication = AcceptApplication("false")
+    const {DisabledRender, EnabledRender} = ToggleButton("Odrzuć zgłoszenie", "Anuluj" )
     const Button = () => (
-        <div onClick={()=>setConfirm(true)} className="form-page-option-button bg-danger w-100"> Odrzuć zgłoszenie </div>
+        <div onClick={() => setConfirm(true)} className="form-page-option-button bg-danger w-100">  </div>
     )
     const ConfirmMenu = () => (
-        <div className={"d-flex flex-column w-100"}>
-                <div className={"w-100 text-danger text-center mt-1"}>Po odrzuceniu wymagane będzie ponowne złożenie
-                    wniosku
+            <MenuWithWarning message={"Po odrzuceniu wymagane będzie ponowne złożenie wniosku"}>
+                <EnabledRender/>
+                <div onClick={() => acceptApplication().catch(err => setError(err.request.response))}
+                     className="form-page-option-button w-50 bg-danger">
+                    {!errorMessage && "Potwierdź odrzucenie"}
+                    {errorMessage}
                 </div>
-                <div className={"d-flex flex-row w-100"}>
-                    <div onClick={() => setConfirm(false)} className="form-page-option-button w-50"> Anuluj</div>
-                    <div onClick={() => acceptApplication().catch(err => setError(err.request.response))}
-                         className="form-page-option-button w-50 bg-danger">
-                        {!errorMessage && "Potwierdź odrzucenie"}
-                        {errorMessage}
-                    </div>
-                </div>
-        </div>
-
+            </MenuWithWarning>
     )
     return {
         confirm: confirm,
-        Button: Button,
+        Button: DisabledRender,
         ConfirmMenu: ConfirmMenu
     }
 }
@@ -186,7 +201,6 @@ export const BottomOptionBar = () => {
         <>
             {(UserHasShipownerAccess() || UserHasAdminAccess()) &&
                 <div className="form-page-option-bar">
-                    {/*{applicationContext!.status == CruiseApplicationStatus.WaitingForSupervisor && <WaitingForSupervisorMenu/>}*/}
                     {applicationContext!.status == CruiseApplicationStatus.WaitingForSupervisor && <WaitingForSupervisorMenu/>}
                     {applicationContext!.status == CruiseApplicationStatus.AcceptedBySupervisor && <AcceptedBySupervisorMenu/>}
                     {applicationContext!.status == CruiseApplicationStatus.Accepted && <EditPointsMenu/>}

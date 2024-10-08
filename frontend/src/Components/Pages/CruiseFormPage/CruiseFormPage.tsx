@@ -7,12 +7,13 @@ import FormTemplate from "../FormPage/Wrappers/FormTemplate";
 import {ApplicationsSection} from "./CruiseFormSections/Sections/AppicationsSection";
 import {DateSection} from "./CruiseFormSections/Sections/InfoSection";
 import {CruiseManagersSection} from "./CruiseFormSections/Sections/CruiseManagersSection";
-import {BottomOptionBar} from "../../Tools/CruiseFormBottomOptionBar";
+import {BottomOptionBar, CruiseLocationData} from "../../Tools/CruiseFormBottomOptionBar";
 import {InfoSection} from "./CruiseFormSections/Sections/DateSection";
 import {formType} from "../CommonComponents/FormTitleWithNavigation";
 import {extendedUseLocation} from "../FormPage/FormPage";
 import Api from "../../Tools/Api";
 import {ApplicationsContext} from "../CruiseApplicationsPage/CruiseApplicationsList";
+import {CruiseStatus} from "./CruiseFormSections/CruiseBasicInfo";
 
 
 type CruiseManagersTeam = {
@@ -34,30 +35,23 @@ export const EMPTY_GUID: string = "00000000-0000-0000-0000-000000000000"
 
 
 const CruiseFormSections = () => [
-    ApplicationsSection(),
-    CruiseManagersSection(),
     DateSection(),
-    InfoSection()
+    InfoSection(),
+    CruiseManagersSection(),
+
+    ApplicationsSection(),
 ]
 
-const EditCruiseFormDefaultValues = (location?:Location) => {
-    if(location?.state)
+const EditCruiseFormDefaultValues = (cruise?:Cruise) => {
+    if(cruise)
         return{
-            startDate:
-                new Date(location.state.cruise?.startDate).toISOString() ?? undefined ,
-            endDate:
-                new Date(location.state.cruise?.endDate).toISOString() ?? undefined ,
+            startDate: new Date(cruise.startDate).toISOString() ,
+            endDate: new Date(cruise.endDate).toISOString() ,
             managersTeam: {
-                mainCruiseManagerId:
-                    location.state.cruise?.mainCruiseManagerId ??
-                    EMPTY_GUID,
-                mainDeputyManagerId:
-                    location.state.cruise?.mainDeputyManagerId ??
-                    EMPTY_GUID
+                mainCruiseManagerId: cruise.mainCruiseManagerId,
+                mainDeputyManagerId: cruise.mainDeputyManagerId
             },
-            cruiseApplicationsIds:
-                location.state.cruise?.cruiseApplicationsShortInfo.map(app => app.id) ??
-                []
+            cruiseApplicationsIds: cruise.cruiseApplicationsShortInfo.map(app => app.id)
         }
     return{
         startDate: undefined ,
@@ -75,23 +69,26 @@ export const CruiseApplicationsContext =
 
 export default function CruiseFormPage() {
 
-    const location = extendedUseLocation()
-
-    const editCruiseFormDefaultValues: EditCruiseFormValues = EditCruiseFormDefaultValues(location)
+    const cruise = CruiseLocationData()
+    const editCruiseFormDefaultValues = EditCruiseFormDefaultValues(cruise)
 
     const sections = CruiseFormSections()
 
-    const [fetchedCruiseApplications, setFetchedCruiseApplications] = useState<CruiseApplication[]>([])
+    const cruiseIsNew = !cruise || cruise?.status == CruiseStatus.New
+    console.log(cruiseIsNew)
+    const [fetchedCruiseApplications, setFetchedCruiseApplications] = useState([])
     useEffect(() => {
-        if(!fetchedCruiseApplications.length)
-            Api.get('/api/CruiseApplications').then(response =>
+        if(fetchedCruiseApplications.length<=0){
+            Api.get(cruiseIsNew ? '/api/CruiseApplications/forCruise': '/api/CruiseApplications').then(response =>
                 setFetchedCruiseApplications(response?.data))
+        }
+
     }, []);
 
     return (
-        <ApplicationsContext.Provider value={fetchedCruiseApplications}>
+        <CruiseApplicationsContext.Provider value={fetchedCruiseApplications}>
             <FormTemplate sections={sections} type={formType.CruiseDetails} BottomOptionBar={BottomOptionBar}
                           defaultValues={editCruiseFormDefaultValues} />
-        </ApplicationsContext.Provider>
+        </CruiseApplicationsContext.Provider>
     )
 }

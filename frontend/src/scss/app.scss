@@ -441,7 +441,7 @@ $top-bar-min-width: 380px;
 .account-page-credentials-column {
   @extend
   .account-page-column-common,
-  .col-xl-7,
+  .col-md-7,
   .d-flex,
   .flex-column,
   .text-center
@@ -449,7 +449,7 @@ $top-bar-min-width: 380px;
 .account-page-change-password-column{
   @extend
   .account-page-column-common,
-  .col-xl-5,
+  .col-md-5,
   .p-3
 }
 .account-page-data-row{
@@ -458,7 +458,7 @@ $top-bar-min-width: 380px;
   .flex-row,
   .flex-wrap,
   .p-2,
-  .p-xl-5
+  .p-md-5
 }
 .form-page{
   font-size: 0.8rem;

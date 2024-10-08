@@ -81,26 +81,14 @@ const AddedApplicationsField = () => {
 
 export const ApplicationsSection = () => {
     const {UserHasShipownerAccess,UserHasAdminAccess} = UserBasedAccess()
-    const location = extendedUseLocation()
-    const cruiseIsNew = location?.state.cruise.status == CruiseStatus.New
-    const [fetchedCruiseApplications, setFetchedCruiseApplications] = useState([])
-    useEffect(() => {
-        if(fetchedCruiseApplications.length<=0){
-            Api.get(cruiseIsNew ? '/api/CruiseApplications/forCruise': '/api/CruiseApplications').then(response =>
-                setFetchedCruiseApplications(response?.data))
-        }
 
-    }, []);
 
     return SectionWrapper(
         {
             shortTitle: "Zgłoszenia",
             longTitle: (UserHasShipownerAccess() || UserHasAdminAccess()) ? "Zgłoszenia przypisane do rejsu": "Moje zgłoszenia przypisane do rejsu",
             children:
-                <CruiseApplicationsContext.Provider value={fetchedCruiseApplications}>
                     <AddedApplicationsField/>
-                </CruiseApplicationsContext.Provider>
-
         }
     )
 }

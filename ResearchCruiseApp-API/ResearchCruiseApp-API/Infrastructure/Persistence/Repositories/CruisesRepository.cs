@@ -18,6 +18,16 @@ internal class CruisesRepository : Repository<Cruise>, ICruisesRepository
             .Where(cruise => cruise.Id == id)
             .SingleOrDefaultAsync(cancellationToken);
     }
+    
+    public Task<Cruise?> GetByIdWithCruiseApplicationsWithForm(Guid id, CancellationToken cancellationToken)
+    {
+        return DbContext.Cruises
+            .Include(cruise => cruise.CruiseApplications)
+            .Where(cruise => cruise.Id == id)
+            .Include(cruise=>cruise.CruiseApplications)
+            .ThenInclude(cruiseApplication=>cruiseApplication.FormA)
+            .SingleOrDefaultAsync(cancellationToken);
+    }
 
     public Task<List<Cruise>> GetAllWithCruiseApplications(CancellationToken cancellationToken)
     {

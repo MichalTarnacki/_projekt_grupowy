@@ -11,7 +11,7 @@ import CruisesPage from "./Pages/CruisesPage/CruisesPage";
 import CruiseFormPage from "./Pages/CruiseFormPage/CruiseFormPage";
 import ManagerPanel from "./Pages/HomePage/ManagerPanel";
 import LogoutPage from "./Pages/LoginPage/LogoutPage";
-import AccountPage from "./Pages/AccountPage/AccountPage";
+import AccountPage from "./Pages/Account/AccountPage";
 import EmailConfirmPage from "./Pages/LoginPage/EmailConfirmPage";
 import LoginPage from "./Pages/LoginPage/LoginPage";
 import React from "react";
