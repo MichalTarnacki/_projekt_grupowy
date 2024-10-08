@@ -9,11 +9,8 @@ public static class StringExtensions
                !value.Equals("false", StringComparison.CurrentCultureIgnoreCase);
     }
 
-    public static T ToEnum<T>(this string value) where T : struct
+    public static T ToEnum<T>(this string value) where T : Enum
     {
-        if (!typeof(T).IsEnum)
-            throw new ArgumentException("T must be an enum.");
-
         return (T)Enum.Parse(typeof(T), value);
     }
 }

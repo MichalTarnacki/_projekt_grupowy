@@ -185,7 +185,8 @@ public class FormsBFactory(
             var formBResearchEquipment = new FormBResearchEquipment
             {
                 ResearchEquipment = researchEquipment,
-                Insurance = researchEquipmentDto.Insurance,
+                InsuranceStartDate = researchEquipmentDto.InsuranceStartDate,
+                InsuranceEndDate = researchEquipmentDto.InsuranceEndDate,
                 Permission = researchEquipmentDto.Permission
             };
             formB.FormBResearchEquipments.Add(formBResearchEquipment);

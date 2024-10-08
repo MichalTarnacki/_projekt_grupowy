@@ -10,7 +10,10 @@ public class FormBResearchEquipment : Entity
     public ResearchEquipment ResearchEquipment { get; init; } = null!;
 
     [StringLength(1024)]
-    public string Insurance { get; init; } = null!;
+    public string? InsuranceStartDate { get; init; }
+    
+    [StringLength(1024)]
+    public string? InsuranceEndDate { get; init; }
 
     [StringLength(1024)]
     public string Permission { get; init; } = null!;
