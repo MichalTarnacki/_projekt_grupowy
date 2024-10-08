@@ -19,14 +19,15 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "baseUrl": "./",
+    "baseUrl": "src",
     "paths": {
       "*": [
         "src/types/*"
-      ]
-    },
-    "include": [
-      "src"
-    ]
+      ],
+      "@api": ["api"],
+      "@config": ["config"],
+      "@components/*": ["Components/*"]
+
+    }
   }
 }
