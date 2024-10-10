@@ -20,14 +20,55 @@
     "noEmit": true,
     "jsx": "preserve",
     "baseUrl": "src",
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "src/**/*.d.ts"
+      // Dodaj ten wpis, aby uwzględnić pliki deklaracji
+    ],
     "paths": {
-      "*": [
-        "src/types/*"
+      "@api/*": [
+        "api/*"
       ],
-      "@api": ["api"],
-      "@config": ["config"],
-      "@components/*": ["Components/*"]
-
+      "@app/*": [
+        "app/*"
+      ],
+      "@assets/*": [
+        "assets/*"
+      ],
+      "@components/*": [
+        "components/*"
+      ],
+      "@config/*": [
+        "config/*"
+      ],
+      "@consts/*": [
+        "consts/*"
+      ],
+      "@defaultValues/*": [
+        "defaultValues/*"
+      ],
+      "@enums/*": [
+        "enums/*"
+      ],
+      "@helpers/*": [
+        "defaultValues/*"
+      ],
+      "@hooks/*": [
+        "hooks/*"
+      ],
+      "@resources/*": [
+        "resources/*"
+      ],
+      "@styles/*": [
+        "styles/*"
+      ],
+      "@types/*": [
+        "types/*"
+      ],
+      "@contexts/*": [
+        "contexts/*"
+      ]
     }
   }
 }
