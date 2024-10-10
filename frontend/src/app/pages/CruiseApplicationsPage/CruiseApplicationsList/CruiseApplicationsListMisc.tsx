@@ -13,7 +13,7 @@ export const sortCruiseApplicationsByDate = (cruiseApplications: CruiseApplicati
 ];
 
 export const sortCruiseApplicationsByYear = (cruiseApplications: CruiseApplication[]) => [
-    ...cruiseApplications.sort((a: CruiseApplication, b: CruiseApplication): number =>
+    ...cruiseApplications?.sort((a: CruiseApplication, b: CruiseApplication): number =>
         (Number(a.year) - Number(b.year)),
     ),
 ];
