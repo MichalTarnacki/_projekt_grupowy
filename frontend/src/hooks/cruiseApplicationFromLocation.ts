@@ -1,8 +1,8 @@
-import { useLocation } from 'react-router-dom';
+import { extendedUseLocation } from '@hooks/extendedUseLocation';
 import { CruiseApplication } from '@types/CruiseApplication';
 
 const cruiseApplicationFromLocation = () => {
-    const location = useLocation();
+    const location = extendedUseLocation();
     return location?.state?.cruiseApplication as CruiseApplication;
 };
 

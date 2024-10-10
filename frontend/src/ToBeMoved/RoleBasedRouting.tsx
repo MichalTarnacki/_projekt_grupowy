@@ -19,6 +19,7 @@ import FormAForSupervisorPage from '../app/pages/FormAForSupervisorPage';
 import RegisterPage from '../app/pages/NotLoggedInPage/RegisterPage/RegisterPage';
 import ResetPasswordPage from '../app/pages/NotLoggedInPage/ResetPasswordPage/ResetPasswordPage';
 import WaitingPage from '../app/pages/WaitingPage';
+import PriorityInformationPage from '../Components/Pages/PriorityInformationPage/PriorityInformationPage';
 
 const RoleBasedRouting = () => {
     const {
@@ -99,6 +100,7 @@ const RoleBasedRouting = () => {
             <>
                 <Route path={Path.ForcedLogout} element={<LogoutPage />} />
                 <Route path={Path.AccountSettings} element={<AccountPage />} />
+                <Route path={Path.PriorityInformation} element={<PriorityInformationPage />} />
             </>
         );
     };

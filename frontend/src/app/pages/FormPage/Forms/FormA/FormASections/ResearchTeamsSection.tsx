@@ -4,7 +4,7 @@ import { SectionWrapper } from '@components/Form/Section/SectionWrapper';
 
 export const researchTeamsSectionFieldNames = {
     ugTeams: 'ugTeams',
-    guestTeams: 'guestUnits',
+    guestTeams: 'guestTeams',
 };
 
 export const ResearchTeamsSection = () => SectionWrapper(
