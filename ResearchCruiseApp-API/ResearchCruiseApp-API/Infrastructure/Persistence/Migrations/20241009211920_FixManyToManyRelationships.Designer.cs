@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ResearchCruiseApp_API.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using ResearchCruiseApp_API.Infrastructure.Persistence;
 namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241009211920_FixManyToManyRelationships")]
+    partial class FixManyToManyRelationships
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -962,6 +965,7 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AdditionalDescription")
+                        .IsRequired()
                         .HasMaxLength(1024)
                         .HasColumnType("nvarchar(1024)");
 
@@ -974,6 +978,7 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(1024)");
 
                     b.Property<string>("SpubReportData")
+                        .IsRequired()
                         .HasMaxLength(1024)
                         .HasColumnType("nvarchar(1024)");
 

@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
+using ResearchCruiseApp_API.Domain.Common.Interfaces;
 
 namespace ResearchCruiseApp_API.Domain.Entities;
 
 
-public class CruiseDayDetails : Entity
+public class CruiseDayDetails : Entity, IEquatableByExpression<CruiseDayDetails>
 {
     [StringLength(1024)]
     public string Number { get; init; } = null!;
@@ -23,27 +25,20 @@ public class CruiseDayDetails : Entity
     [StringLength(1024)]
     public string Comment { get; init; } = null!;
 
+    public List<FormB> FormsB { get; init; } = [];
     
-    public override bool Equals(object? other)
-    {
-        if (other is not CruiseDayDetails otherCruiseDayDetails)
-            return false;
+    public List<FormC> FormsC { get; init; } = [];
 
-        return otherCruiseDayDetails.Number == Number &&
-               otherCruiseDayDetails.Hours == Hours &&
-               otherCruiseDayDetails.TaskName == TaskName &&
-               otherCruiseDayDetails.Region == Region &&
-               otherCruiseDayDetails.Position == Position &&
-               otherCruiseDayDetails.Comment == Comment;
-    }
 
-    public override int GetHashCode()
+    public static Expression<Func<CruiseDayDetails, bool>> EqualsByExpression(CruiseDayDetails? other)
     {
-        return Number.GetHashCode() + 
-               Hours.GetHashCode() +
-               TaskName.GetHashCode() +
-               Region.GetHashCode() +
-               Position.GetHashCode() +
-               Comment.GetHashCode();
+        return cruiseDayDetails =>
+            other != null &&
+            other.Number == cruiseDayDetails.Number &&
+            other.Hours == cruiseDayDetails.Hours &&
+            other.TaskName == cruiseDayDetails.TaskName &&
+            other.Region == cruiseDayDetails.Region &&
+            other.Position == cruiseDayDetails.Position &&
+            other.Comment == cruiseDayDetails.Comment;
     }
 }

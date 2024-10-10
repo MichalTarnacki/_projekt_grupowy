@@ -5,6 +5,7 @@ using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AcceptCruiseApplication;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AddCruiseApplication;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AddFormB;
+using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AddFormC;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AnswerAsSupervisor;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.EditCruiseApplicationEvaluation;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetAllCruiseApplications;
@@ -76,10 +77,10 @@ public class CruiseApplicationsController(IMediator mediator) : ControllerBase
     }
     
     [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.CruiseManager}")]
-    [HttpPost("{id:guid}/FormB")]
-    public async Task<IActionResult> AddFormB(Guid id, [FromBody] FormBDto formBDto)
+    [HttpPost("{cruiseApplicationId:guid}/FormB")]
+    public async Task<IActionResult> AddFormB(Guid cruiseApplicationId, [FromBody] FormBDto formBDto)
     {
-        var result = await mediator.Send(new AddFormBCommand(id, formBDto));
+        var result = await mediator.Send(new AddFormBCommand(cruiseApplicationId, formBDto));
         return result.IsSuccess
             ? Created()
             : this.CreateError(result);
@@ -136,6 +137,16 @@ public class CruiseApplicationsController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(new GetFormBQuery(cruiseApplicationId));
         return result.IsSuccess
             ? Ok(result.Data)
+            : this.CreateError(result);
+    }
+    
+    [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.CruiseManager}")]
+    [HttpPost("{cruiseApplicationId:guid}/FormC")]
+    public async Task<IActionResult> AddFormC(Guid cruiseApplicationId, [FromBody] FormCDto formCDto)
+    {
+        var result = await mediator.Send(new AddFormCCommand(cruiseApplicationId, formCDto));
+        return result.IsSuccess
+            ? Created()
             : this.CreateError(result);
     }
 }

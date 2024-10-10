@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
+using ResearchCruiseApp_API.Domain.Common.Interfaces;
 
 namespace ResearchCruiseApp_API.Domain.Entities;
 
 
-public class CrewMember : Entity
+public class CrewMember : Entity, IEquatableByExpression<CrewMember>
 {
     [StringLength(1024)]
     public string Title { get; init; } = null!;
@@ -32,30 +34,17 @@ public class CrewMember : Entity
     public List<FormB> FormsB { get; set; } = [];
 
 
-    public override bool Equals(object? other)
+    public static Expression<Func<CrewMember, bool>> EqualsByExpression(CrewMember? other)
     {
-        if (other is not CrewMember otherCrewMember)
-            return false;
-        
-        return otherCrewMember.Title == Title &&
-               otherCrewMember.FirstName == FirstName &&
-               otherCrewMember.LastName == LastName &&
-               otherCrewMember.BirthPlace == BirthPlace &&
-               otherCrewMember.BirthDate == BirthDate &&
-               otherCrewMember.DocumentNumber == DocumentNumber &&
-               otherCrewMember.DocumentExpiryDate == DocumentExpiryDate &&
-               otherCrewMember.Institution == Institution;
-    }
-
-    public override int GetHashCode()
-    {
-        return Title.GetHashCode() +
-               FirstName.GetHashCode() +
-               LastName.GetHashCode() +
-               BirthPlace.GetHashCode() +
-               BirthDate.GetHashCode() +
-               DocumentNumber.GetHashCode() +
-               DocumentExpiryDate.GetHashCode() +
-               Institution.GetHashCode();
+        return crewMember =>
+            other != null &&
+            other.Title == crewMember.Title &&
+            other.FirstName == crewMember.FirstName &&
+            other.LastName == crewMember.LastName &&
+            other.BirthPlace == crewMember.BirthPlace &&
+            other.BirthDate == crewMember.BirthDate &&
+            other.DocumentNumber == crewMember.DocumentNumber &&
+            other.DocumentExpiryDate == crewMember.DocumentExpiryDate &&
+            other.Institution == crewMember.Institution;
     }
 }

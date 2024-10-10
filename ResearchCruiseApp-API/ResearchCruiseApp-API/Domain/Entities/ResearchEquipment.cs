@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
+using ResearchCruiseApp_API.Domain.Common.Interfaces;
 
 namespace ResearchCruiseApp_API.Domain.Entities;
 
 
-public class ResearchEquipment : Entity
+public class ResearchEquipment : Entity, IEquatableByExpression<ResearchEquipment>
 {
     [StringLength(1024)]
     public string Name { get; init; } = null!;
@@ -21,16 +23,10 @@ public class ResearchEquipment : Entity
     public List<FormCResearchEquipment> FormCResearchEquipments { get; init; } = [];
 
 
-    public override bool Equals(object? other)
+    public static Expression<Func<ResearchEquipment, bool>> EqualsByExpression(ResearchEquipment? other)
     {
-        if (other is not ResearchEquipment otherResearchEquipment)
-            return false;
-
-        return otherResearchEquipment.Name == Name;
-    }
-
-    public override int GetHashCode()
-    {
-        return Name.GetHashCode();
+        return researchEquipment =>
+            other != null &&
+            researchEquipment.Name == other.Name;
     }
 }

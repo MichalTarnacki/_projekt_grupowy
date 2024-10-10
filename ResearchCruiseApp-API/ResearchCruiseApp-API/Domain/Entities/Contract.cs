@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
+using ResearchCruiseApp_API.Domain.Common.Interfaces;
 
 namespace ResearchCruiseApp_API.Domain.Entities;
 
 
-public class Contract : Entity
+public class Contract : Entity, IEquatableByExpression<Contract>
 {
       [StringLength(1024)]
       public string Category { get; init; } = null!;
@@ -48,30 +50,20 @@ public class Contract : Entity
       }
 
       public List<FormAContract> FormAContracts { get; init; } = [];
-      
-      
-      public override bool Equals(object? other)
-      {
-            if (other is not Contract otherContract)
-                  return false;
-          
-            return otherContract.Category == Category &&
-                   otherContract.InstitutionName == InstitutionName &&
-                   otherContract.InstitutionUnit == InstitutionUnit &&
-                   otherContract.InstitutionLocalization == InstitutionLocalization &&
-                   otherContract.Description == Description &&
-                   otherContract.ScanName == ScanName &&
-                   otherContract.ScanContent.SequenceEqual(ScanContent);
-      }
 
-      public override int GetHashCode()
+      public List<FormC> FormsC { get; init; } = [];
+
+
+      public static Expression<Func<Contract, bool>> EqualsByExpression(Contract? other)
       {
-            return Category.GetHashCode() +
-                   InstitutionName.GetHashCode() +
-                   InstitutionUnit.GetHashCode() +
-                   InstitutionLocalization.GetHashCode() +
-                   Description.GetHashCode() +
-                   ScanName.GetHashCode() +
-                   ScanContent.GetHashCode();
+            return contract =>
+                  other != null &&
+                  other.Category == contract.Category &&
+                  other.InstitutionName == contract.InstitutionName &&
+                  other.InstitutionUnit == contract.InstitutionUnit &&
+                  other.InstitutionLocalization == contract.InstitutionLocalization &&
+                  other.Description == contract.Description &&
+                  other.ScanName == contract.ScanName &&
+                  other.ScanContent.SequenceEqual(contract.ScanContent);
       }
 }

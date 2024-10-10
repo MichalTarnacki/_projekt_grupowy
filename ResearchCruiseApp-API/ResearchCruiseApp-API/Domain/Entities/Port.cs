@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
+using ResearchCruiseApp_API.Domain.Common.Interfaces;
 
 namespace ResearchCruiseApp_API.Domain.Entities;
 
 
-public class Port : Entity
+public class Port : Entity, IEquatableByExpression<Port>
 {
     [StringLength(1024)]
     public string Name { get; init; } = null!;
@@ -13,16 +15,10 @@ public class Port : Entity
     public List<FormCPort> FormCPorts { get; init; } = [];
 
 
-    public override bool Equals(object? other)
+    public static Expression<Func<Port, bool>> EqualsByExpression(Port? other)
     {
-        if (other is not Port otherPort)
-            return false;
-
-        return otherPort.Name == Name;
-    }
-
-    public override int GetHashCode()
-    {
-        return Name.GetHashCode();
+        return port =>
+            other != null &&
+            other.Name != port.Name;
     }
 }

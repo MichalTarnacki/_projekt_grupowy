@@ -1,36 +1,32 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
+using ResearchCruiseApp_API.Domain.Common.Interfaces;
 
 namespace ResearchCruiseApp_API.Domain.Entities;
 
 
-public class SpubTask : Entity
+public class SpubTask : Entity, IEquatableByExpression<SpubTask>
 {
-    [StringLength(1024)] public string YearFrom { get; init; } = null!;
-
-    [StringLength(1024)] public string YearTo { get; init; } = null!;
-    
     [StringLength(1024)]
     public string Name { get; init; } = null!;
+    
+    [StringLength(1024)]
+    public string YearFrom { get; init; } = null!;
+
+    [StringLength(1024)]
+    public string YearTo { get; init; } = null!;
     
     public List<FormASpubTask> FormASpubTasks { get; init; } = [];
     
     public List<FormCSpubTask> FormCSpubTasks { get; init; } = [];
 
 
-    public override bool Equals(object? other)
+    public static Expression<Func<SpubTask, bool>> EqualsByExpression(SpubTask? other)
     {
-        if (other is not SpubTask otherSpubTask)
-            return false;
-
-        return otherSpubTask.YearFrom == YearFrom &&
-               otherSpubTask.YearTo == YearTo &&
-               otherSpubTask.Name == Name;
-    }
-
-    public override int GetHashCode()
-    {
-        return YearFrom.GetHashCode() +
-               YearTo.GetHashCode() +
-               Name.GetHashCode();
+        return spubTask =>
+            other != null &&
+            other.Name == spubTask.Name &&
+            other.YearFrom == spubTask.YearFrom &&
+            other.YearTo == spubTask.YearTo;
     }
 }

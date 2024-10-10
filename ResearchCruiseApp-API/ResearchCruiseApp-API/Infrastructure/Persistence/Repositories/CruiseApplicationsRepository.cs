@@ -27,14 +27,6 @@ internal class CruiseApplicationsRepository : Repository<CruiseApplication>, ICr
             .Include(cruiseApplication => cruiseApplication.FormA)
             .SingleOrDefaultAsync(cruiseApplication => cruiseApplication.Id == id, cancellationToken);
     }
-    
-    public Task<CruiseApplication?> GetByIdWithFormsAndFormAContent(Guid id, CancellationToken cancellationToken)
-    {
-        return DbContext.CruiseApplications
-            .IncludeForms()
-            .IncludeFormAContent()
-            .SingleOrDefaultAsync(cruiseApplication => cruiseApplication.Id == id, cancellationToken);
-    }
 
     public Task<CruiseApplication?> GetByIdWithFormAContent(Guid id, CancellationToken cancellationToken)
     {
@@ -44,6 +36,29 @@ internal class CruiseApplicationsRepository : Repository<CruiseApplication>, ICr
             .SingleOrDefaultAsync(cruiseApplication => cruiseApplication.Id == id, cancellationToken);
     }
 
+    public Task<CruiseApplication?> GetByIdWithFormAAndFormB(Guid id, CancellationToken cancellationToken)
+    {
+        return DbContext.CruiseApplications
+            .IncludeFormA()
+            .IncludeFormB()
+            .SingleOrDefaultAsync(cruiseApplication => cruiseApplication.Id == id, cancellationToken);
+    }
+
+    public Task<CruiseApplication?> GetByIdWithForms(Guid id, CancellationToken cancellationToken)
+    {
+        return DbContext.CruiseApplications
+            .IncludeForms()
+            .SingleOrDefaultAsync(cruiseApplication => cruiseApplication.Id == id, cancellationToken);
+    }
+    
+    public Task<CruiseApplication?> GetByIdWithFormsAndFormAContent(Guid id, CancellationToken cancellationToken)
+    {
+        return DbContext.CruiseApplications
+            .IncludeForms()
+            .IncludeFormAContent()
+            .SingleOrDefaultAsync(cruiseApplication => cruiseApplication.Id == id, cancellationToken);
+    }
+    
     public Task<CruiseApplication?> GetByIdWithFormAAndFormBContent(Guid id, CancellationToken cancellationToken)
     {
         return DbContext.CruiseApplications

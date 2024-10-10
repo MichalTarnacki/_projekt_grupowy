@@ -9,9 +9,13 @@ public interface ICruiseApplicationsRepository : IRepository<CruiseApplication>
     
     Task<CruiseApplication?> GetByIdWithFormA(Guid id, CancellationToken cancellationToken);
     
-    Task<CruiseApplication?> GetByIdWithFormsAndFormAContent(Guid id, CancellationToken cancellationToken);
-    
     Task<CruiseApplication?> GetByIdWithFormAContent(Guid id, CancellationToken cancellationToken);
+    
+    Task<CruiseApplication?> GetByIdWithFormAAndFormB(Guid id, CancellationToken cancellationToken);
+    
+    Task<CruiseApplication?> GetByIdWithForms(Guid id, CancellationToken cancellationToken);
+    
+    Task<CruiseApplication?> GetByIdWithFormsAndFormAContent(Guid id, CancellationToken cancellationToken);
     
     Task<CruiseApplication?> GetByIdWithFormAAndFormBContent(Guid id, CancellationToken cancellationToken);
     

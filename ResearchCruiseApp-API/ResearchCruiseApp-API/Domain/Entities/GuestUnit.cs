@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
+using ResearchCruiseApp_API.Domain.Common.Interfaces;
 
 namespace ResearchCruiseApp_API.Domain.Entities;
 
 
-public class GuestUnit : Entity
+public class GuestUnit : Entity, IEquatableByExpression<GuestUnit>
 {
     [StringLength(1024)]
     public string Name { get; init; } = null!;
@@ -15,16 +17,10 @@ public class GuestUnit : Entity
     public List<FormCGuestUnit> FormCGuestUnits { get; init; } = [];
     
     
-    public override bool Equals(object? other)
+    public static Expression<Func<GuestUnit, bool>> EqualsByExpression(GuestUnit? other)
     {
-        if (other is not GuestUnit otherGuestUnit)
-            return false;
-
-        return otherGuestUnit.Name == Name;
-    }
-    
-    public override int GetHashCode()
-    {
-        return Name.GetHashCode();
+        return guestUnit =>
+            other != null &&
+            other.Name == guestUnit.Name;
     }
 }

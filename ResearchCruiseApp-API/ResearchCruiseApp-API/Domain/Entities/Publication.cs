@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
+using ResearchCruiseApp_API.Domain.Common.Interfaces;
 
 namespace ResearchCruiseApp_API.Domain.Entities;
 
 
-public class Publication: Entity
+public class Publication: Entity, IEquatableByExpression<Publication>
 {
     [StringLength(1024)]
     public string Category { get; init; } = null!;
@@ -27,29 +29,18 @@ public class Publication: Entity
     public string MinisterialPoints { get; init; } = null!;
     
     public List<FormAPublication> FormAPublications { get; init; } = [];
+
     
-    public override bool Equals(object? other)
+    public static Expression<Func<Publication, bool>> EqualsByExpression(Publication? other)
     {
-        if (other is not Publication otherPublication)
-            return false;
-
-        return otherPublication.Category == Category &&
-               otherPublication.Doi == Doi &&
-               otherPublication.Authors == Authors &&
-               otherPublication.Title == Title &&
-               otherPublication.Magazine == Magazine &&
-               otherPublication.Year == Year &&
-               otherPublication.MinisterialPoints == MinisterialPoints;
-    }
-
-    public override int GetHashCode()
-    {
-        return Category.GetHashCode() +
-               Doi.GetHashCode() +
-               Authors.GetHashCode() +
-               Title.GetHashCode() +
-               Magazine.GetHashCode() +
-               Year.GetHashCode() +
-               MinisterialPoints.GetHashCode();
+        return publication =>
+            other != null &&
+            other.Category == publication.Category &&
+            other.Doi == publication.Doi &&
+            other.Authors == publication.Authors &&
+            other.Title == publication.Title &&
+            other.Magazine == publication.Magazine &&
+            other.Year == publication.Year &&
+            other.MinisterialPoints == publication.MinisterialPoints;
     }
 }

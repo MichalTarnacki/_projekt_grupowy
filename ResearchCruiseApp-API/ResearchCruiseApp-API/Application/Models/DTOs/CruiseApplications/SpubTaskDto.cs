@@ -6,9 +6,11 @@ namespace ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
 
 public class SpubTaskDto
 {
-    public string YearFrom { get; set; } = null!;
-    public string YearTo { get; set; } = null!;
-    public string Name { get; set; } = null!;
+    public string Name { get; init; } = null!;
+    
+    public string YearFrom { get; init; } = null!;
+    
+    public string YearTo { get; init; } = null!;
     
     
     private class MapProfile : Profile
