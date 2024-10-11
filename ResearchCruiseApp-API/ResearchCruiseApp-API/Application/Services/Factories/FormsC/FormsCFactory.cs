@@ -26,7 +26,7 @@ public class FormsCFactory(
         await AddResearchArea(formC, formCDto, cancellationToken);
         await AddFormCUgUnits(formC, formCDto, cancellationToken);
         await AddFormCGuestUnits(formC, formCDto, cancellationToken);
-        await AddFormCResearchTasks(formC, formCDto, cancellationToken);
+        await AddResearchTaskEffects(formC, formCDto, cancellationToken);
         await AddContracts(formC, formCDto, cancellationToken);
         await AddFormCSpubTasks(formC, formCDto, cancellationToken);
         await AddFormCPorts(formC, formCDto, cancellationToken);
@@ -90,7 +90,7 @@ public class FormsCFactory(
         }
     }
 
-    private async Task AddFormCResearchTasks(FormC formC, FormCDto formCDto, CancellationToken cancellationToken)
+    private async Task AddResearchTaskEffects(FormC formC, FormCDto formCDto, CancellationToken cancellationToken)
     {
         var alreadyAddedResearchTasks = new HashSet<ResearchTask>();
         
@@ -100,14 +100,14 @@ public class FormsCFactory(
                 .GetUniqueResearchTask(researchTaskEffectDto, alreadyAddedResearchTasks, cancellationToken);
             alreadyAddedResearchTasks.Add(researchTask);
             
-            var formCResearchTask = new FormCResearchTask
+            var formCResearchTask = new ResearchTaskEffect
             {
                 ResearchTask = researchTask,
                 Done = researchTaskEffectDto.Done,
                 ManagerConditionMet = researchTaskEffectDto.ManagerConditionMet,
                 DeputyConditionMet = researchTaskEffectDto.DeputyConditionMet
             };
-            formC.FormCResearchTasks.Add(formCResearchTask);
+            formC.ResearchTaskEffects.Add(formCResearchTask);
         }
     }
 

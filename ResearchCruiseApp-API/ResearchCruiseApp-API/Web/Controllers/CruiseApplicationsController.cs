@@ -14,6 +14,7 @@ using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetCruiseApp
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetFormA;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetFormAForSupervisor;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetFormB;
+using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetFormC;
 using ResearchCruiseApp_API.Domain.Common.Constants;
 using ResearchCruiseApp_API.Web.Common.Extensions;
 
@@ -147,6 +148,16 @@ public class CruiseApplicationsController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(new AddFormCCommand(cruiseApplicationId, formCDto));
         return result.IsSuccess
             ? Created()
+            : this.CreateError(result);
+    }
+
+    [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.CruiseManager}")]
+    [HttpGet("{cruiseApplicationId:guid}/FormC")]
+    public async Task<IActionResult> GetFormC(Guid cruiseApplicationId)
+    {
+        var result = await mediator.Send(new GetFormCQuery(cruiseApplicationId));
+        return result.IsSuccess
+            ? Ok(result.Data)
             : this.CreateError(result);
     }
 }

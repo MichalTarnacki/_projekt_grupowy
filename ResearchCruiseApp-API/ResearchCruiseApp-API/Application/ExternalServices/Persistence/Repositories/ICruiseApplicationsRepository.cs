@@ -18,10 +18,10 @@ public interface ICruiseApplicationsRepository : IRepository<CruiseApplication>
     Task<CruiseApplication?> GetByIdWithFormsAndFormAContent(Guid id, CancellationToken cancellationToken);
     
     Task<CruiseApplication?> GetByIdWithFormAAndFormBContent(Guid id, CancellationToken cancellationToken);
+
+    Task<CruiseApplication?> GetByIdWithFormAAndFormCContent(Guid id, CancellationToken cancellationToken);
     
     Task<List<CruiseApplication>> GetAllByIds(List<Guid> ids, CancellationToken cancellationToken);
-    
-    Task<FormA?> GetFormAByCruiseApplicationId(Guid id, CancellationToken cancellationToken);
     
     Task<List<CruiseApplication>> GetAllByUserIdWithFormA(Guid userId, CancellationToken cancellationToken);
 }

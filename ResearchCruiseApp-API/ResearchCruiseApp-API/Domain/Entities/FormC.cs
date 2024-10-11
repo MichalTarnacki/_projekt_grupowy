@@ -16,7 +16,7 @@ public class FormC : Entity
     
     public List<FormCGuestUnit> FormCGuestUnits { get; init; } = [];
 
-    public List<FormCResearchTask> FormCResearchTasks { get; init; } = [];
+    public List<ResearchTaskEffect> ResearchTaskEffects { get; init; } = [];
 
     public List<Contract> Contracts { get; init; } = [];
 

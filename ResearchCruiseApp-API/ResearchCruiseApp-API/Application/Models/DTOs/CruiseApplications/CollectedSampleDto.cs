@@ -25,6 +25,8 @@ public class CollectedSampleDto
         public MapProfile()
         {
             CreateMap<CollectedSampleDto, CollectedSample>();
+            
+            CreateMap<CollectedSample, CollectedSampleDto>();
         }
     }
 }
