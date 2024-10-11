@@ -37,7 +37,7 @@ public class CruiseDto
                     dest => dest.Status,
                     options =>
                         options.MapFrom(src => 
-                            src.Status.GetStringValue()
+                            src.Status
                         ))
                 .ForMember(
                     dest => dest.CruiseApplicationsShortInfo,

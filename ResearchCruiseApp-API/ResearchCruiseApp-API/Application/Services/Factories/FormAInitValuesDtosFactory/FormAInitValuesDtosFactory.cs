@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using AutoMapper;
-using Microsoft.AspNetCore.SignalR.Protocol;
 using ResearchCruiseApp_API.Application.Common.Models.DTOs;
 using ResearchCruiseApp_API.Application.ExternalServices;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
@@ -8,7 +7,6 @@ using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
 using ResearchCruiseApp_API.Application.Models.DTOs.Forms;
 using ResearchCruiseApp_API.Application.Services.Factories.ContractDtos;
 using ResearchCruiseApp_API.Application.Services.Factories.FormUserDtos;
-using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetAllCruiseApplications;
 using ResearchCruiseApp_API.Domain.Entities;
 
 namespace ResearchCruiseApp_API.Application.Services.Factories.FormAInitValuesDtosFactory;

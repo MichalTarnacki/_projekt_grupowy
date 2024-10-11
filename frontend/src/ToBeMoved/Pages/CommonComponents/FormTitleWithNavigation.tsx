@@ -1,5 +1,6 @@
 export const formType = {
   A: 'A',
+  AForSupervisor: "AForSupervisor",
   B: 'B',
   C: 'C',
   ApplicationDetails: '0',
