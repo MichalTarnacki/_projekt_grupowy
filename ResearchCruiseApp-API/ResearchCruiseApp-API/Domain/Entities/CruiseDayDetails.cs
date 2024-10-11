@@ -5,7 +5,7 @@ using ResearchCruiseApp_API.Domain.Common.Interfaces;
 namespace ResearchCruiseApp_API.Domain.Entities;
 
 
-public class CruiseDayDetails : Entity, IEquatableByExpression<CruiseDayDetails>
+public class CruiseDayDetails : Entity, IEquatable<CruiseDayDetails>, IEquatableByExpression<CruiseDayDetails>
 {
     [StringLength(1024)]
     public string Number { get; init; } = null!;
@@ -29,6 +29,30 @@ public class CruiseDayDetails : Entity, IEquatableByExpression<CruiseDayDetails>
     
     public List<FormC> FormsC { get; init; } = [];
 
+
+    public override bool Equals(object? other) =>
+        Equals((CruiseDayDetails?)other);
+
+    public override int GetHashCode()
+    {
+        return Number.GetHashCode() + 
+               Hours.GetHashCode() +
+               TaskName.GetHashCode() +
+               Region.GetHashCode() +
+               Position.GetHashCode() +
+               Comment.GetHashCode();
+    }
+    
+    public bool Equals(CruiseDayDetails? other)
+    {
+        return other is not null &&
+               other.Number == Number &&
+               other.Hours == Hours &&
+               other.TaskName == TaskName &&
+               other.Region == Region &&
+               other.Position == Position &&
+               other.Comment == Comment;
+    }
 
     public static Expression<Func<CruiseDayDetails, bool>> EqualsByExpression(CruiseDayDetails? other)
     {

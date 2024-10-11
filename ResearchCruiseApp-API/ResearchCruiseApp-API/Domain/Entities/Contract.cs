@@ -5,7 +5,7 @@ using ResearchCruiseApp_API.Domain.Common.Interfaces;
 namespace ResearchCruiseApp_API.Domain.Entities;
 
 
-public class Contract : Entity, IEquatableByExpression<Contract>
+public class Contract : Entity, IEquatable<Contract>, IEquatableByExpression<Contract>
 {
       [StringLength(1024)]
       public string Category { get; init; } = null!;
@@ -53,6 +53,32 @@ public class Contract : Entity, IEquatableByExpression<Contract>
 
       public List<FormC> FormsC { get; init; } = [];
 
+
+      public override bool Equals(object? other) =>
+            Equals((Contract?) other);
+
+      public override int GetHashCode()
+      {
+            return Category.GetHashCode() +
+                   InstitutionName.GetHashCode() +
+                   InstitutionUnit.GetHashCode() +
+                   InstitutionLocalization.GetHashCode() +
+                   Description.GetHashCode() +
+                   ScanName.GetHashCode() +
+                   ScanContent.GetHashCode();
+      }
+      
+      public bool Equals(Contract? other)
+      {
+            return other is not null &&
+                   other.Category == Category &&
+                   other.InstitutionName == InstitutionName &&
+                   other.InstitutionUnit == InstitutionUnit &&
+                   other.InstitutionLocalization == InstitutionLocalization &&
+                   other.Description == Description &&
+                   other.ScanName == ScanName &&
+                   other.ScanContent.SequenceEqual(ScanContent);
+      }
 
       public static Expression<Func<Contract, bool>> EqualsByExpression(Contract? other)
       {

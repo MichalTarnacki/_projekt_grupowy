@@ -5,7 +5,7 @@ using ResearchCruiseApp_API.Domain.Common.Interfaces;
 namespace ResearchCruiseApp_API.Domain.Entities;
 
 
-public class Port : Entity, IEquatableByExpression<Port>
+public class Port : Entity, IEquatable<Port>, IEquatableByExpression<Port>
 {
     [StringLength(1024)]
     public string Name { get; init; } = null!;
@@ -14,6 +14,20 @@ public class Port : Entity, IEquatableByExpression<Port>
 
     public List<FormCPort> FormCPorts { get; init; } = [];
 
+
+    public override bool Equals(object? other) =>
+        Equals((Port?)other);
+
+    public override int GetHashCode()
+    {
+        return Name.GetHashCode();
+    }
+    
+    public bool Equals(Port? other)
+    {
+        return other is not null &&
+               other.Name == Name;
+    }
 
     public static Expression<Func<Port, bool>> EqualsByExpression(Port? other)
     {

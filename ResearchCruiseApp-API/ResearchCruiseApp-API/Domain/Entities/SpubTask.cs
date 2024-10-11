@@ -5,7 +5,7 @@ using ResearchCruiseApp_API.Domain.Common.Interfaces;
 namespace ResearchCruiseApp_API.Domain.Entities;
 
 
-public class SpubTask : Entity, IEquatableByExpression<SpubTask>
+public class SpubTask : Entity, IEquatable<SpubTask>, IEquatableByExpression<SpubTask>
 {
     [StringLength(1024)]
     public string Name { get; init; } = null!;
@@ -21,6 +21,24 @@ public class SpubTask : Entity, IEquatableByExpression<SpubTask>
     public List<FormCSpubTask> FormCSpubTasks { get; init; } = [];
 
 
+    public override bool Equals(object? other) =>
+        Equals((SpubTask?)other);
+
+    public override int GetHashCode()
+    {
+        return YearFrom.GetHashCode() +
+               YearTo.GetHashCode() +
+               Name.GetHashCode();
+    }
+    
+    public bool Equals(SpubTask? other)
+    {
+        return other is not null &&
+               other.YearFrom == YearFrom &&
+               other.YearTo == YearTo &&
+               other.Name == Name;
+    }
+    
     public static Expression<Func<SpubTask, bool>> EqualsByExpression(SpubTask? other)
     {
         return spubTask =>

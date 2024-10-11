@@ -116,8 +116,9 @@ public class FormsFieldsService(
     }
 
 
-    private static T? Find<T>(T searchedObject, IEnumerable<T> collection) where T : Entity
+    private static T? Find<T>(T searchedObject, IEnumerable<T> collection)
+        where T : Entity, IEquatable<T>
     {
-        return collection.FirstOrDefault(obj => obj.Equals(searchedObject));
+        return collection.FirstOrDefault(element => element.Equals(searchedObject));
     }
 }

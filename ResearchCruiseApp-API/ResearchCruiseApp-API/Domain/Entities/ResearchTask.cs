@@ -6,7 +6,7 @@ using ResearchCruiseApp_API.Domain.Common.Interfaces;
 namespace  ResearchCruiseApp_API.Domain.Entities;
 
 
-public class ResearchTask : Entity, IEquatableByExpression<ResearchTask>
+public class ResearchTask : Entity, IEquatable<ResearchTask>, IEquatableByExpression<ResearchTask>
 {
     public ResearchTaskType Type { get; init; }
 
@@ -48,6 +48,38 @@ public class ResearchTask : Entity, IEquatableByExpression<ResearchTask>
     public List<FormCResearchTask> FormCResearchTasks { get; set; } = [];
 
 
+    public override bool Equals(object? other) =>
+        Equals((ResearchTask?)other);
+
+    public override int GetHashCode()
+    {
+        return Type.GetHashCode() +
+            Title?.GetHashCode() ?? 0 +
+            Author?.GetHashCode() ?? 0 +
+            Institution?.GetHashCode() ?? 0 +
+            Date?.GetHashCode() ?? 0 +
+            StartDate?.GetHashCode() ?? 0 +
+            EndDate?.GetHashCode() ?? 0 +
+            FinancingAmount?.GetHashCode() ?? 0 +
+            Description?.GetHashCode() ?? 0 +
+            FinancingApproved?.GetHashCode() ?? 0;
+    }
+    
+    public bool Equals(ResearchTask? other)
+    {
+        return other is not null &&
+               other.Type == Type &&
+               other.Title == Title &&
+               other.Author == Author &&
+               other.Institution == Institution &&
+               other.Date == Date &&
+               other.StartDate == StartDate &&
+               other.EndDate == EndDate &&
+               other.FinancingAmount == FinancingAmount &&
+               other.Description == Description &&
+               other.FinancingApproved == FinancingApproved;
+    }
+    
     public static Expression<Func<ResearchTask, bool>> EqualsByExpression(ResearchTask? other)
     {
         return researchTask =>
