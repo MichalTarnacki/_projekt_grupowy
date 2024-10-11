@@ -42,12 +42,6 @@ public class ResearchTaskEffectDto : IResearchTaskDto
     {
         public MapProfile()
         {
-            // CreateMap<ResearchTask, ResearchTaskEffectDto>()
-            //     .ForMember(
-            //         dest => dest.Type,
-            //         options =>
-            //             options.MapFrom(src => ((int)src.Type).ToString()));
-
             CreateMap<ResearchTaskEffect, ResearchTaskEffectDto>()
                 .ForMember(
                     dest => dest.Type,

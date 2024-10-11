@@ -32,7 +32,6 @@ public class FormsCFactory(
         await AddFormCPorts(formC, formCDto, cancellationToken);
         await AddCruiseDaysDetails(formC, formCDto, cancellationToken);
         await AddShipEquipments(formC, formCDto, cancellationToken);
-        AddCollectedSamples(formC, formCDto);
         await AddPhotos(formC, formCDto, cancellationToken);
         
         var alreadyAddedResearchEquipments = new HashSet<ResearchEquipment>();
@@ -257,17 +256,7 @@ public class FormsCFactory(
             formC.ShipEquipments.Add(shipEquipment);
         }
     }
-
-    private void AddCollectedSamples(FormC formC, FormCDto formCDto)
-    {
-        foreach (var collectedSampleDto in formCDto.CollectedSamples)
-        {
-            var collectedSample = mapper.Map<CollectedSample>(collectedSampleDto);
-
-            formC.CollectedSamples.Add(collectedSample);
-        }
-    }
-
+    
     private async Task AddPhotos(FormC formC, FormCDto formCDto, CancellationToken cancellationToken)
     {
         foreach (var photoDto in formCDto.Photos)

@@ -111,7 +111,11 @@ public class FormCDto
                 .ForMember(
                     dest => dest.ResearchEquipments,
                     options =>
-                        options.MapFrom(src => src.FormCResearchEquipments));
+                        options.MapFrom(src => src.FormCResearchEquipments))
+                .ForMember(
+                    dest => dest.Photos,
+                    options =>
+                        options.Ignore());  // Member requires complex logic
         }
     }
 }
