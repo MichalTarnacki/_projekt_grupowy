@@ -1,16 +1,12 @@
-import React from 'react';
-import CruiseBasicInfo from '../../../CruiseFormPage/CruiseFormSections/CruiseBasicInfo';
+import { cruiseFromLocation } from '@hooks/cruiseFromLocation';
 import { SectionWrapper } from '@components/Form/Section/SectionWrapper';
+import CruiseBasicInfo from '@app/pages/CruiseFormPage/CruiseFormSections/CruiseBasicInfo';
 import {
     CruiseApplicationCruiseManagerName,
-} from '../../../CruiseApplicationDetailsPage/CruiseApplicationDetailsFields/CruiseApplicationCruiseManagerName';
+} from '@app/pages/CruiseApplicationDetailsPage/CruiseApplicationDetailsFields/CruiseApplicationCruiseManagerName';
 import {
     CruiseApplicationDeputyManagerName,
-} from '../../../CruiseApplicationDetailsPage/CruiseApplicationDetailsFields/CruiseApplicationDeputyManagerName';
-
-import { extendedUseLocation } from '@hooks/extendedUseLocation';
-import cruiseApplicationFromLocation from '@hooks/cruiseApplicationFromLocation';
-import { cruiseFromLocation } from '@hooks/cruiseFromLocation';
+} from '@app/pages/CruiseApplicationDetailsPage/CruiseApplicationDetailsFields/CruiseApplicationDeputyManagerName';
 
 
 export const BasicInfo = () => {

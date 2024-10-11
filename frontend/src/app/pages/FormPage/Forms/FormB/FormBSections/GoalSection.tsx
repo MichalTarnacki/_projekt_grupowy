@@ -1,5 +1,9 @@
 import React from 'react';
 import { SectionWrapper } from '@components/Form/Section/SectionWrapper';
+import {
+    CruiseGoalDescriptionField,
+    CruiseGoalField,
+} from '@app/pages/FormPage/Forms/FormA/FormASections/GoalSectionFields';
 
 
 export const goalSectionFieldNames = {
@@ -14,7 +18,8 @@ export const GoalSection = () => SectionWrapper(
         sectionFieldNames: goalSectionFieldNames,
         children:
             <>
-
+                <CruiseGoalField />
+                <CruiseGoalDescriptionField />
             </>,
     },
 );

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FormA from './Forms/FormA/FormA';
-import FormB from './Forms/FormB';
+import FormB from './Forms/FormB/FormB';
 import NotFoundPage from '../NotFoundPage';
 import { Path } from '../../../ToBeMoved/Tools/Path';
 

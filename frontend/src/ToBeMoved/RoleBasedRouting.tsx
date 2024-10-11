@@ -19,7 +19,7 @@ import FormAForSupervisorPage from '../app/pages/FormAForSupervisorPage';
 import RegisterPage from '../app/pages/NotLoggedInPage/RegisterPage/RegisterPage';
 import ResetPasswordPage from '../app/pages/NotLoggedInPage/ResetPasswordPage/ResetPasswordPage';
 import WaitingPage from '../app/pages/WaitingPage';
-import PriorityInformationPage from '../Components/Pages/PriorityInformationPage/PriorityInformationPage';
+import PriorityInformationPage from '@app/pages/PriorityInformationPage/PriorityInformationPage';
 
 const RoleBasedRouting = () => {
     const {

@@ -97,7 +97,6 @@ export const IsCurrentUserCruiseOrDeputyManager = (
 export const Status = () => {
     const { application } = ApplicationTools();
     const listModeContext = useContext(ListModeContext);
-    const { UserHasCruiseManagerAccess } = userBasedAccess();
     const isCurrentUserCruiseOrDeputyManager =
         IsCurrentUserCruiseOrDeputyManager(application);
     return (
