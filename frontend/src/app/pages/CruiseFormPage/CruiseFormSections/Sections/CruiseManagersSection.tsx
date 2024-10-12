@@ -5,7 +5,7 @@ import { applicationsSectionFieldNames } from './AppicationsSection';
 import { useWatch } from 'react-hook-form';
 import { FormContext } from '@contexts/FormContext';
 import { SectionWrapper } from '@components/Form/Section/SectionWrapper';
-import { FormUser } from '../../../../../types/FormUser';
+import { FormUser } from 'FormUser';
 
 import {
     ErrorMessageIfPresentNoContext,
@@ -78,12 +78,12 @@ const CruiseManagersField = () => {
     if (
         cruiseUsers
             .map((user) => user.id)
-            .includes(cruise.mainCruiseManagerId) &&
+            .includes(cruise?.mainCruiseManagerId) &&
         mainManagerField == EMPTY_GUID
     ) {
         formContext?.setValue(
             cruiseManagerSectionFieldNames.mainCruiseManagerId,
-            cruise.mainCruiseManagerId,
+            cruise?.mainCruiseManagerId,
         );
     } else {
         if (
@@ -99,12 +99,12 @@ const CruiseManagersField = () => {
     if (
         cruiseUsers
             .map((user) => user.id)
-            .includes(cruise.mainDeputyManagerId) &&
+            .includes(cruise?.mainDeputyManagerId) &&
         deputyManagerField == EMPTY_GUID
     ) {
         formContext?.setValue(
             cruiseManagerSectionFieldNames.mainDeputyManagerId,
-            cruise.mainDeputyManagerId,
+            cruise?.mainDeputyManagerId,
         );
     } else {
         if (

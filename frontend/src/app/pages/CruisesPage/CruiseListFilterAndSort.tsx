@@ -1,16 +1,16 @@
 import { CruiseStateContext } from './CruisesPage';
 import React, { useContext, useState } from 'react';
-import { Cruise } from '../../../types/Cruise';
+import { Cruise } from 'Cruise';
 import { AnyStringFilterOption } from '../../../ToBeMoved/Pages/CommonComponents/ListFilterMenu';
 
 export const sortCruiseListByNumber = (list: Cruise[]) => [
-    ...list.sort((a: Cruise, b: Cruise): number =>
+    ...list?.sort((a: Cruise, b: Cruise): number =>
         a.number.localeCompare(b.number),
     ),
 ];
 
 export const sortCruiseListByStartDate = (list: Cruise[]) => [
-    ...list.sort(
+    ...list?.sort(
         (a: Cruise, b: Cruise): number =>
             Date.parse(a.startDate) - Date.parse(b.endDate),
     ),
