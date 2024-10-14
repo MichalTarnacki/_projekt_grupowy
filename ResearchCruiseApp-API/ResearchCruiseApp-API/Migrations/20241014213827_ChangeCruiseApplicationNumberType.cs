@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
+namespace ResearchCruiseApp_API.Migrations
 {
     /// <inheritdoc />
-    public partial class FormAInitValuesForSupervisor : Migration
+    public partial class ChangeCruiseApplicationNumberType : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -870,7 +870,8 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Number = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
+                    Number = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateOnly>(type: "date", nullable: false),
                     FormAId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     FormBId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),

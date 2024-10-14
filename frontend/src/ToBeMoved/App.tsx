@@ -3,7 +3,7 @@ import { UserData } from 'User/UserData';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Interceptors } from '@api/Api';
 import BusyEvent from './CommonComponents/BusyEvent';
-import PageBackground from '../components/Page/Background/PageBackground';
+import PageBackground from '../Components/Page/Background/PageBackground';
 import PageHeader from './Pages/PageHeader/PageHeader';
 import RoleBasedRouting from './RoleBasedRouting';
 import WaitingPage from '../app/pages/WaitingPage';
