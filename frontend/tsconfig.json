@@ -34,7 +34,7 @@
         "assets/*"
       ],
       "@components/*": [
-        "Components/*"
+        "components/*"
       ],
       "@config/*": [
         "config/*"
