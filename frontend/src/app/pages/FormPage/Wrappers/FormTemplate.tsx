@@ -96,7 +96,7 @@ function FormTemplate(props: FormTemplateProps) {
                 return '/Forms/InitValues/A';
             case FormType.ApplicationDetails:
                 return `/api/CruiseApplications/${cruiseApplication.id}/evaluation`;
-            case formType.AForSupervisor:
+            case FormType.AForSupervisor:
                 return `/Forms/InitValuesForSupervisor/A?cruiseApplicationId=${cruiseApplicationId}&supervisorCode=${supervisorCode}`
         }
     };
@@ -105,7 +105,7 @@ function FormTemplate(props: FormTemplateProps) {
         FormAInitValues | undefined
     >(undefined);
     useEffect(() => {
-        const _formType = supervisorCode ? formType.AForSupervisor : props.type;
+        const _formType = supervisorCode ? FormType.AForSupervisor : props.type;
         const initValuesPath = initEndpoint(_formType);
 
         if (!initValuesPath) {

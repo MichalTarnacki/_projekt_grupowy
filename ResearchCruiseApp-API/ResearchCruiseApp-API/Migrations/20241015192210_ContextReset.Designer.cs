@@ -9,10 +9,10 @@ using ResearchCruiseApp_API.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
+namespace ResearchCruiseApp_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241011212437_ContextReset")]
+    [Migration("20241015192210_ContextReset")]
     partial class ContextReset
     {
         /// <inheritdoc />

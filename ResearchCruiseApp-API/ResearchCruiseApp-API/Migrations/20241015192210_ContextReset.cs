@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
+namespace ResearchCruiseApp_API.Migrations
 {
     /// <inheritdoc />
     public partial class ContextReset : Migration
