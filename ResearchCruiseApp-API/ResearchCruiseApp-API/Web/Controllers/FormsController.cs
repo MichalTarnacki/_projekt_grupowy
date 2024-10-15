@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ResearchCruiseApp_API.Application.UseCases.Forms.GetFormAInitValues;
+using ResearchCruiseApp_API.Application.UseCases.Forms.GetFormBInitValues;
 using ResearchCruiseApp_API.Domain.Common.Constants;
 using ResearchCruiseApp_API.Web.Common.Extensions;
 
@@ -17,6 +18,15 @@ public class FormsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetFormAInitValues()
     {
         var result = await mediator.Send(new GetFormAInitValuesQuery());
+        return result.IsSuccess
+            ? Ok(result.Data)
+            : this.CreateError(result);
+    }
+    
+    [HttpGet("InitValues/B")]
+    public async Task<IActionResult> GetFormBInitValues()
+    {
+        var result = await mediator.Send(new GetFormBInitValuesQuery());
         return result.IsSuccess
             ? Ok(result.Data)
             : this.CreateError(result);
