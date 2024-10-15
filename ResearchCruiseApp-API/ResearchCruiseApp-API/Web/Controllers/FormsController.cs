@@ -2,6 +2,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ResearchCruiseApp_API.Application.UseCases.Forms.GetFormAInitValues;
+using ResearchCruiseApp_API.Application.UseCases.Forms.GetFormAInitValuesForSupervisor;
+using ResearchCruiseApp_API.Application.UseCases.Forms.GetFormBInitValues;
 using ResearchCruiseApp_API.Domain.Common.Constants;
 using ResearchCruiseApp_API.Web.Common.Extensions;
 
@@ -33,6 +35,7 @@ public class FormsController(IMediator mediator) : ControllerBase
             : this.CreateError(result);
     }
     
+    [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.Shipowner}, {RoleName.CruiseManager}, {RoleName.Guest}")]
     [HttpGet("InitValues/B")]
     public async Task<IActionResult> GetFormBInitValues()
     {
