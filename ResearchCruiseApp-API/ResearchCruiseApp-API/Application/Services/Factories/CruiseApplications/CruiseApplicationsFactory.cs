@@ -12,7 +12,7 @@ internal class CruiseApplicationsFactory(
     ICruiseApplicationsRepository cruiseApplicationsRepository)
     : ICruiseApplicationsFactory
 {
-    public CruiseApplication Create(FormA formA, CancellationToken cancellationToken)
+    public async Task<CruiseApplication> Create(FormA formA, CancellationToken cancellationToken)
     {
         var newCruiseApplication = new CruiseApplication
         {
