@@ -58,7 +58,17 @@ internal class CruiseApplicationsRepository : Repository<CruiseApplication>, ICr
             .IncludeFormAContent()
             .SingleOrDefaultAsync(cruiseApplication => cruiseApplication.Id == id, cancellationToken);
     }
-    
+
+    public Task<CruiseApplication?> GetByIdWithFormsAndFormAContentAndEffects(Guid id,
+        CancellationToken cancellationToken)
+    {
+        return DbContext.CruiseApplications
+            .IncludeForms()
+            .IncludeFormAContent()
+            .IncludeEffects()
+            .SingleOrDefaultAsync(cruiseApplication => cruiseApplication.Id == id, cancellationToken);
+    }
+
     public Task<CruiseApplication?> GetByIdWithFormAAndFormBContent(Guid id, CancellationToken cancellationToken)
     {
         return DbContext.CruiseApplications
