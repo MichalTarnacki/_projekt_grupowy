@@ -34,7 +34,7 @@ internal class CruiseApplicationsFactory(
         CruiseApplication cruiseApplication, FormA formA, CancellationToken cancellationToken)
     {
         var otherCruiseApplications = await cruiseApplicationsRepository
-            .GetAllByManagerIdWithFormCContent(formA.CruiseManagerId, cancellationToken);
+            .GetAllByUserIdWithFormAAndFormCContent(formA.CruiseManagerId, cancellationToken);
 
         foreach (var otherCruiseApplication in otherCruiseApplications)
         {

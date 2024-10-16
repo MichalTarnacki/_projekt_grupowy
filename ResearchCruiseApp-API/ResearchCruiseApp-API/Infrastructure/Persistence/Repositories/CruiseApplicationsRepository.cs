@@ -95,14 +95,16 @@ internal class CruiseApplicationsRepository : Repository<CruiseApplication>, ICr
             .ToListAsync(cancellationToken);
     }
 
-    public Task<List<CruiseApplication>> GetAllByManagerIdWithFormCContent(
-        Guid cruiseManagerId, CancellationToken cancellationToken)
+    public Task<List<CruiseApplication>> GetAllByUserIdWithFormAAndFormCContent(
+        Guid userId, CancellationToken cancellationToken)
     {
         return DbContext.CruiseApplications
             .IncludeFormA()
             .IncludeFormC()
             .IncludeFormCContent()
-            .Where(cruiseApplication => cruiseApplication.FormA!.CruiseManagerId == cruiseManagerId)
+            .Where(cruiseApplication =>
+                cruiseApplication.FormA!.CruiseManagerId == userId ||
+                cruiseApplication.FormA.DeputyManagerId == userId)
             .ToListAsync(cancellationToken);
     }
 }
