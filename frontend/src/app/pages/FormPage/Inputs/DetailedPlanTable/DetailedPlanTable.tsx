@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { FormContext } from '@contexts/FormContext';
 import { BottomMenuWithAddButton, OrdinalNumber, RemoveRowButton } from '@app/pages/FormPage/Inputs/TableParts';
 import {
+    DayField,
     HoursField, NotesField, PositionField,
     RegionField,
     TaskNameField,
@@ -41,7 +42,7 @@ const detailedPlanTableContent = () => {
     const formContext = useContext(FormContext);
 
     return [
-        () => (<OrdinalNumber label={'Dzień'} />),
+        DayField,
         HoursField,
         TaskNameField,
         RegionField,
@@ -63,9 +64,9 @@ function DetailedPlanTable(props: DetailedPlanProps) {
     const formContext = useContext(FormContext);
 
 
-    const mdColWidths = [5, 18, 18, 18, 18, 18, 5];
+    const mdColWidths = [10, 14, 17, 18, 18, 18, 5];
     const mdColTitles = ['Dzień', 'Liczba godzin', 'Nazwa zadania', 'Rejon zadania', 'Pozycja', 'Uwagi', ''];
-    const colTitle = 'Lista uczestników rejsu';
+    const colTitle = 'Plan rejsu';
     const bottomMenu =
         <BottomMenuWithAddButton newOption={detailedPlanDefault as SingleValue<any>} />;
     const emptyText = 'Nie dodano żadnego dnia';
@@ -80,7 +81,6 @@ function DetailedPlanTable(props: DetailedPlanProps) {
             required: false,
             validate: {
                 notEmptyArray: notEmptyArray<DetailedPlan>,
-                fileExists: fileExists,
             },
         },
         render: FieldContextWrapper(Render),

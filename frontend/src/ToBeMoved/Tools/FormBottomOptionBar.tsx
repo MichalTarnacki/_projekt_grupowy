@@ -13,6 +13,8 @@ import { extendedUseLocation } from '@hooks/extendedUseLocation';
 import { AxiosRequestConfig } from 'axios';
 import { cruiseApplicationIdFromLocation } from '@hooks/cruiseApplicationIdFromLocation';
 import { supervisorCodeFromLocation } from '@hooks/supervisorCodeFromLocation';
+import { FormType } from '../Pages/CommonComponents/FormTitleWithNavigation';
+import CruiseApplicationFromLocation from '@hooks/cruiseApplicationFromLocation';
 
 const SupervisorMenu = () => {
     const cruiseApplicationId = cruiseApplicationIdFromLocation();
@@ -103,17 +105,22 @@ const SendMenu = () => {
 
     const Points = () => (
         <div className="text-primary pt-2 text-center">
-            {' '}
-            Obliczona liczba punktów: 5{' '}
+            Obliczona liczba punktów: ?
         </div>
     );
     const ConfirmSendButton = () => {
         const formContext = useContext(FormContext);
         const navigate = useNavigate();
+        const cruiseApplication = CruiseApplicationFromLocation();
         const handleSubmit = () =>
-            Api.post('/api/CruiseApplications/', formContext?.getValues()).then(() =>
-                navigate(Path.CruiseApplications),
-            );
+            formContext!.type === FormType.A ?
+                Api.post('/api/CruiseApplications/', formContext?.getValues()).then(() =>
+                    navigate(Path.CruiseApplications),
+                ) :
+                Api.post(`/api/CruiseApplications/${cruiseApplication.id}/FormB`, formContext?.getValues()).then(() =>
+                    navigate(Path.CruiseApplications),
+                )
+        ;
         const onClickAction = formContext!.handleSubmit(handleSubmit);
         return (
             <button onClick={onClickAction} className="form-page-option-button w-100">
@@ -125,7 +132,7 @@ const SendMenu = () => {
     return {
         Menu: () => (
             <div className={'d-flex flex-column w-100'}>
-                <Points />
+                {formContext!.type == FormType.A && <Points />}
                 <div className={'d-flex flex-row w-100'}>
                     <ConfirmSendButton />
                     <CancelButton />
@@ -151,12 +158,13 @@ export const BottomOptionBar = () => {
 
     const EditableFormButtons = () => (
         <>
-            {!sendMenu.enabled && <saveMenu.saveButton />}
+            {/*{!sendMenu.enabled && <saveMenu.saveButton />}*/}
             {!saveMenu.enabled && <sendMenu.Button />}
         </>
     );
 
     const ReadonlyFormButtons = () => {
+        const formContext = useContext(FormContext);
         const {
             UserHasCruiseManagerAccess,
             UserHasShipownerAccess,
@@ -165,7 +173,7 @@ export const BottomOptionBar = () => {
         return (
             <>
                 <PrintButton />
-                <ResendButton />
+                {formContext?.type === FormType.A && <ResendButton />}
                 {(UserHasShipownerAccess() || UserHasAdminAccess()) && (
                     <DownloadButtonDefault />
                 )}
