@@ -6,13 +6,15 @@ using ResearchCruiseApp_API.Domain.Entities;
 namespace ResearchCruiseApp_API.Application.Services.Factories.CruiseApplications;
 
 
-internal class CruiseApplicationsFactory(IRandomGenerator randomGenerator, IResearchTaskEffectsRepository researchTaskEffectsRepository)
+internal class CruiseApplicationsFactory(
+    IRandomGenerator randomGenerator,
+    IUserEffectsRepository userEffectsRepository)
     : ICruiseApplicationsFactory
 {
     public async Task<CruiseApplication> Create(FormA formA, CancellationToken cancellationToken)
     {
-        var effectsPoints = await researchTaskEffectsRepository
-            .GetEffectsPointsSumByUserId(formA.CruiseManagerId, cancellationToken);
+        var effectsPoints = await userEffectsRepository
+            .GetPointsSumByUserId(formA.CruiseManagerId, cancellationToken);
         
         var newCruiseApplication = new CruiseApplication
         {

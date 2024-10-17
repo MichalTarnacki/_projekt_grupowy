@@ -53,6 +53,8 @@ internal class ApplicationDbContext(DbContextOptions<ApplicationDbContext> optio
     public DbSet<CollectedSample> CollectedSamples { get; init; } = null!;
     public DbSet<Photo> Photos { get; init; } = null!;
 
+    public DbSet<UserEffect> UserEffects { get; set; } = null!;
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -60,6 +62,5 @@ internal class ApplicationDbContext(DbContextOptions<ApplicationDbContext> optio
         
         EntityConfiguration.Apply(builder);
         builder.ApplyConfiguration(new CruiseApplicationConfiguration());
-
     }
 }

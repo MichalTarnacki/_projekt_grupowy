@@ -5,17 +5,15 @@ using ResearchCruiseApp_API.Domain.Entities;
 namespace ResearchCruiseApp_API.Infrastructure.Persistence.Repositories;
 
 
-internal class ResearchTasksEffectsRepository : Repository<ResearchTaskEffect>, IResearchTaskEffectsRepository
+internal class UserEffectsRepository : Repository<UserEffect>, IUserEffectsRepository
 {
-    public ResearchTasksEffectsRepository(ApplicationDbContext dbContext) : base(dbContext)
+    public UserEffectsRepository(ApplicationDbContext dbContext) : base(dbContext)
     { }
 
-    public Task<int> GetEffectsPointsSumByUserId(Guid userId, CancellationToken cancellationToken)
+    public Task<int> GetPointsSumByUserId(Guid userId, CancellationToken cancellationToken)
     {
-        return DbContext.ResearchTaskEffects
-            .Where(researchTaskEffect =>
-                researchTaskEffect.FormC.CruiseApplication.FormA!.CruiseManagerId == userId ||
-                researchTaskEffect.FormC.CruiseApplication.FormA.DeputyManagerId == userId)
+        return DbContext.UserEffects
+            .Where(userEffect => userEffect.UserId == userId)
             .Select(researchTaskEffect => researchTaskEffect.Points)
             .SumAsync(cancellationToken);
     }
