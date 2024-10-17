@@ -6,14 +6,14 @@ using ResearchCruiseApp_API.Domain.Entities;
 namespace ResearchCruiseApp_API.Application.Services.Factories.CruiseApplications;
 
 
-internal class CruiseApplicationsFactory(
-    IYearBasedKeyGenerator yearBasedKeyGenerator,
-    IRandomGenerator randomGenerator,
-    ICruiseApplicationsRepository cruiseApplicationsRepository)
+internal class CruiseApplicationsFactory(IRandomGenerator randomGenerator, IResearchTaskEffectsRepository researchTaskEffectsRepository)
     : ICruiseApplicationsFactory
 {
     public async Task<CruiseApplication> Create(FormA formA, CancellationToken cancellationToken)
     {
+        var effectsPoints = await researchTaskEffectsRepository
+            .GetEffectsPointsSumByUserId(formA.CruiseManagerId, cancellationToken);
+        
         var newCruiseApplication = new CruiseApplication
         {
             Date = DateOnly.FromDateTime(DateTime.Now),
@@ -21,30 +21,10 @@ internal class CruiseApplicationsFactory(
             FormB = null,
             FormC = null,
             Status = CruiseApplicationStatus.WaitingForSupervisor,
-            SupervisorCode = randomGenerator.CreateSecureCodeBytes()
+            SupervisorCode = randomGenerator.CreateSecureCodeBytes(),
+            EffectsPoints = effectsPoints
         };
-        await AddCruiseApplicationEffects(newCruiseApplication, formA, cancellationToken);
 
         return newCruiseApplication;
-    }
-
-
-    private async Task AddCruiseApplicationEffects(
-        CruiseApplication cruiseApplication, FormA formA, CancellationToken cancellationToken)
-    {
-        var otherCruiseApplications = await cruiseApplicationsRepository
-            .GetAllByUserIdWithFormAAndFormCContent(formA.CruiseManagerId, cancellationToken);
-
-        foreach (var otherCruiseApplication in otherCruiseApplications)
-        {
-            if (otherCruiseApplication.FormC is null)
-                continue;
-
-            foreach (var researchTaskEffect in otherCruiseApplication.FormC.ResearchTaskEffects)
-            {
-                var cruiseApplicationEffect = new CruiseApplicationEffect { Effect = researchTaskEffect };
-                cruiseApplication.CruiseApplicationEffects.Add(cruiseApplicationEffect);
-            }
-        }
     }
 }
