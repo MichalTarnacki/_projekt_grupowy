@@ -5,5 +5,7 @@ namespace ResearchCruiseApp_API.Application.ExternalServices.Persistence.Reposit
 
 public interface IUserEffectsRepository : IRepository<UserEffect>
 {
+    Task<List<UserEffect>> GetAllByUserIdWithCruiseApplication(Guid userId, CancellationToken cancellationToken);
+    
     Task<int> GetPointsSumByUserId(Guid userId, CancellationToken cancellationToken);
 }

@@ -10,6 +10,16 @@ internal class UserEffectsRepository : Repository<UserEffect>, IUserEffectsRepos
     public UserEffectsRepository(ApplicationDbContext dbContext) : base(dbContext)
     { }
 
+
+    public Task<List<UserEffect>> GetAllByUserIdWithCruiseApplication(Guid userId, CancellationToken cancellationToken)
+    {
+        return DbContext.UserEffects
+            .Include(userEffect => userEffect.Effect.FormC.CruiseApplication)
+            .Include(userEffect => userEffect.Effect.ResearchTask)
+            .Where(userEffect => userEffect.UserId == userId)
+            .ToListAsync(cancellationToken);
+    }
+    
     public Task<int> GetPointsSumByUserId(Guid userId, CancellationToken cancellationToken)
     {
         return DbContext.UserEffects
