@@ -17,6 +17,7 @@ using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetFormAForS
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetFormB;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetFormC;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetOwnEffectsEvaluations;
+using ResearchCruiseApp_API.Application.UseCases.GetEffectsEvaluations;
 using ResearchCruiseApp_API.Domain.Common.Constants;
 using ResearchCruiseApp_API.Web.Common.Extensions;
 
@@ -176,6 +177,16 @@ public class CruiseApplicationsController(IMediator mediator) : ControllerBase
             : this.CreateError(result);
     }
 
+    [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.Shipowner}")]
+    [HttpGet("{userId:guid}/effectsEvaluations")]
+    public async Task<IActionResult> GetEffectsEvaluations(Guid userId)
+    {
+        var result = await mediator.Send(new GetEffectsEvaluationsQuery(userId));
+        return result.IsSuccess
+            ? Ok(result.Data)
+            : this.CreateError(result);
+    }
+    
     [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.Shipowner}, {RoleName.CruiseManager}")]
     [HttpGet("effectsEvaluations")]
     public async Task<IActionResult> GetOwnEffectsEvaluations()
