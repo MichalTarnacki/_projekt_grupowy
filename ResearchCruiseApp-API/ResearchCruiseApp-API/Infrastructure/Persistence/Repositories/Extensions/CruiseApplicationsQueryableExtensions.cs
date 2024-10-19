@@ -24,6 +24,10 @@ internal static class CruiseApplicationsQueryableExtensions
     {
         return query.Include(cruiseApplication => cruiseApplication.FormB);
     }
+    public static IQueryable<CruiseApplication> IncludeCruise(this IQueryable<CruiseApplication> query)
+    {
+        return query.Include(cruiseApplication => cruiseApplication.Cruise);
+    }
 
     public static IQueryable<CruiseApplication> IncludeFormC(this IQueryable<CruiseApplication> query)
     {
@@ -96,13 +100,5 @@ internal static class CruiseApplicationsQueryableExtensions
             .Include(cruiseApplication => cruiseApplication.FormC!.ShipEquipments)
             .Include(cruiseApplication => cruiseApplication.FormC!.CollectedSamples)
             .Include(cruiseApplication => cruiseApplication.FormC!.Photos);
-    }
-
-    public static IQueryable<CruiseApplication> IncludeEffects(this IQueryable<CruiseApplication> query)
-    {
-        return query
-            .Include(cruiseApplication => cruiseApplication.CruiseApplicationEffects)
-            .ThenInclude(cruiseApplicationEffect => cruiseApplicationEffect.Effect)
-            .ThenInclude(researchTaskEffect => researchTaskEffect.ResearchTask);
     }
 }
