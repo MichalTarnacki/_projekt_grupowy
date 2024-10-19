@@ -11,6 +11,10 @@ public class AddCruiseApplicationValidator: AbstractValidator<AddCruiseApplicati
 {
     public AddCruiseApplicationValidator(IFileInspector fileInspector)
     {
+        RuleForEach(command => command.FormADto.Permissions)
+            .Must(permissionDto => permissionDto.Scan is null)
+            .WithMessage("Na etapie formularza A nie jest dozwolone przesyłanie skanów umów.");
+        
         RuleForEach(command => command.FormADto.Contracts)
             .Must(contractDto => fileInspector.IsFilePdf(contractDto.Scan.Content))
             .WithMessage("Skan umowy musi być plikiem PDF.");
