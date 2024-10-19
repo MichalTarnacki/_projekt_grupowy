@@ -13,7 +13,7 @@ public class AddCruiseApplicationValidator: AbstractValidator<AddCruiseApplicati
     {
         RuleForEach(command => command.FormADto.Permissions)
             .Must(permissionDto => permissionDto.Scan is null)
-            .WithMessage("Na etapie formularza A nie jest dozwolone przesyłanie skanów umów.");
+            .WithMessage("Na etapie formularza A nie jest dozwolone przesyłanie skanów pozwoleń.");
         
         RuleForEach(command => command.FormADto.Contracts)
             .Must(contractDto => fileInspector.IsFilePdf(contractDto.Scan.Content))
@@ -21,6 +21,6 @@ public class AddCruiseApplicationValidator: AbstractValidator<AddCruiseApplicati
 
         RuleForEach(command => command.FormADto.Contracts)
             .Must(contractDto => fileInspector.IsFileSizeValid(contractDto.Scan.Content, FileConstants.MaxFileSize))
-            .WithMessage("Rozmiar skanu nie może przekraczać 2 MiB.");
+            .WithMessage("Rozmiar skanu umowy nie może przekraczać 2 MiB.");
     }
 }

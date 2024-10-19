@@ -7,14 +7,15 @@ namespace ResearchCruiseApp_API.Domain.Entities;
 
 public class Permission : Entity, IEquatable<Permission>, IEquatableByExpression<Permission>
 {
+    private string? _scanName;
+    private byte[]? _scanContent = [];
+    
     [StringLength(1024)]
     public string Description { get; init; } = null!;
 
     [StringLength(1024)]
     public string Executive { get; init; } = null!;
-
-    private string? _scanName;
-      
+    
     [MaxLength(1024)]  
     public string? ScanName
     {
@@ -26,9 +27,7 @@ public class Permission : Entity, IEquatable<Permission>, IEquatableByExpression
             _scanName = value;
         }
     }
-
-    private byte[]? _scanContent = [];
-
+    
     public byte[]? ScanContent
     {
         get => _scanContent;
@@ -39,9 +38,12 @@ public class Permission : Entity, IEquatable<Permission>, IEquatableByExpression
             _scanContent = value;
         }
     }
-
-
-    public List<FormA> FormsA { get; set; } = [];
+    
+    public List<FormA> FormsA { get; init; } = [];
+    
+    public List<FormB> FormsB { get; init; } = [];
+    
+    public List<FormC> FormsC { get; init; } = [];
 
     
     public override bool Equals(object? other) =>
