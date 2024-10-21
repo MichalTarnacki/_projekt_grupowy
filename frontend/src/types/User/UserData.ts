@@ -20,19 +20,24 @@ export type PublicationData = {
 }
 
 export type CruiseEffectData = {
-    id: string,
+    userId: string,
     points: string,
-    researchTask: ResearchTask
+    effect: ResearchTask
 }
 
 export type ResearchTask = {
     type: string,
-    title: string,
-    authors: string,
-    institution: string,
-    date: string,
-    financingAmount: string,
-    description: string,
-    done: string,
-
+    title?: string,
+    magazine?: string,
+    author?: string,
+    institution?: string,
+    date?: string,
+    name?: string,
+    startDate?: string,
+    endDate?: string,
+    financingApproved?: string
+    financingAmount?: string,
+    description?: string
+    securedAmount?: string,
+    ministerialPoints?: string
 }
