@@ -4,12 +4,12 @@ import { ApplicationToCruiseManagersMapper } from '../CruiseListMisc';
 import { applicationsSectionFieldNames } from './AppicationsSection';
 import { useWatch } from 'react-hook-form';
 import { FormContext } from '@contexts/FormContext';
-import { SectionWrapper } from '@components/Form/Section/SectionWrapper';
+import { SectionWrapper } from '../../../../../components/Form/Section/SectionWrapper';
 import { FormUser } from 'FormUser';
 
 import {
     ErrorMessageIfPresentNoContext,
-} from '@components/Form/ErrorMessage/ErrorMessageIfPresentNoContext';
+} from '../../../../../components/Form/ErrorMessage/ErrorMessageIfPresentNoContext';
 import { EMPTY_GUID } from '@consts/emptyGuid';
 import { ApplicationsContext } from '@contexts/ApplicationsContext';
 

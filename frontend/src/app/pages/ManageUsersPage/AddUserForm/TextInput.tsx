@@ -3,7 +3,7 @@ import { FieldError, UseFormReturn } from 'react-hook-form';
 
 import {
     ErrorMessageIfPresentNoContext,
-} from '@components/Form/ErrorMessage/ErrorMessageIfPresentNoContext';
+} from '../../../../components/Form/ErrorMessage/ErrorMessageIfPresentNoContext';
 import { NewUserFormValues } from 'NewUserFormValues';
 
 type Props = {

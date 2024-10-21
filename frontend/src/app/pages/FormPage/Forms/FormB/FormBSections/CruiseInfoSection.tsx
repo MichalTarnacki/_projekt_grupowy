@@ -1,6 +1,6 @@
 import React from 'react';
 import CruiseBasicInfo from '../../../../CruiseFormPage/CruiseFormSections/CruiseBasicInfo';
-import { SectionWrapper } from '@components/Form/Section/SectionWrapper';
+import { SectionWrapper } from '../../../../../../components/Form/Section/SectionWrapper';
 
 import { cruiseFromLocation } from '@hooks/cruiseFromLocation';
 

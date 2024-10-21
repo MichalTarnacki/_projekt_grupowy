@@ -1,5 +1,5 @@
 import Page from '../../../ToBeMoved/Pages/Page';
-import PageTitle from '@components/Page/PageTitle';
+import PageTitle from '../../../components/Page/PageTitle';
 import CruiseApplicationsList from '@app/pages/CruiseApplicationsPage/CruiseApplicationsList/CruiseApplicationsList';
 import React from 'react';
 

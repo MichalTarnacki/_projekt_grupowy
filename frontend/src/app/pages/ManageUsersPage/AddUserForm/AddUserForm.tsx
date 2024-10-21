@@ -7,7 +7,7 @@ import { emailPattern } from '@consts/emailPatterns';
 
 import {
     ErrorMessageIfPresentNoContext,
-} from '@components/Form/ErrorMessage/ErrorMessageIfPresentNoContext';
+} from '../../../../components/Form/ErrorMessage/ErrorMessageIfPresentNoContext';
 import Api from '../../../../api/Api';
 import SuccessMessage from '../../../../ToBeMoved/Pages/CommonComponents/SuccessMessage';
 import { Role } from 'Role';

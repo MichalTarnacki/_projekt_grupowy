@@ -1,4 +1,4 @@
-import { LinkWithStateProps } from '@components/Navigation/LinkWithState';
+import { LinkWithStateProps } from '../../../components/Navigation/LinkWithState';
 // import ReadOnlyTextInput from '../../CommonComponents/ReadOnlyTextInput';
 import ReadOnlyTextInput from '../../../ToBeMoved/CommonComponents/ReadOnlyTextInput';
 import { useNavigate } from 'react-router-dom';

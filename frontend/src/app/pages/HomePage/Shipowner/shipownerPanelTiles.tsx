@@ -4,8 +4,10 @@ import ManageUserTile from '../../../../components/MainPageMenu/Tiles/ManageUser
 import AccountSettingsTile from '../../../../components/MainPageMenu/Tiles/AccountSettingsTile';
 import NewCruiseApplicationTile from '../../../../components/MainPageMenu/Tiles/NewCruiseApplicationTile';
 import React from 'react';
-import { HelpInformationTile } from '@components/MainPageMenu/Tiles/HelpInformationTile';
-import { PriorityInformationTile } from '@components/MainPageMenu/Tiles/PriorityInformationTile';
+import { HelpInformationTile } from '../../../../components/MainPageMenu/Tiles/HelpInformationTile';
+import { PriorityInformationTile } from '../../../../components/MainPageMenu/Tiles/PriorityInformationTile';
+import MyPublicationsTile from '../../../../components/MainPageMenu/Tiles/MyPublicationTile';
+import CruiseEffectsTile from '../../../../components/MainPageMenu/Tiles/CruiseEffectsTile';
 
 const shipownerPanelTiles = () => [
     { element: <CruisesTile />, cols: 2, rows: 2 },

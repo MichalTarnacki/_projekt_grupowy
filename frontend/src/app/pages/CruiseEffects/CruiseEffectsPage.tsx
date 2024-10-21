@@ -1,11 +1,14 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
-import {CruiseEffectData} from "../../CommonComponents/DataTypes";
-import {CellContext, FieldTableWrapper} from "../FormPage/Wrappers/FieldTableWrapper";
-import ReadOnlyTextInput from "../../CommonComponents/ReadOnlyTextInput";
+
+import {FieldTableWrapper} from "../FormPage/Wrappers/FieldTableWrapper";
 import {OrdinalNumber} from "../FormPage/Inputs/TableParts";
-import Api from "../../Tools/Api";
-import Page from "../Page";
-import PageTitle from "../CommonComponents/PageTitle";
+import {CruiseEffectData} from "User/UserData";
+import {CellContext} from "@contexts/CellContext";
+import ReadOnlyTextInput from "../../../ToBeMoved/CommonComponents/ReadOnlyTextInput";
+import Api from "@api/Api";
+import Page from "../../../ToBeMoved/Pages/Page";
+import PageTitle from "../../../components/Page/PageTitle";
+
 
 export const CruiseEffectsContext = createContext<null | CruiseEffectData[]>(null)
 export const SetCruiseEffectListContext = createContext<React.Dispatch<React.SetStateAction<CruiseEffectData[]>> | null>(null)
@@ -18,6 +21,7 @@ export const CruiseEffectsTools = () => {
     const cruiseEffect: CruiseEffectData = cruiseEffectsContext![cellContext?.rowIndex!]
     //TODO zmienić logike by dało się usunąć efekty
     const updateCruiseEffect = (fieldKey: keyof CruiseEffectData, value: CruiseEffectData) => {
+        // @ts-ignore
         cruiseEffect[fieldKey] = value
         const newCruiseEffectList = [...cruiseEffectsContext!]
         const publicationIndex = newCruiseEffectList.findIndex(_cruiseEffect => _cruiseEffect.id == cruiseEffect.id)

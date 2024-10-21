@@ -1,6 +1,6 @@
 import React from 'react';
-import { SectionWrapper } from '@components/Form/Section/SectionWrapper';
-import ReadonlyOverrideWrapper from '@components/Form/ReadonlyOverrideWrapper';
+import { SectionWrapper } from '../../../../../../components/Form/Section/SectionWrapper';
+import ReadonlyOverrideWrapper from '../../../../../../components/Form/ReadonlyOverrideWrapper';
 import { SpubTaskField } from '@app/pages/FormPage/Forms/FormA/FormASections/SpubTasksSectionFields';
 
 export const spubTasksSectionFieldNames = {

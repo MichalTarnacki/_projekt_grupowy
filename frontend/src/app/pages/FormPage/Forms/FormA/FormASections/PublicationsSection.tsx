@@ -1,6 +1,6 @@
 import React from 'react';
 import { PublicationsDescription, PublicationsField } from './PublicationsSectionFields';
-import { SectionWrapper } from '@components/Form/Section/SectionWrapper';
+import { SectionWrapper } from '../../../../../../components/Form/Section/SectionWrapper';
 
 export const publicationsSectionFieldNames = {
     publications: 'publications',

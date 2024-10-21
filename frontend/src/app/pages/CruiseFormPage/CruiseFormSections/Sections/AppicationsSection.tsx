@@ -4,7 +4,7 @@ import { FieldValues } from 'react-hook-form';
 import FieldWrapper from '../../../FormPage/Inputs/FieldWrapper';
 import { FormContext } from '@contexts/FormContext';
 import { FieldContext } from '@contexts/FieldContext';
-import { SectionWrapper } from '@components/Form/Section/SectionWrapper';
+import { SectionWrapper } from '../../../../../components/Form/Section/SectionWrapper';
 import UserBasedAccess from '../../../../../route/UserBasedAccess';
 import {
     CruiseApplicationListMode,

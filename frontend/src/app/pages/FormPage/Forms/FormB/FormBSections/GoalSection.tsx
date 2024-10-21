@@ -1,10 +1,10 @@
 import React from 'react';
-import { SectionWrapper } from '@components/Form/Section/SectionWrapper';
+import { SectionWrapper } from '../../../../../../components/Form/Section/SectionWrapper';
 import {
     CruiseGoalDescriptionField,
     CruiseGoalField,
 } from '@app/pages/FormPage/Forms/FormA/FormASections/GoalSectionFields';
-import ReadonlyOverrideWrapper from '@components/Form/ReadonlyOverrideWrapper';
+import ReadonlyOverrideWrapper from '../../../../../../components/Form/ReadonlyOverrideWrapper';
 
 
 export const goalSectionFieldNames = {
