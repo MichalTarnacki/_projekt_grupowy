@@ -1,10 +1,11 @@
 using AutoMapper;
+using ResearchCruiseApp_API.Application.Models.Interfaces;
 using ResearchCruiseApp_API.Domain.Entities;
 
 namespace ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
 
 
-public class ResearchTaskDto
+public class ResearchTaskDto : IResearchTaskDto
 {
     public string Type { get; init; } = null!;
 
@@ -34,12 +35,6 @@ public class ResearchTaskDto
     {
         public MapProfile()
         {
-            CreateMap<ResearchTask, ResearchTaskDto>()
-                .ForMember(
-                dest => dest.Type,
-                options =>
-                    options.MapFrom(src => ((int)src.Type).ToString()));
-            
             CreateMap<FormAResearchTask, ResearchTaskDto>()
                 .ForMember(
                     dest => dest.Type,
@@ -76,15 +71,27 @@ public class ResearchTaskDto
                     options =>
                         options.MapFrom(src => src.ResearchTask.FinancingAmount))
                 .ForMember(
+                    dest => dest.FinancingApproved,
+                    options =>
+                        options.MapFrom(src => src.ResearchTask.FinancingApproved))
+                .ForMember(
                     dest => dest.Description,
                     options =>
                         options.MapFrom(src => src.ResearchTask.Description))
                 .ForMember(
-                    dest => dest.FinancingApproved,
+                    dest => dest.SecuredAmount,
                     options =>
-                        options.MapFrom(src => src.ResearchTask.FinancingApproved));
+                        options.MapFrom(src => src.ResearchTask.SecuredAmount))
+                .ForMember(
+                    dest => dest.MinisterialPoints,
+                    options =>
+                        options.MapFrom(src => src.ResearchTask.MinisterialPoints));
             
-            CreateMap<ResearchTaskDto, ResearchTask>();
+            CreateMap<ResearchTask, ResearchTaskDto>()
+                .ForMember(
+                    dest => dest.Type,
+                    options =>
+                        options.MapFrom(src => ((int)src.Type).ToString()));
         }
     }
 }

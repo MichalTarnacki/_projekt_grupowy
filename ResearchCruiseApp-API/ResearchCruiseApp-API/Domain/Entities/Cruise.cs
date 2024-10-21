@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using ResearchCruiseApp_API.Domain.Common.Enums;
 using ResearchCruiseApp_API.Domain.Common.Interfaces;
 
 namespace ResearchCruiseApp_API.Domain.Entities;
@@ -17,6 +17,8 @@ public class Cruise : Entity, IYearBasedNumbered
     public DateTime StartDate { get; set; }
     
     public DateTime EndDate { get; set; }
+    
+    public CruiseStatus Status { get; set; }
 
     public List<CruiseApplication> CruiseApplications { get; set; } = null!;
 }

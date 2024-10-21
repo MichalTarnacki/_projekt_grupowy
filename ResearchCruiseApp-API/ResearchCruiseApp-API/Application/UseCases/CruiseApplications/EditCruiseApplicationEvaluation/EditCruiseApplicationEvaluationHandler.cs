@@ -1,8 +1,11 @@
-﻿using MediatR;
+﻿using System.Runtime.InteropServices.JavaScript;
+using MediatR;
 using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
 using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
+using ResearchCruiseApp_API.Domain.Common.Enums;
+using ResearchCruiseApp_API.Domain.Entities;
 
 namespace ResearchCruiseApp_API.Application.UseCases.CruiseApplications.EditCruiseApplicationEvaluation;
 
@@ -19,13 +22,22 @@ public class EditCruiseApplicationEvaluationHandler(
     public async Task<Result> Handle(
         EditCruiseApplicationEvaluationCommand request, CancellationToken cancellationToken)
     {
-        var cruiseApplicationEvaluationEditsDto = request.CruiseApplicationEvaluationsEditsDto;
+        var cruiseApplication = await cruiseApplicationsRepository
+            .GetByIdWithFormA(request.Id, cancellationToken);
 
-        await EditResearchTasksEvaluations(cruiseApplicationEvaluationEditsDto, cancellationToken);
-        await EditContractsEvaluations(cruiseApplicationEvaluationEditsDto, cancellationToken);
-        await EditUgUnitsEvaluations(request, cancellationToken);
-        await EditPublicationsEvaluations(cruiseApplicationEvaluationEditsDto, cancellationToken);
-        await EditSpubTasksEvaluations(cruiseApplicationEvaluationEditsDto, cancellationToken);
+        if (cruiseApplication?.FormA is null)
+            return Error.ResourceNotFound();
+        
+        if (cruiseApplication.Status != CruiseApplicationStatus.Accepted)
+            return Error.InvalidArgument("Czas na edycję punktów minął.");
+        
+        var editsDto = request.CruiseApplicationEvaluationsEditsDto;
+        
+        await EditResearchTasksEvaluations(editsDto, cancellationToken);
+        await EditContractsEvaluations(editsDto, cancellationToken);
+        EditUgUnitsEvaluations(cruiseApplication, editsDto);
+        await EditPublicationsEvaluations(editsDto, cancellationToken);
+        await EditSpubTasksEvaluations(editsDto, cancellationToken);
 
         await unitOfWork.Complete(cancellationToken);
         
@@ -43,7 +55,7 @@ public class EditCruiseApplicationEvaluationHandler(
             if (formAResearchTask is null)
                 continue;
 
-            formAResearchTask.Points = Int32.Parse(researchTaskEvaluationEdit.NewPoints);
+            formAResearchTask.Points = int.Parse(researchTaskEvaluationEdit.NewPoints);
         }
     }
     
@@ -57,17 +69,14 @@ public class EditCruiseApplicationEvaluationHandler(
             if (formAContract is null)
                 continue;
 
-            formAContract.Points = Int32.Parse(contractEvaluationEdit.NewPoints);
+            formAContract.Points = int.Parse(contractEvaluationEdit.NewPoints);
         }
     }
     
-    private async Task EditUgUnitsEvaluations(
-        EditCruiseApplicationEvaluationCommand request, CancellationToken cancellationToken)
+    private static void EditUgUnitsEvaluations(
+        CruiseApplication cruiseApplication, CruiseApplicationEvaluationsEditsDto cruiseApplicationEvaluationEditsDto)
     {
-        var cruiseApplication = await cruiseApplicationsRepository
-            .GetByIdWithFormA(request.Id, cancellationToken);
-        if (cruiseApplication?.FormA is not null)
-            cruiseApplication.FormA.UgUnitsPoints = request.CruiseApplicationEvaluationsEditsDto.NewUgUnitsPoints;
+        cruiseApplication.FormA!.UgUnitsPoints = cruiseApplicationEvaluationEditsDto.NewUgUnitsPoints;
     }
     
     private async Task EditPublicationsEvaluations(
@@ -80,7 +89,7 @@ public class EditCruiseApplicationEvaluationHandler(
             if (formAPublication is null)
                 continue;
 
-            formAPublication.Points = Int32.Parse(publicationEvaluationEdit.NewPoints);
+            formAPublication.Points = int.Parse(publicationEvaluationEdit.NewPoints);
         }
     }
     
@@ -94,7 +103,7 @@ public class EditCruiseApplicationEvaluationHandler(
             if (formASpubTask is null)
                 continue;
 
-            formASpubTask.Points = Int32.Parse(spubTaskEvaluationEdit.NewPoints);
+            formASpubTask.Points = int.Parse(spubTaskEvaluationEdit.NewPoints);
         }
     }
 }

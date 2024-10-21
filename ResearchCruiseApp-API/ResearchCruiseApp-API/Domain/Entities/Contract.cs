@@ -1,10 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
+using ResearchCruiseApp_API.Domain.Common.Interfaces;
 
 namespace ResearchCruiseApp_API.Domain.Entities;
 
 
-public class Contract : Entity
+public class Contract : Entity, IEquatable<Contract>, IEquatableByExpression<Contract>
 {
+      private string? _scanName;
+      private byte[]? _scanContent;
+      
       [StringLength(1024)]
       public string Category { get; init; } = null!;
       
@@ -20,9 +25,7 @@ public class Contract : Entity
       [MaxLength(1024)]
       public string Description { get; init; } = null!;
 
-      private string? _scanName;
-      
-      [MaxLength(1024)]  
+      [MaxLength(1024)]
       public string ScanName
       {
             get => _scanName ?? throw new InvalidOperationException("ScanName has not been set.");
@@ -33,8 +36,6 @@ public class Contract : Entity
                   _scanName = value;
             }
       }
-
-      private byte[]? _scanContent;
 
       public byte[] ScanContent
       {
@@ -48,21 +49,12 @@ public class Contract : Entity
       }
 
       public List<FormAContract> FormAContracts { get; init; } = [];
-      
-      
-      public override bool Equals(object? other)
-      {
-            if (other is not Contract otherContract)
-                  return false;
-          
-            return otherContract.Category == Category &&
-                   otherContract.InstitutionName == InstitutionName &&
-                   otherContract.InstitutionUnit == InstitutionUnit &&
-                   otherContract.InstitutionLocalization == InstitutionLocalization &&
-                   otherContract.Description == Description &&
-                   otherContract.ScanName == ScanName &&
-                   otherContract.ScanContent.SequenceEqual(ScanContent);
-      }
+
+      public List<FormC> FormsC { get; init; } = [];
+
+
+      public override bool Equals(object? other) =>
+            Equals((Contract?) other);
 
       public override int GetHashCode()
       {
@@ -73,5 +65,30 @@ public class Contract : Entity
                    Description.GetHashCode() +
                    ScanName.GetHashCode() +
                    ScanContent.GetHashCode();
+      }
+      
+      public bool Equals(Contract? other)
+      {
+            return other is not null &&
+                   other.Category == Category &&
+                   other.InstitutionName == InstitutionName &&
+                   other.InstitutionUnit == InstitutionUnit &&
+                   other.InstitutionLocalization == InstitutionLocalization &&
+                   other.Description == Description &&
+                   other.ScanName == ScanName &&
+                   other.ScanContent.SequenceEqual(ScanContent);
+      }
+
+      public static Expression<Func<Contract, bool>> EqualsByExpression(Contract? other)
+      {
+            return contract =>
+                  other != null &&
+                  other.Category == contract.Category &&
+                  other.InstitutionName == contract.InstitutionName &&
+                  other.InstitutionUnit == contract.InstitutionUnit &&
+                  other.InstitutionLocalization == contract.InstitutionLocalization &&
+                  other.Description == contract.Description &&
+                  other.ScanName == contract.ScanName &&
+                  other.ScanContent.SequenceEqual(contract.ScanContent);
       }
 }

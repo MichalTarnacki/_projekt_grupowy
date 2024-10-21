@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
 using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
-using ResearchCruiseApp_API.Application.Services.Factories.Contracts;
 using ResearchCruiseApp_API.Application.Services.FormsFields;
 using ResearchCruiseApp_API.Domain.Entities;
 
@@ -11,20 +11,19 @@ namespace ResearchCruiseApp_API.Application.Services.Factories.FormsA;
 internal class FormsAFactory(
     IFormsFieldsService formsFieldsService,
     IResearchAreasRepository researchAreasRepository,
-    IContractsRepository contractsRepository,
-    IResearchTasksRepository researchTasksRepository,
     IUgUnitsRepository ugUnitsRepository,
-    IPublicationsRepository publicationsRepository,
-    ISpubTasksRepository spubTasksRepository,
-    IMapper mapper,
-    IContractsFactory contractsFactory)
+    IMapper mapper)
     : IFormsAFactory
 {
-    public async Task<FormA> Create(FormADto formADto, CancellationToken cancellationToken)
+    public async Task<Result<FormA>> Create(FormADto formADto, CancellationToken cancellationToken)
     {
         var formA = mapper.Map<FormA>(formADto);
 
-        await AddResearchArea(formA, formADto, cancellationToken);
+        var result = await AddResearchArea(formA, formADto, cancellationToken);
+        if (!result.IsSuccess)
+            return result.Error!;
+        
+        await AddPermissions(formA, formADto, cancellationToken);
         await AddFormAResearchTasks(formA, formADto, cancellationToken);
         await AddFormAContracts(formA, formADto, cancellationToken);
         await AddFormAUgUnits(formA, formADto, cancellationToken);
@@ -36,22 +35,40 @@ internal class FormsAFactory(
     }
 
 
-    private async Task AddResearchArea(FormA formA, FormADto formADto, CancellationToken cancellationToken)
+    private async Task AddPermissions(FormA formA, FormADto formADto, CancellationToken cancellationToken)
+    {
+        var alreadyAddedPermissions = new HashSet<Permission>();
+
+        foreach (var permissionDto in formADto.Permissions)
+        {
+            var permission = await formsFieldsService
+                .GetUniquePermission(permissionDto, alreadyAddedPermissions, cancellationToken);
+            alreadyAddedPermissions.Add(permission);
+            
+            formA.Permissions.Add(permission);
+        }
+    }
+    
+    private async Task<Result> AddResearchArea(FormA formA, FormADto formADto, CancellationToken cancellationToken)
     {
         var researchArea = await researchAreasRepository.GetById(formADto.ResearchAreaId, cancellationToken);
         if (researchArea is null)
-            return;
+            return Error.InvalidArgument("Podany obszar badawczy nie istnieje.");
 
         formA.ResearchArea = researchArea;
+        return Result.Empty;
     }
     
     private async Task AddFormAResearchTasks(FormA formA, FormADto formADto, CancellationToken cancellationToken)
     {
-        var allResearchTasks = await researchTasksRepository.GetAll(cancellationToken);
+        var alreadyAddedResearchTasks = new HashSet<ResearchTask>();
         
         foreach (var researchTaskDto in formADto.ResearchTasks)
         {
-            var researchTask = GetUniqueResearchTask(researchTaskDto, allResearchTasks);
+            var researchTask = await formsFieldsService
+                .GetUniqueResearchTask(researchTaskDto, alreadyAddedResearchTasks, cancellationToken);
+            alreadyAddedResearchTasks.Add(researchTask);
+            
             var formAResearchTask = new FormAResearchTask { ResearchTask = researchTask };
             formA.FormAResearchTasks.Add(formAResearchTask);
         }
@@ -59,11 +76,14 @@ internal class FormsAFactory(
     
     private async Task AddFormAContracts(FormA formA, FormADto formADto, CancellationToken cancellationToken)
     {
-        var allContracts = await contractsRepository.GetAll(cancellationToken);
+        var alreadyAddedContracts = new HashSet<Contract>();
         
         foreach (var contractDto in formADto.Contracts)
         {
-            var contract = await GetUniqueContract(contractDto, allContracts);
+            var contract = await formsFieldsService
+                .GetUniqueContract(contractDto, alreadyAddedContracts, cancellationToken);
+            alreadyAddedContracts.Add(contract);
+            
             var formAContract = new FormAContract { Contract = contract };
             formA.FormAContracts.Add(formAContract);
         }
@@ -108,11 +128,14 @@ internal class FormsAFactory(
 
     private async Task AddFormAPublications(FormA formA, FormADto formADto, CancellationToken cancellationToken)
     {
-        var allPublications = await publicationsRepository.GetAll(cancellationToken);
+        var alreadyAddedPublications = new HashSet<Publication>();
 
         foreach (var publicationDto in formADto.Publications)
         {
-            var publication = GetUniquePublication(publicationDto, allPublications);
+            var publication = await formsFieldsService
+                .GetUniquePublication(publicationDto, alreadyAddedPublications, cancellationToken);
+            alreadyAddedPublications.Add(publication);
+            
             var formAPublication = new FormAPublication { Publication = publication };
             formA.FormAPublications.Add(formAPublication);
         }
@@ -120,69 +143,16 @@ internal class FormsAFactory(
 
     private async Task AddFormASpubTasks(FormA formA, FormADto formADto, CancellationToken cancellationToken)
     {
-        var allSpubTasks = await spubTasksRepository.GetAll(cancellationToken);
-
+        var alreadyAddedSpubTasks = new HashSet<SpubTask>();
+        
         foreach (var spubTaskDto in formADto.SpubTasks)
         {
-            var spubTask = GetUniqueSpubTask(spubTaskDto, allSpubTasks);
+            var spubTask = await formsFieldsService
+                .GetUniqueSpubTask(spubTaskDto, alreadyAddedSpubTasks, cancellationToken);
+            alreadyAddedSpubTasks.Add(spubTask);
+            
             var formASpubTask = new FormASpubTask { SpubTask = spubTask };
             formA.FormASpubTasks.Add(formASpubTask);
         }
-    }
-    
-    private ResearchTask GetUniqueResearchTask(ResearchTaskDto researchTaskDto, List<ResearchTask> allResearchTasks)
-    {
-        var researchTask = mapper.Map<ResearchTask>(researchTaskDto);
-        var alreadyPersistedResearchTask = allResearchTasks
-            .Find(r => r.Equals(researchTask));
-
-        if (alreadyPersistedResearchTask is not null)
-            researchTask = alreadyPersistedResearchTask;
-        else
-            allResearchTasks.Add(researchTask);
-
-        return researchTask;
-    }
-
-    private async Task<Contract> GetUniqueContract(ContractDto contractDto, List<Contract> allContracts)
-    {
-        var contract = await contractsFactory.Create(contractDto);
-        var alreadyPersistedContract = allContracts
-            .Find(c => c.Equals(contract));
-
-        if (alreadyPersistedContract is not null)
-            contract = alreadyPersistedContract;
-        else
-            allContracts.Add(contract);
-
-        return contract;
-    }
-    
-    private Publication GetUniquePublication(PublicationDto publicationDto, List<Publication> allPublications)
-    {
-        var publication = mapper.Map<Publication>(publicationDto);
-        var alreadyPersistedPublication = allPublications
-            .Find(p => p.Equals(publication));
-
-        if (alreadyPersistedPublication is not null)
-            publication = alreadyPersistedPublication;
-        else
-            allPublications.Add(publication);
-
-        return publication;
-    }
-    
-    private SpubTask GetUniqueSpubTask(SpubTaskDto spubTaskDto, List<SpubTask> allSpubTasks)
-    {
-        var spubTask = mapper.Map<SpubTask>(spubTaskDto);
-        var alreadyPersistedSpubTask = allSpubTasks
-            .Find(st => st.Equals(spubTask));
-
-        if (alreadyPersistedSpubTask is not null)
-            spubTask = alreadyPersistedSpubTask;
-        else
-            allSpubTasks.Add(spubTask);
-
-        return spubTask;
     }
 }

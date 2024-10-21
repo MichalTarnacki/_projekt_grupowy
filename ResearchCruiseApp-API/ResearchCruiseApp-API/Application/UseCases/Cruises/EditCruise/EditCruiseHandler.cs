@@ -6,6 +6,7 @@ using ResearchCruiseApp_API.Application.ExternalServices;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
 using ResearchCruiseApp_API.Application.Services.Cruises;
+using ResearchCruiseApp_API.Domain.Common.Enums;
 using ResearchCruiseApp_API.Domain.Entities;
 
 namespace ResearchCruiseApp_API.Application.UseCases.Cruises.EditCruise;
@@ -23,7 +24,13 @@ public class EditCruiseHandler(
     {
         var cruise = await cruisesRepository.GetByIdWithCruiseApplications(request.Id, cancellationToken);
         if (cruise is null)
-            return Error.NotFound();
+            return Error.ResourceNotFound();
+        
+        if (cruise.Status != CruiseStatus.New)
+            return Error.InvalidArgument("Można edytować jedynie nowe zgłoszenia");
+        
+        if (cruise.CruiseApplications.Any(application => application.Status != CruiseApplicationStatus.Accepted))
+            return Error.InvalidArgument("Można dodać do rejsu jedynie zgłoszenia w stanie: zaakceptowane");
 
         UpdateCruiseDates(cruise, request);
         
@@ -52,9 +59,9 @@ public class EditCruiseHandler(
         var newMainDeputyManagerId = request.CruiseFormModel.ManagersTeam.MainDeputyManagerId;
         
         if (newMainCruiseManagerId != Guid.Empty && await identityService.GetUserDtoById(newMainCruiseManagerId) is null)
-            return Error.NotFound("Podany kierownik nie istnieje");
+            return Error.ResourceNotFound("Podany kierownik nie istnieje");
         if (newMainDeputyManagerId != Guid.Empty && await identityService.GetUserDtoById(newMainDeputyManagerId) is null)
-            return Error.NotFound("Podany zastępca nie istnieje"); 
+            return Error.ResourceNotFound("Podany zastępca nie istnieje"); 
         
         cruise.MainCruiseManagerId = newMainCruiseManagerId;
         cruise.MainDeputyManagerId = newMainDeputyManagerId;

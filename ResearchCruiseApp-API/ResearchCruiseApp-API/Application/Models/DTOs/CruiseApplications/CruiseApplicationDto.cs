@@ -40,7 +40,7 @@ public class CruiseApplicationDto
     public int Points { get; set; }
     
     public string Status { get; init; } = null!;
-
+    
 
     private class MapProfile : Profile
     {

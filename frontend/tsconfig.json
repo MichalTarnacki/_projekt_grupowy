@@ -19,14 +19,50 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "baseUrl": "./",
+    "baseUrl": "src",
     "paths": {
       "*": [
-        "src/types/*"
+        "types/*"
+      ],
+      "@api/*": [
+        "api/*"
+      ],
+      "@app/*": [
+        "app/*"
+      ],
+      "@assets/*": [
+        "assets/*"
+      ],
+      "@components/*": [
+        "components/*"
+      ],
+      "@config/*": [
+        "config/*"
+      ],
+      "@consts/*": [
+        "consts/*"
+      ],
+      "@defaultValues/*": [
+        "defaultValues/*"
+      ],
+      "@enums/*": [
+        "enums/*"
+      ],
+      "@helpers/*": [
+        "defaultValues/*"
+      ],
+      "@hooks/*": [
+        "hooks/*"
+      ],
+      "@resources/*": [
+        "resources/*"
+      ],
+      "@styles/*": [
+        "styles/*"
+      ],
+      "@contexts/*": [
+        "contexts/*"
       ]
-    },
-    "include": [
-      "src"
-    ]
+    }
   }
 }

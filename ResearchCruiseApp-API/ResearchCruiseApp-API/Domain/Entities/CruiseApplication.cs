@@ -5,10 +5,9 @@ using ResearchCruiseApp_API.Domain.Common.Interfaces;
 namespace ResearchCruiseApp_API.Domain.Entities;
 
 
-public class CruiseApplication : Entity, IYearBasedNumbered
+public class CruiseApplication : Entity
 {
-    [StringLength(1024)]
-    public string Number { get; set; } = null!;
+    public int Number { get; set; }
     
     public DateOnly Date { get; init; }
     
@@ -21,6 +20,8 @@ public class CruiseApplication : Entity, IYearBasedNumbered
     public CruiseApplicationStatus Status { get; set; }
     
     public byte[] SupervisorCode { get; init; } = [];
-
-    public List<CruiseApplicationEffect> CruiseApplicationEffects { get; set; } = [];
+    
+    public Cruise? Cruise { get; set; }
+    
+    public int EffectsPoints { get; set; }
 }

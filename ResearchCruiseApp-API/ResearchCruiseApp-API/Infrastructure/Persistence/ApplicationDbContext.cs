@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ResearchCruiseApp_API.Domain.Entities;
+using ResearchCruiseApp_API.Infrastructure.Persistence.Configurations;
 using ResearchCruiseApp_API.Infrastructure.Services.Identity;
 
 namespace ResearchCruiseApp_API.Infrastructure.Persistence;
@@ -43,7 +44,7 @@ internal class ApplicationDbContext(DbContextOptions<ApplicationDbContext> optio
 
     public DbSet<FormCUgUnit> FormCUgUnits { get; init; } = null!;
     public DbSet<FormCGuestUnit> FormGuestUnits { get; init; } = null!;
-    public DbSet<FormCResearchTask> FormCResearchTasks { get; init; } = null!;
+    public DbSet<ResearchTaskEffect> ResearchTaskEffects { get; init; } = null!;
     public DbSet<FormCSpubTask> FormCSpubTasks { get; init; } = null!;
     public DbSet<FormCShortResearchEquipment> FormCShortResearchEquipments { get; init; } = null!;
     public DbSet<FormCLongResearchEquipment> FormCLongResearchEquipments { get; init; } = null!;
@@ -51,5 +52,15 @@ internal class ApplicationDbContext(DbContextOptions<ApplicationDbContext> optio
     public DbSet<FormCResearchEquipment> FormCResearchEquipments { get; init; } = null!;
     public DbSet<CollectedSample> CollectedSamples { get; init; } = null!;
     public DbSet<Photo> Photos { get; init; } = null!;
-    public DbSet<CruiseApplicationEffect> CruiseApplicationEffects { get; set; } = null!;
+
+    public DbSet<UserEffect> UserEffects { get; set; } = null!;
+
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+        
+        EntityConfiguration.Apply(builder);
+        builder.ApplyConfiguration(new CruiseApplicationConfiguration());
+    }
 }
