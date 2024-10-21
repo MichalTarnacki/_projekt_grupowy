@@ -3,12 +3,12 @@ import React, {createContext, useContext, useEffect, useState} from "react";
 import {FieldTableWrapper} from "../FormPage/Wrappers/FieldTableWrapper";
 
 import {OrdinalNumber} from "../FormPage/Inputs/TableParts";
-import {PublicationData} from "User/UserData";
 import {CellContext} from "@contexts/CellContext";
 import ReadOnlyTextInput from "../../../ToBeMoved/CommonComponents/ReadOnlyTextInput";
 import Api from "@api/Api";
 import Page from "../../../ToBeMoved/Pages/Page";
 import PageTitle from "../../../components/Page/PageTitle";
+import {PublicationData} from "PublicationData";
 
 export const PublicationsContext = createContext<null | PublicationData[]>(null)
 export const SetPublicationListContext = createContext<React.Dispatch<React.SetStateAction<PublicationData[]>> | null>(null)

@@ -2,12 +2,12 @@ import React, {createContext, useContext, useEffect, useState} from "react";
 
 import {FieldTableWrapper} from "../FormPage/Wrappers/FieldTableWrapper";
 import {OrdinalNumber} from "../FormPage/Inputs/TableParts";
-import {CruiseEffectData} from "User/UserData";
 import {CellContext} from "@contexts/CellContext";
 import ReadOnlyTextInput from "../../../ToBeMoved/CommonComponents/ReadOnlyTextInput";
 import Api from "@api/Api";
 import Page from "../../../ToBeMoved/Pages/Page";
 import PageTitle from "../../../components/Page/PageTitle";
+import {CruiseEffectData} from "CruiseEffectData";
 
 
 export const CruiseEffectsContext = createContext<null | CruiseEffectData[]>(null);
@@ -56,6 +56,14 @@ export const Type = () => {
     return (
         <div className={"task-field-input"}>
             <i>{cruiseEffect.effect.type}</i>
+        </div>)
+};
+
+export const Points = () => {
+    const {cruiseEffect} = CruiseEffectsTools();
+    return (
+        <div className={"task-field-input"}>
+            <i>{cruiseEffect.points}</i>
         </div>)
 };
 
@@ -184,6 +192,7 @@ const manageCruiseEffectsPageTableContent = () => [
     () => (<OrdinalNumber label={"Efekt rejsu"}/>),
     Type,
     Informations,
+    Points,
 ];
 
 const deleteCruiseEffect = (cruiseEffect: CruiseEffectData) => Api.delete('/CrusiseEffect/' + cruiseEffect.userId);
@@ -202,7 +211,7 @@ function CruiseEffectsPage() {
                     author: "Urszula Kwasigroch, Katarzyna Łukawska-Matuszewska",
                     title: "Drogi lęgowe karasia i jak wpływają na połów rekinów",
                 },
-                points: "0",
+                points: "1",
                 userId: "1235"
             },
             {
@@ -211,7 +220,7 @@ function CruiseEffectsPage() {
                     author: "Katarzyna Łukawska-Matuszewska",
                     title: "Drogi lęgowe karasia i jak wpływają na połów rekinów",
                 },
-                points: "0",
+                points: "5",
                 userId: "12345"
             },
             {
@@ -220,7 +229,7 @@ function CruiseEffectsPage() {
                     author: "Urszula Kwasigroch, Katarzyna Łukawska-Matuszewska",
                     title: "Drogi lęgowe karasia i jak wpływają na połów rekinów",
                 },
-                points: "0",
+                points: "9",
                 userId: "1235"
             },
             {
@@ -231,7 +240,7 @@ function CruiseEffectsPage() {
                     date: "21.12.2024",
                     financingApproved: "true",
                 },
-                points: "0",
+                points: "12",
                 userId: "1235"
             },
             {
@@ -244,7 +253,7 @@ function CruiseEffectsPage() {
                     endDate: '25.10.2024',
                     securedAmount: '19.00'
                 },
-                points: "0",
+                points: "3",
                 userId: "1235"
             },
             {
@@ -257,7 +266,7 @@ function CruiseEffectsPage() {
                     endDate: '25.10.2024',
                     securedAmount: '19.00'
                 },
-                points: "0",
+                points: "5",
                 userId: "1235"
             },
             {
@@ -270,7 +279,7 @@ function CruiseEffectsPage() {
                     endDate: '25.10.2024',
                     securedAmount: '19.00'
                 },
-                points: "0",
+                points: "7",
                 userId: "1235"
             },
             {
@@ -283,7 +292,7 @@ function CruiseEffectsPage() {
                     endDate: '25.10.2024',
                     securedAmount: '19.00'
                 },
-                points: "0",
+                points: "3",
                 userId: "1235"
             },
             {
@@ -296,7 +305,7 @@ function CruiseEffectsPage() {
                     endDate: '25.10.2024',
                     securedAmount: '19.00'
                 },
-                points: "0",
+                points: "8",
                 userId: "1235"
             },
             {
@@ -304,7 +313,7 @@ function CruiseEffectsPage() {
                     type: "Dydaktyka",
                     description: "Rejs rekreacyjno-dydaktyczny"
                 },
-                points: "0",
+                points: "5",
                 userId: "1235"
             },
             {
@@ -315,7 +324,7 @@ function CruiseEffectsPage() {
                     magazine: 'Chemik powszedni',
                     ministerialPoints: '10'
                 },
-                points: "0",
+                points: "9",
                 userId: "1235"
             },
             {
@@ -323,7 +332,7 @@ function CruiseEffectsPage() {
                     type: "Inne zadanie",
                     description: "Zadanie do pływania"
                 },
-                points: "0",
+                points: "2",
                 userId: "1235"
             },
         ]);
@@ -335,8 +344,8 @@ function CruiseEffectsPage() {
         (fetchData)()
     }, []);
 
-    const mdColWidths = [5, 20, 75];
-    const mdColTitles = ["Lp.", "Zadanie", "Szczegóły"];
+    const mdColWidths = [5, 20, 65, 10];
+    const mdColTitles = ["Lp.", "Zadanie", "Szczegóły", "Punkty"];
     const colTitle = "Efekty rejsu";
 
     const emptyText = "Nie ma żadnego efektu rejsu";
