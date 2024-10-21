@@ -24,6 +24,7 @@ import CruiseApplicationsPage from "./Pages/CruiseApplicationsPage/CruiseApplica
 import CruiseApplicationDetailsPage from "./Pages/CruiseApplicationDetailsPage/CruiseApplicationDetailsPage";
 import FormAForSupervisorPage from "./Pages/FormAForSupervisorPage";
 import MyPublicationsPage from "./Pages/MyPublications/MyPublicationsPage";
+import CruiseEffectsPage from "./Pages/CruiseEffects/CruiseEffectsPage";
 
 
 
@@ -85,6 +86,7 @@ const RoleBasedRouting = () => {
                 <Route path={Path.ForcedLogout} element={<LogoutPage />} />
                 <Route path={Path.AccountSettings} element={<AccountPage />} />
                 <Route path={Path.MyPublications} element={<MyPublicationsPage />} />
+                <Route path={Path.CruiseEffects} element={<CruiseEffectsPage />} />
             </>
         )
     }

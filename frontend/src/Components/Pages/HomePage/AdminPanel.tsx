@@ -8,6 +8,7 @@ import CruisesTile from "./Tiles/CruisesTile";
 import CruiseApplicationsTile from "./Tiles/CruiseApplicationsTile";
 import NewCruiseApplicationTile from "./Tiles/NewCruiseApplicationTile";
 import MyPublicationsTile from "./Tiles/MyPublicationsTile";
+import CruiseEffectsTile from "./Tiles/CruiseEffectsTile";
 
 
 export default function AdminPanel() {
@@ -19,6 +20,7 @@ export default function AdminPanel() {
         { element: <CruiseApplicationsTile />, cols: 1, rows: 1},
         { element: <CruisesTile />, cols: 2, rows: 1 },
         { element: <MyPublicationsTile />, cols: 1, rows: 1 },
+        { element: <CruiseEffectsTile/>, cols: 1, rows: 1 },
     ];
 
     return(

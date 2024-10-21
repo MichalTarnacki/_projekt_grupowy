@@ -18,3 +18,21 @@ export type PublicationData = {
     ministerialPoints: string,
     id: string,
 }
+
+export type CruiseEffectData = {
+    id: string,
+    points: string,
+    researchTask: ResearchTask
+}
+
+export type ResearchTask = {
+    type: string,
+    title: string,
+    authors: string,
+    institution: string,
+    date: string,
+    financingAmount: string,
+    description: string,
+    done: string,
+
+}

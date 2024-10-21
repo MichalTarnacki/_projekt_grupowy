@@ -1,7 +1,7 @@
 import Page from "../Page";
 import PageTitle from "../CommonComponents/PageTitle";
 import React, {createContext, useContext, useEffect, useState} from "react";
-import {PublicationData, UserData} from "../../CommonComponents/DataTypes";
+import {PublicationData} from "../../CommonComponents/DataTypes";
 import {CellContext, FieldTableWrapper} from "../FormPage/Wrappers/FieldTableWrapper";
 import ReadOnlyTextInput from "../../CommonComponents/ReadOnlyTextInput";
 import Api from "../../Tools/Api";
@@ -39,11 +39,6 @@ const TableReadOnlyField = (props: { fieldLabel: string, fieldKey: keyof Publica
         </div>
     )
 }
-export const Category = () => (
-    <div className={"d-flex justify-content-center align-items-center"}>
-        <TableReadOnlyField fieldLabel={"Kategoria"} fieldKey={"category"}/>
-    </div>
-)
 export const Informations = () => (
     <div className={"w-100 d-flex flex-row flex-wrap"}>
         <TableReadOnlyField fieldLabel={"DOI:"} fieldKey={"doi"}/>
@@ -76,7 +71,6 @@ export const Actions = () => {
 
 const managePublicationsPageTableContent = () => [
     () => (<OrdinalNumber label={"Publikacja"}/>),
-    Category,
     Informations,
     Year,
     MinisterialPoints,
@@ -102,6 +96,15 @@ function MyPublicationsPage() {
             year: "2023",
             ministerialPoints: "0",
             id: "1234"
+        }, {
+            category: "subject",
+            doi: "33.3016/j.marenvres.2023.106132",
+            authors: "Urszula Kwasigroch, Katarzyna Łukawska-Matuszewska",
+            title: "Drogi lęgowe karasia i jak wpływają na połów rekinów",
+            magazine: "Koło fanatyków wędkarstwa",
+            year: "2019",
+            ministerialPoints: "0",
+            id: "1235"
         }])
         //return getPublications().then(response => setPublicationList(response))
     }
@@ -109,8 +112,8 @@ function MyPublicationsPage() {
         (fetchData)()
     }, []);
 
-    const mdColWidths = [5, 10, 45, 15, 15, 10]
-    const mdColTitles = ["Lp.", "Kategoria", "Informacje", "Rok publikacji", "Punkty ministerialne", "Akcje"]
+    const mdColWidths = [5, 55, 15, 15, 10]
+    const mdColTitles = ["Lp.", "Informacje", "Rok publikacji", "Punkty ministerialne", "Akcje"]
     const colTitle = "Publikacje"
 
     const emptyText = "Nie dodano żadnej publikacji"
