@@ -187,6 +187,8 @@ export const Informations = () => {
     }
 };
 
+// TODO dodać label do punktów
+// TODO dodać link do zgłoszenia
 
 const manageCruiseEffectsPageTableContent = () => [
     () => (<OrdinalNumber label={"Efekt rejsu"}/>),

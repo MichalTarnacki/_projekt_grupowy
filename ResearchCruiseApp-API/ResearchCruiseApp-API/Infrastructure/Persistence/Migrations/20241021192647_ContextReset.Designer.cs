@@ -9,11 +9,11 @@ using ResearchCruiseApp_API.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
+namespace ResearchCruiseApp_API.infrastructure.persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241019225314_UpdatePermissionsRelationShipsWithForms")]
-    partial class UpdatePermissionsRelationShipsWithForms
+    [Migration("20241021192647_ContextReset")]
+    partial class ContextReset
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

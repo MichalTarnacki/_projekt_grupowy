@@ -8,7 +8,7 @@ using ResearchCruiseApp_API.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
+namespace ResearchCruiseApp_API.infrastructure.persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
