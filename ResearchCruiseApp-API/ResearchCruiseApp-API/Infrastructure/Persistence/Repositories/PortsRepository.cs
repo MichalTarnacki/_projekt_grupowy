@@ -11,7 +11,15 @@ internal class PortsRepository : Repository<Port>, IPortsRepository
     {
     }
 
-
+    
+    public Task<int> CountFormBPorts(Port port, CancellationToken cancellationToken)
+    {
+        return DbContext.Ports
+            .Where(p => p.Id == port.Id)
+            .SelectMany(p => p.FormBPorts)
+            .CountAsync(cancellationToken);
+    }
+    
     public Task<int> CountFormCPorts(Port port, CancellationToken cancellationToken)
     {
         return DbContext.Ports
@@ -26,6 +34,16 @@ internal class PortsRepository : Repository<Port>, IPortsRepository
             .Where(p => p.Id == port.Id)
             .SelectMany(p => p.FormBPorts)
             .Select(fp => fp.FormB.Id)
+            .Distinct()
+            .CountAsync(cancellationToken);
+    }
+    
+    public Task<int> CountUniqueFormsC(Port port, CancellationToken cancellationToken)
+    {
+        return DbContext.Ports
+            .Where(p => p.Id == port.Id)
+            .SelectMany(p => p.FormCPorts)
+            .Select(fp => fp.FormC.Id)
             .Distinct()
             .CountAsync(cancellationToken);
     }

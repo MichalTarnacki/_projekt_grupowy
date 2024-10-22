@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using ResearchCruiseApp_API.Application.ExternalServices;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
+using ResearchCruiseApp_API.Domain.Entities;
 using ResearchCruiseApp_API.Infrastructure.Persistence;
 using ResearchCruiseApp_API.Infrastructure.Persistence.Initialization;
 using ResearchCruiseApp_API.Infrastructure.Persistence.Repositories;
@@ -115,6 +116,15 @@ public static class DependencyInjection
             .AddScoped<IPortsRepository, PortsRepository>()
             .AddScoped<ICruiseDaysDetailsRepository, CruiseDaysDetailsRepository>()
             .AddScoped<IShipEquipmentsRepository, ShipEquipmentsRepository>()
+            .AddScoped<IFormsCRepository, FormsCRepository>()
+            .AddScoped<IFormCUgUnitsRepository, FormCUgUnitsRepository>()
+            .AddScoped<IFormCGuestUnitsRepository, FormCGuestUnitsRepository>()
+            .AddScoped<IFormCShortResearchEquipmentsRepository, FormCShortResearchEquipmentsRepository>()
+            .AddScoped<IFormCLongResearchEquipmentsRepository, FormCLongResearchEquipmentsRepository>()
+            .AddScoped<IFormCPortsRepository, FormCPortsRepository>()
+            .AddScoped<IFormCResearchEquipmentsRepository, FormCResearchEquipmentsRepository>()
+            .AddScoped<ICollectedSamplesRepository, CollectedSamplesRepository>()
+            .AddScoped<IPhotosRepository, PhotosRepository>()
             .AddScoped<IUserEffectsRepository, UserEffectsRepository>();
     }
 }

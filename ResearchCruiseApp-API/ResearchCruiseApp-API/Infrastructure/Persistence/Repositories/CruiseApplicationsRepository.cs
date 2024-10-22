@@ -79,10 +79,12 @@ internal class CruiseApplicationsRepository : Repository<CruiseApplication>, ICr
             .SingleOrDefaultAsync(cruiseApplication => cruiseApplication.Id == id, cancellationToken);
     }
 
-    public Task<CruiseApplication?> GetByIdWithFormsAndResearchTasks(Guid id, CancellationToken cancellationToken)
+    public Task<CruiseApplication?> GetByIdWithFormsAndFormCContentAndResearchTasks(
+        Guid id, CancellationToken cancellationToken)
     {
         return DbContext.CruiseApplications
             .IncludeForms()
+            .IncludeFormCContent()
             .Include(cruiseApplication => cruiseApplication.FormA!.FormAResearchTasks)
             .ThenInclude(formAResearchTask => formAResearchTask.ResearchTask)
             .SingleOrDefaultAsync(cruiseApplication => cruiseApplication.Id == id, cancellationToken);

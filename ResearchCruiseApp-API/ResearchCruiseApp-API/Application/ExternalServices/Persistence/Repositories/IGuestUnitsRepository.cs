@@ -8,4 +8,6 @@ public interface IGuestUnitsRepository : IRepository<GuestUnit>
     Task<int> CountFormAGuestUnits(GuestUnit guestUnit, CancellationToken cancellationToken);
     
     Task<int> CountUniqueFormsB(GuestUnit guestUnit, CancellationToken cancellationToken);
+
+    Task<int> CountUniqueFormsC(GuestUnit guestUnit, CancellationToken cancellationToken);
 }

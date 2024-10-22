@@ -27,4 +27,14 @@ internal class GuestUnitsRepository : Repository<GuestUnit>, IGuestUnitsReposito
             .Distinct()
             .CountAsync(cancellationToken);
     }
+    
+    public Task<int> CountUniqueFormsC(GuestUnit guestUnit, CancellationToken cancellationToken)
+    {
+        return DbContext.GuestUnits
+            .Where(g => g.Id == guestUnit.Id)
+            .SelectMany(g => g.FormCGuestUnits)
+            .Select(fg => fg.FormC.Id)
+            .Distinct()
+            .CountAsync(cancellationToken);
+    }
 }
