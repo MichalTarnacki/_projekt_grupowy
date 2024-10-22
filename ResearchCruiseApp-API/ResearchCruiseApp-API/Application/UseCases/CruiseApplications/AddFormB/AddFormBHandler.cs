@@ -37,8 +37,8 @@ public class AddFormBHandler(
             return Error.ResourceNotFound();
         if (!await userPermissionVerifier.CanCurrentUserAddForm(cruiseApplication))
             return Error.ResourceNotFound(); // Forbidden may give to much information
-        //if (cruiseApplication.Status != CruiseApplicationStatus.FormBRequired)
-           // return Error.ForbiddenOperation("Obecnie nie można przesłać formularza B.");
+        if (cruiseApplication.Status != CruiseApplicationStatus.FormBRequired)
+            return Error.ForbiddenOperation("Obecnie nie można przesłać formularza B.");
 
         await unitOfWork.ExecuteIsolated(
             () => AddNewFormB(request.FormBDto, cruiseApplication, cancellationToken),
