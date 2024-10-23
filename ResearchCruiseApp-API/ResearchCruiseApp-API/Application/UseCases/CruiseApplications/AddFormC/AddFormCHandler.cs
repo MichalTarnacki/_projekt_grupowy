@@ -41,13 +41,8 @@ public class AddFormCHandler(
         if (!await userPermissionVerifier.CanCurrentUserAddForm(cruiseApplication))
             return Error.ResourceNotFound();
 
-        if (cruiseApplication.Status != CruiseApplicationStatus.Undertaken &&
-            cruiseApplication.Status != CruiseApplicationStatus.Reported &&
-            cruiseApplication.Status != CruiseApplicationStatus.Archived)
-            return Error.ForbiddenOperation("Obecnie nie można wysłać zgłoszenia.");
-        
-        if (cruiseApplication is { Status: CruiseApplicationStatus.Archived, FormC: not null })
-            return Error.ForbiddenOperation("Formularz C został już dodany do tego zgłoszenia.");
+        if (cruiseApplication.Status != CruiseApplicationStatus.Undertaken)
+            return Error.ForbiddenOperation("Obecnie nie można wysłać Formularza C.");
 
         var result = await unitOfWork.ExecuteIsolated(
             () => AddNewFormC(request.FormCDto, cruiseApplication, cancellationToken),

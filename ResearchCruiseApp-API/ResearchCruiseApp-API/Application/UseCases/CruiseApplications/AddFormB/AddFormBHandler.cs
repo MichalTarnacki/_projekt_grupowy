@@ -29,7 +29,7 @@ public class AddFormBHandler(
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             return validationResult.ToApplicationResult();
-        
+
         var cruiseApplication = await cruiseApplicationsRepository
             .GetByIdWithFormAAndFormBContent(request.CruiseApplicationId, cancellationToken);
         
@@ -45,9 +45,11 @@ public class AddFormBHandler(
             IsolationLevel.Serializable,
             cancellationToken);
         
-        cruiseApplication.Status = cruiseApplication.Cruise?.Status is CruiseStatus.Ended or CruiseStatus.Archive
-            ? CruiseApplicationStatus.Undertaken
-            : CruiseApplicationStatus.FormBFilled;
+        
+        if (cruiseApplication.Cruise is not null && (cruiseApplication.Cruise?.Status == CruiseStatus.Ended))
+            cruiseApplication.Status = CruiseApplicationStatus.Undertaken;
+        else
+            cruiseApplication.Status = CruiseApplicationStatus.FormBFilled;
         
         await unitOfWork.Complete(cancellationToken);
         return Result.Empty;
