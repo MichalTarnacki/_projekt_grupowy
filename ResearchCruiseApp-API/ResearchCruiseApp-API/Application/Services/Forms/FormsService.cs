@@ -27,6 +27,9 @@ public class FormsService(
     IContractsRepository contractsRepository,
     ISpubTasksRepository spubTasksRepository,
     ICollectedSamplesRepository collectedSamplesRepository,
+    IResearchTasksRepository researchTasksRepository,
+    IResearchTaskEffectsRepository researchTaskEffectsRepository,
+    IUserEffectsRepository userEffectsRepository,
     IPhotosRepository photosRepository,
     IFormsBRepository formsBRepository,
     IFormsCRepository formsCRepository,
@@ -240,7 +243,22 @@ public class FormsService(
 
     private async Task DeleteResearchTaskEffects(FormC formC, CancellationToken cancellationToken)
     {
-        //throw new NotImplementedException();
+        foreach (var researchTaskEffect in formC.ResearchTaskEffects)
+        {
+            var researchTask = researchTaskEffect.ResearchTask;
+            researchTaskEffectsRepository.Delete(researchTaskEffect);
+            
+            foreach (var userEffect in researchTaskEffect.UserEffects)
+            {
+                userEffectsRepository.Delete(userEffect);
+            }
+            
+            if (await researchTasksRepository.CountFormAResearchTasks(researchTask, cancellationToken) == 0 &&
+                await researchTasksRepository.CountUniqueFormsC(researchTask, cancellationToken) == 1) // The one to be deleted
+            {
+                researchTasksRepository.Delete(researchTask);
+            }
+        }
     }
 
     private async Task DeleteContracts(FormC formC, CancellationToken cancellationToken)

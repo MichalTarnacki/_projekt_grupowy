@@ -125,6 +125,7 @@ public static class DependencyInjection
             .AddScoped<IFormCResearchEquipmentsRepository, FormCResearchEquipmentsRepository>()
             .AddScoped<ICollectedSamplesRepository, CollectedSamplesRepository>()
             .AddScoped<IPhotosRepository, PhotosRepository>()
+            .AddScoped<IResearchTaskEffectsRepository, ResearchTaskEffectsRepository>()
             .AddScoped<IUserEffectsRepository, UserEffectsRepository>();
     }
 }
