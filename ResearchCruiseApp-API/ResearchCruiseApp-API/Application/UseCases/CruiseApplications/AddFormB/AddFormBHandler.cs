@@ -42,7 +42,6 @@ public class AddFormBHandler(
 
         await unitOfWork.ExecuteIsolated(
             () => AddNewFormB(request.FormBDto, cruiseApplication, cancellationToken),
-            IsolationLevel.Serializable,
             cancellationToken);
         
         

@@ -28,6 +28,13 @@ internal class CruiseApplicationsRepository : Repository<CruiseApplication>, ICr
             .SingleOrDefaultAsync(cruiseApplication => cruiseApplication.Id == id, cancellationToken);
     }
 
+    public Task LoadFormA(CruiseApplication cruiseApplication, CancellationToken cancellationToken)
+    {
+        return DbContext.Entry(cruiseApplication)
+            .Reference(applicationEntry => applicationEntry.FormA)
+            .LoadAsync(cancellationToken);
+    }
+    
     public Task<CruiseApplication?> GetByIdWithFormAContent(Guid id, CancellationToken cancellationToken)
     {
         return DbContext.CruiseApplications

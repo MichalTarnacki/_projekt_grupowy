@@ -35,29 +35,25 @@ public class AddFormCHandler(
         
         var cruiseApplication = await cruiseApplicationsRepository
             .GetByIdWithFormsAndFormCContentAndResearchTasks(request.CruiseApplicationId, cancellationToken);
+        
         if (cruiseApplication is null)
             return Error.ResourceNotFound();
-
         if (!await userPermissionVerifier.CanCurrentUserAddForm(cruiseApplication))
             return Error.ResourceNotFound();
-
         if (cruiseApplication.Status != CruiseApplicationStatus.Undertaken)
             return Error.ForbiddenOperation("Obecnie nie można wysłać Formularza C.");
 
         var result = await unitOfWork.ExecuteIsolated(
             () => AddNewFormC(request.FormCDto, cruiseApplication, cancellationToken),
-            IsolationLevel.Serializable,
             cancellationToken);
 
         if (!result.IsSuccess)
             return result;
-
-        if (cruiseApplication.Status == CruiseApplicationStatus.Undertaken)
-            cruiseApplication.Status = CruiseApplicationStatus.Reported;
         
+        cruiseApplication.Status = CruiseApplicationStatus.Reported;
         await effectsEvaluator.Evaluate(cruiseApplication, cancellationToken);
-
         await unitOfWork.Complete(cancellationToken);
+        
         return Result.Empty;
     }
     
