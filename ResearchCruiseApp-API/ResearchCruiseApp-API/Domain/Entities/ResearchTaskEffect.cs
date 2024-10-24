@@ -10,10 +10,10 @@ public class ResearchTaskEffect : Entity
     public ResearchTask ResearchTask { get; init; } = null!;
 
     [StringLength(1024)]
-    public string Done { get; set; } = null!;
+    public string Done { get; init; } = null!;
 
     [StringLength(1024)]
-    public string? PublicationMinisterialPoints { get; set; }
+    public string? PublicationMinisterialPoints { get; init; }
     
     [StringLength(1024)]
     public string ManagerConditionMet { get; init; } = null!;
