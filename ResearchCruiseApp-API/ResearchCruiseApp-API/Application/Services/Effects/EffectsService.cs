@@ -1,14 +1,21 @@
 ﻿using System.Diagnostics;
 using ResearchCruiseApp_API.Application.Common.Constants;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
+using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
+using ResearchCruiseApp_API.Application.Services.FormsFields;
 using ResearchCruiseApp_API.Domain.Common.Enums;
 using ResearchCruiseApp_API.Domain.Common.Extensions;
 using ResearchCruiseApp_API.Domain.Entities;
 
-namespace ResearchCruiseApp_API.Application.Services.EffectsEvaluator;
+namespace ResearchCruiseApp_API.Application.Services.Effects;
 
 
-public class EffectsEvaluator(IUserEffectsRepository userEffectsRepository) : IEffectsEvaluator
+public class EffectsService(
+    IResearchTasksRepository researchTasksRepository,
+    IResearchTaskEffectsRepository researchTaskEffectsRepository,
+    IUserEffectsRepository userEffectsRepository,
+    IFormsFieldsService formsFieldsService
+    ) : IEffectsService
 {
     public async Task Evaluate(CruiseApplication cruiseApplication, CancellationToken cancellationToken)
     {
@@ -42,8 +49,52 @@ public class EffectsEvaluator(IUserEffectsRepository userEffectsRepository) : IE
                     cancellationToken);
         }
     }
+    
+    public async Task DeleteResearchTasksEffects(FormC formC, CancellationToken cancellationToken)
+    {
+        foreach (var researchTaskEffect in formC.ResearchTaskEffects)
+        {
+            var researchTask = researchTaskEffect.ResearchTask;
+            researchTaskEffectsRepository.Delete(researchTaskEffect);
+            
+            foreach (var userEffect in researchTaskEffect.UserEffects)
+            {
+                userEffectsRepository.Delete(userEffect);
+            }
+            
+            if (await researchTasksRepository.CountFormAResearchTasks(researchTask, cancellationToken) == 0 &&
+                await researchTasksRepository.CountUniqueFormsC(researchTask, cancellationToken) == 1) // The given one
+            {
+                researchTasksRepository.Delete(researchTask);
+            }
+        }
+    }
 
-    private Dictionary<CruiseFunction, int> GetPointsForManagersTeam(
+    public async Task AddResearchTasksEffects(
+        FormC formC, List<ResearchTaskEffectDto> researchTaskEffectDtos, CancellationToken cancellationToken)
+    {
+        var alreadyAddedResearchTasks = new HashSet<ResearchTask>();
+        
+        foreach (var researchTaskEffectDto in researchTaskEffectDtos)
+        {
+            var researchTask = await formsFieldsService
+                .GetUniqueResearchTask(researchTaskEffectDto, alreadyAddedResearchTasks, cancellationToken);
+            alreadyAddedResearchTasks.Add(researchTask);
+            
+            var researchTaskEffect = new ResearchTaskEffect
+            {
+                ResearchTask = researchTask,
+                Done = researchTaskEffectDto.Done,
+                PublicationMinisterialPoints = researchTaskEffectDto.PublicationMinisterialPoints,
+                ManagerConditionMet = researchTaskEffectDto.ManagerConditionMet,
+                DeputyConditionMet = researchTaskEffectDto.DeputyConditionMet
+            };
+            formC.ResearchTaskEffects.Add(researchTaskEffect);
+        }
+    }
+    
+    
+    private static Dictionary<CruiseFunction, int> GetPointsForManagersTeam(
         ResearchTaskEffect effect, CruiseApplication cruiseApplication)
     {
         var managerPoints = 0;
