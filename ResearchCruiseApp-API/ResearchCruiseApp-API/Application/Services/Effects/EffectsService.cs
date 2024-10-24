@@ -17,7 +17,7 @@ public class EffectsService(
     IFormsFieldsService formsFieldsService
     ) : IEffectsService
 {
-    public async Task Evaluate(CruiseApplication cruiseApplication, CancellationToken cancellationToken)
+    public async Task EvaluateEffects(CruiseApplication cruiseApplication, CancellationToken cancellationToken)
     {
         if (cruiseApplication.FormA is null)
             throw new ArgumentException("CruiseApplication must have a FormA for its effects to be evaluated");
@@ -30,23 +30,21 @@ public class EffectsService(
 
         var doneEffects = cruiseApplication.FormC.ResearchTaskEffects
             .Where(effect => effect.Done.ToBool());
-        
+
         foreach (var effect in doneEffects)
         {
             var pointsForManagersTeam = GetPointsForManagersTeam(effect, cruiseApplication);
 
-            if (pointsForManagersTeam[CruiseFunction.CruiseManager] > 0)
-                await AddEvaluationForUser(
-                    effect,
-                    cruiseManagerId,
-                    pointsForManagersTeam[CruiseFunction.CruiseManager],
-                    cancellationToken);
-            if (pointsForManagersTeam[CruiseFunction.DeputyManager] > 0)
-                await AddEvaluationForUser(
-                    effect,
-                    deputyManagerId,
-                    pointsForManagersTeam[CruiseFunction.DeputyManager],
-                    cancellationToken);
+            await AddEvaluationForUser(
+                effect,
+                cruiseManagerId,
+                pointsForManagersTeam[CruiseFunction.CruiseManager],
+                cancellationToken);
+            await AddEvaluationForUser(
+                effect,
+                deputyManagerId,
+                pointsForManagersTeam[CruiseFunction.DeputyManager],
+                cancellationToken);
         }
     }
     
@@ -125,7 +123,9 @@ public class EffectsService(
                 managerPoints = supplementaryConditionMet || managerConditionMet
                     ? EvaluationConstants.PointsForProjectPreparationEffect
                     : 0;
-                deputyPoints = supplementaryConditionMet ? EvaluationConstants.PointsForProjectPreparationEffect : 0;
+                deputyPoints = supplementaryConditionMet
+                    ? EvaluationConstants.PointsForProjectPreparationEffect
+                    : 0;
                 break;
 
             case ResearchTaskType.DomesticProject:
@@ -139,7 +139,7 @@ public class EffectsService(
                 break;
             
             case ResearchTaskType.OtherResearchTask:
-                var evaluationBeforeCruise = GetResearchTaskEvaluationFromBeforeCruise(effect, cruiseApplication);
+                var evaluationBeforeCruise = GetResearchTaskEvaluationBeforeCruise(effect, cruiseApplication);
                 managerPoints = evaluationBeforeCruise;
                 deputyPoints = evaluationBeforeCruise;
                 break;
@@ -171,7 +171,7 @@ public class EffectsService(
     /// Returns the number of points that have been assigned to the researchTask linked with the given effect when
     /// the cruiseApplication was evaluated before the cruise
     /// </summary>
-    private static int GetResearchTaskEvaluationFromBeforeCruise(
+    private static int GetResearchTaskEvaluationBeforeCruise(
         ResearchTaskEffect effect, CruiseApplication cruiseApplication)
     {
         Debug.Assert(cruiseApplication.FormA is not null);

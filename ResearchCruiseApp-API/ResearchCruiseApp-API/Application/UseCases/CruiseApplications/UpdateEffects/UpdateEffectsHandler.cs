@@ -30,7 +30,7 @@ public class UpdateEffectsHandler(
             () => UpdateEffects(request.EffectsUpdatesDto, cruiseApplication, cancellationToken),
             cancellationToken);
         
-        await effectsService.Evaluate(cruiseApplication, cancellationToken);
+        await effectsService.EvaluateEffects(cruiseApplication, cancellationToken);
         await unitOfWork.Complete(cancellationToken);
         
         return Result.Empty;

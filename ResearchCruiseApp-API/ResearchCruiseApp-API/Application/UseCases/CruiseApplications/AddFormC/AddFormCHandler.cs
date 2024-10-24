@@ -44,7 +44,7 @@ public class AddFormCHandler(
             return formCreationResult;
         
         cruiseApplication.Status = CruiseApplicationStatus.Reported;
-        await effectsService.Evaluate(cruiseApplication, cancellationToken);
+        await effectsService.EvaluateEffects(cruiseApplication, cancellationToken);
         
         await unitOfWork.Complete(cancellationToken);
         return Result.Empty;

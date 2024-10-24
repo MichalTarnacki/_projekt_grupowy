@@ -6,7 +6,7 @@ namespace ResearchCruiseApp_API.Application.Services.Effects;
 
 public interface IEffectsService
 {
-    Task Evaluate(CruiseApplication cruiseApplication, CancellationToken cancellationToken);
+    Task EvaluateEffects(CruiseApplication cruiseApplication, CancellationToken cancellationToken);
     
     Task DeleteResearchTasksEffects(FormC formC, CancellationToken cancellationToken);
     
