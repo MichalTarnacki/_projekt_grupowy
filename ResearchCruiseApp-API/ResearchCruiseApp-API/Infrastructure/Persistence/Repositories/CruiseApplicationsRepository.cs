@@ -82,6 +82,7 @@ internal class CruiseApplicationsRepository : Repository<CruiseApplication>, ICr
             .IncludeFormA()
             .IncludeFormC()
             .IncludeFormCContent()
+            .AsSplitQuery()
             .SingleOrDefaultAsync(cruiseApplication => cruiseApplication.Id == id, cancellationToken);
     }
     
