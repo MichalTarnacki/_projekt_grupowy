@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import {
     ErrorMessageIfPresentNoContext,
@@ -48,14 +48,6 @@ function ResetPasswordForm() {
 
     const onSubmitWhenSuccess = () => {
         navigate(Path.Default);
-    };
-
-    const RememberPasswordLink = () => {
-        return (
-            <Link className="forget-password-link" to={Path.Default}>
-                Znasz hasło?
-            </Link>
-        );
     };
 
     const DefaultForm = () => {
