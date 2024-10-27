@@ -31,7 +31,7 @@ function ResetPasswordForm() {
     const onSubmit = async (fieldValues: FieldValues) => {
         setDisabled(true);
         try {
-            const resetPasswordData: ResetPasswordData | undefined = fieldValuesToResetPasswordData(fieldValues);
+            const resetPasswordData: ResetPasswordData | undefined = createResetPasswordData(fieldValues);
             if (resetPasswordData) {
                 await ResetPassword(resetPasswordData);
                 setResetSuccessful(true);
@@ -80,7 +80,7 @@ function ResetPasswordForm() {
         );
     };
 
-    const fieldValuesToResetPasswordData = (fieldValues: FieldValues): ResetPasswordData | undefined => {
+    const createResetPasswordData = (fieldValues: FieldValues): ResetPasswordData | undefined => {
         if (!emailBase64 || !resetCode) {
             return undefined;
         }
