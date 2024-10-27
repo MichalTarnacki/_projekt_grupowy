@@ -8,38 +8,26 @@ import {
 import userDataManager from '../../../../ToBeMoved/CommonComponents/UserDataManager';
 import useFormWrapper from '../../../../ToBeMoved/CommonComponents/useFormWrapper';
 import { Path } from '../../../../ToBeMoved/Tools/Path';
-import {ResetPasswordData} from "ResetPasswordData";
 
-function ResetPasswordForm() {
-    const { ResetPassword } = userDataManager();
+function ForgotPasswordForm() {
+    const { ForgotPassword } = userDataManager();
     const {
         handleSubmit,
-        PasswordTextInput,
-        ConfirmPasswordTextInput,
+        EmailTextInput,
         ConfirmButton,
+        RegisterLink,
         setDisabled,
         ReturnToLoginLink,
     } = useFormWrapper();
     const [resetError, setError] = useState<null | string>(null);
-    const [resetSuccessful, setResetSuccessful] = useState(false);
-
-    const queryParams = new URLSearchParams(window.location.search);
-    const resetCode = queryParams.get('resetCode');
-    const emailBase64 = queryParams.get('emailBase64');
+    const [resetEnablingSuccessful, setResetEnablingSuccessful] = useState(false);
 
     const navigate = useNavigate();
-    const onSubmit = async (fieldValues: FieldValues) => {
+    const onSubmit = async (data: FieldValues) => {
         setDisabled(true);
         try {
-            const resetPasswordData: ResetPasswordData | undefined = fieldValuesToResetPasswordData(fieldValues);
-            if (resetPasswordData) {
-                await ResetPassword(resetPasswordData);
-                setResetSuccessful(true);
-            }
-            else {
-                setError('Wystąpił problem z resetowaniem hasła');
-                setDisabled(false);
-            }
+            await ForgotPassword(data);
+            setResetEnablingSuccessful(true);
         } catch (e) {
             setError('Wystąpił problem z resetowaniem hasła');
             setDisabled(false);
@@ -61,10 +49,11 @@ function ResetPasswordForm() {
     const DefaultForm = () => {
         return (
             <form onSubmit={handleSubmit(onSubmit)}>
-                <PasswordTextInput />
-                <ConfirmPasswordTextInput />
+                <EmailTextInput />
+                <RememberPasswordLink />
                 <ConfirmButton />
                 {resetError && <ErrorMessageIfPresentNoContext message={resetError} />}
+                <RegisterLink />
             </form>
         );
     };
@@ -73,33 +62,21 @@ function ResetPasswordForm() {
         return (
             <form onSubmit={handleSubmit(onSubmitWhenSuccess)}>
                 <div className={'signup-link'}>
-                    Hasło zostało pomyślnie zmienione.
+                    Jeśli konto istnieje, został wysłany link do zmiany hasła na podany
+                    adres e-mail
                 </div>
                 <ReturnToLoginLink />
             </form>
         );
     };
 
-    const fieldValuesToResetPasswordData = (fieldValues: FieldValues): ResetPasswordData | undefined => {
-        if (!emailBase64 || !resetCode) {
-            return undefined;
-        }
-
-        return {
-            password: fieldValues.password,
-            passwordConfirm: fieldValues.passwordConfirm,
-            emailBase64: emailBase64,
-            resetCode: resetCode
-        }
-    };
-
     return (
         <>
             <h1 className={'login-common-header'}>Resetowanie hasła</h1>
-            {!resetSuccessful && <DefaultForm />}
-            {resetSuccessful && <FormAfterResetSuccess />}
+            {!resetEnablingSuccessful && <DefaultForm />}
+            {resetEnablingSuccessful && <FormAfterResetSuccess />}
         </>
     );
 }
 
-export default ResetPasswordForm;
+export default ForgotPasswordForm;
