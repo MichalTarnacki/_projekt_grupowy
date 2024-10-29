@@ -30,5 +30,5 @@ public enum CruiseApplicationStatus
     Undertaken,
         
     [StringValue("Rozliczone")]
-    Reported,
+    Reported
 }

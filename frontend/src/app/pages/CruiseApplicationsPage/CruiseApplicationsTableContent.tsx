@@ -98,13 +98,14 @@ export const Status = () => {
     const listModeContext = useContext(ListModeContext);
     const isCurrentUserCruiseOrDeputyManager =
         IsCurrentUserCruiseOrDeputyManager(application);
+    console.log(application);
     return (
         <div className={'task-field-input'}>
             <label className={'table-field-input-label'}>Status:</label>
             <i>{application!.status}</i>
             {!listModeContext?.mode && (
                 <>
-                    {application!.status == CruiseApplicationStatus.FormBRequired &&
+                    {application!.status === CruiseApplicationStatus.FormBRequired &&
                         isCurrentUserCruiseOrDeputyManager && (
                             <LinkWithState
                                 to={Path.Form}
@@ -112,13 +113,19 @@ export const Status = () => {
                                 label={'Wypełnij'}
                             />
                         )}
-                    {application!.status == CruiseApplicationStatus.Undertaken &&
+                    {application!.status === CruiseApplicationStatus.Undertaken &&
                         isCurrentUserCruiseOrDeputyManager && (
                             <LinkWithState
                                 to={Path.Form}
                                 state={{ formType: 'C' }}
                                 label={'Wypełnij formularz C'}
                             />
+                        )}
+                    {(application!.status === CruiseApplicationStatus.Undertaken || application!.status === CruiseApplicationStatus.Reported) &&
+                        isCurrentUserCruiseOrDeputyManager && (
+                            <div>
+                                {application.effectsDoneRate} efektów
+                            </div>
                         )}
                 </>
             )}
