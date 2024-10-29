@@ -9,7 +9,7 @@ import { FormTemplateProps } from 'Form/FormTemplateProps';
 import Page from '../../../../ToBeMoved/Pages/Page';
 import FormTitleWithNavigation from '../../../../components/Form/FormTitleWithNavigation';
 
-import { FormContent } from '../../../../components/Form/FormContent';
+import { FormContent } from '@components/Form/FormContent';
 import { BottomOptionBar } from '../../../../ToBeMoved/Tools/FormBottomOptionBar';
 import { FormContext } from '@contexts/FormContext';
 import { ReadOnlyContext } from '@contexts/ReadOnlyContext';

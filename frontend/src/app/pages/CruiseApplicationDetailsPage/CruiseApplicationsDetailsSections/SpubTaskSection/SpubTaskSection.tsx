@@ -1,5 +1,5 @@
 import { FormSectionType } from 'Form/Section/FormSectionType';
-import { SectionIdFromTitle } from '../../../../../components/Form/Section/helpers/SectionIdFromTitle';
+import { SectionIdFromTitle } from '@components/Form/Section/helpers/SectionIdFromTitle';
 import Section from '../../../../../components/Form/Section/Section';
 import { SectionContentProps } from 'Form/Section/SectionContentProps';
 import { spubTasksSectionFieldNames } from './SpubTasksSectionFieldNames';

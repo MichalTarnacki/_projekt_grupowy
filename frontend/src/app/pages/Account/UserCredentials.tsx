@@ -4,7 +4,7 @@ import Question from '/node_modules/bootstrap-icons/icons/question.svg';
 import Person from '/node_modules/bootstrap-icons/icons/person-bounding-box.svg';
 import axios from 'axios';
 
-import { ErrorMessageIfPresentNoContext } from '../../../components/Form/ErrorMessage/ErrorMessageIfPresentNoContext';
+import { ErrorMessageIfPresentNoContext } from '@components/Form/ErrorMessage/ErrorMessageIfPresentNoContext';
 import { UserRole } from '@enums/UserRole';
 
 // TODO : Move to different place

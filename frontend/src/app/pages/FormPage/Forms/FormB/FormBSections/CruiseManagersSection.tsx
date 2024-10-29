@@ -1,5 +1,5 @@
 import { cruiseFromLocation } from '@hooks/cruiseFromLocation';
-import { SectionWrapper } from '../../../../../../components/Form/Section/SectionWrapper';
+import { SectionWrapper } from '@components/Form/Section/SectionWrapper';
 import CruiseBasicInfo from '@app/pages/CruiseFormPage/CruiseFormSections/CruiseBasicInfo';
 import BoolField from '@app/pages/FormPage/Inputs/BoolField';
 import React, { useContext } from 'react';

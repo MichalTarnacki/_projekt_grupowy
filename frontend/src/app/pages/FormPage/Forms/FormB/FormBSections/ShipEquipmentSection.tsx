@@ -1,4 +1,4 @@
-import { SectionWrapper } from '../../../../../../components/Form/Section/SectionWrapper';
+import { SectionWrapper } from '@components/Form/Section/SectionWrapper';
 import TechnicalElementsTable
     from '@app/pages/FormPage/Inputs/TechnicalElementsTable/TechnicalElementsTable';
 import ListWithCheckbox from '@app/pages/FormPage/Inputs/ListWithCheckbox';

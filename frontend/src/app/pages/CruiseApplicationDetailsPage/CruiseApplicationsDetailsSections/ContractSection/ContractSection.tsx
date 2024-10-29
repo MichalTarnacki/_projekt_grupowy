@@ -1,5 +1,5 @@
 import React from 'react';
-import { SectionWrapper } from '../../../../../components/Form/Section/SectionWrapper';
+import { SectionWrapper } from '@components/Form/Section/SectionWrapper';
 import { ContractsField } from './ContractsField';
 import { contractSectionFieldNames } from './ContractSectionFieldNames';
 

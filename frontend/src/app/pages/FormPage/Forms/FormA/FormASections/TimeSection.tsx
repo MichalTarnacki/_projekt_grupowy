@@ -8,7 +8,7 @@ import {
     PeriodNotesField,
     ShipUsageField,
 } from './TimeSectionFields';
-import { SectionWrapper } from '../../../../../../components/Form/Section/SectionWrapper';
+import { SectionWrapper } from '@components/Form/Section/SectionWrapper';
 
 export const timeSectionFieldNames = {
     acceptablePeriod: 'acceptablePeriod',

@@ -1,4 +1,4 @@
-import { SimpleInfoContextWrapperSingleField } from '../../../../components/SimpleInfoContextWrapperSingleField';
+import { SimpleInfoContextWrapperSingleField } from '@components/SimpleInfoContextWrapperSingleField';
 import { CruiseApplication } from 'CruiseApplication';
 import { CruiseApplicationContext } from '@contexts/CruiseApplicationContext';
 

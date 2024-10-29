@@ -4,7 +4,7 @@ import useFormWrapper from '../../../ToBeMoved/CommonComponents/useFormWrapper';
 import React, { useState } from 'react';
 import userDataManager from '../../../ToBeMoved/CommonComponents/UserDataManager';
 
-import { ErrorMessageIfPresentNoContext } from '../../../components/Form/ErrorMessage/ErrorMessageIfPresentNoContext';
+import { ErrorMessageIfPresentNoContext } from '@components/Form/ErrorMessage/ErrorMessageIfPresentNoContext';
 
 import {ChangePasswordData} from "ChangePasswordData";
 

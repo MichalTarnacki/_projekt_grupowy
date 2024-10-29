@@ -3,7 +3,7 @@ import { Controller, UseFormReturn } from 'react-hook-form';
 
 import useWindowWidth from '../../../../hooks/useWindowWidth';
 
-import { ErrorMessageIfPresentNoContext } from '../../../../components/Form/ErrorMessage/ErrorMessageIfPresentNoContext';
+import { ErrorMessageIfPresentNoContext } from '@components/Form/ErrorMessage/ErrorMessageIfPresentNoContext';
 
 export type TechnicalElements = {
     bowStarboard: boolean;

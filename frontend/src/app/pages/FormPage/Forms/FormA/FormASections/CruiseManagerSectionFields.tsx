@@ -6,7 +6,7 @@ import { FormContext } from '@contexts/FormContext';
 
 import {
     ErrorMessageIfPresentNoContext,
-} from '../../../../../../components/Form/ErrorMessage/ErrorMessageIfPresentNoContext';
+} from '@components/Form/ErrorMessage/ErrorMessageIfPresentNoContext';
 import userDataManager from '../../../../../../ToBeMoved/CommonComponents/UserDataManager';
 import { EmptyFunction } from '@consts/EmptyFunction';
 import { FormAInitValues } from 'FormAInitValues';
