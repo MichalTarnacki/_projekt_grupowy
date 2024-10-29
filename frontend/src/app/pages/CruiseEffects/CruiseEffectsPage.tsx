@@ -199,7 +199,6 @@ const manageCruiseEffectsPageTableContent = () => [
 
 const deleteCruiseEffect = (cruiseEffect: CruiseEffectData) => Api.delete('/CrusiseEffect/' + cruiseEffect.userId);
 const getCruiseEffect = () => Api.get('/api/CruiseApplications/effectsEvaluations').then(response => {
-    console.log(response);
     return response?.data
 });
 

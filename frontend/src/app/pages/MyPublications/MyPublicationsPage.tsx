@@ -60,7 +60,6 @@ export const MinisterialPoints = () => (
 )
 export const Actions = () => {
     const {publication, removePublication} = PublicationsTools()
-    console.log(publication);
 
     return (
         <div className="btn-group-vertical">
