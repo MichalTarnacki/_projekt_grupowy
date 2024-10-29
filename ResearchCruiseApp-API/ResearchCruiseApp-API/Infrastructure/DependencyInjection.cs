@@ -108,6 +108,7 @@ public static class DependencyInjection
             .AddScoped<IPortsRepository, PortsRepository>()
             .AddScoped<ICruiseDaysDetailsRepository, CruiseDaysDetailsRepository>()
             .AddScoped<IShipEquipmentsRepository, ShipEquipmentsRepository>()
-            .AddScoped<IUserEffectsRepository, UserEffectsRepository>();
+            .AddScoped<IUserEffectsRepository, UserEffectsRepository>()
+            .AddScoped<IUserPublicationsRepository, UserPublicationsRepository>();
     }
 }

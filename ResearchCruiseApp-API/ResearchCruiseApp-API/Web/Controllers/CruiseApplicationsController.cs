@@ -7,6 +7,7 @@ using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AddCruiseApp
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AddFormB;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AddFormC;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AnswerAsSupervisor;
+using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.DeleteOwnPublication;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.EditCruiseApplicationEvaluation;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetAllCruiseApplications;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetCruiseApplicationById;
@@ -18,6 +19,7 @@ using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetFormAForS
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetFormB;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetFormC;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetOwnEffectsEvaluations;
+using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetOwnPublications;
 using ResearchCruiseApp_API.Domain.Common.Constants;
 using ResearchCruiseApp_API.Web.Common.Extensions;
 
@@ -194,6 +196,26 @@ public class CruiseApplicationsController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(new GetOwnEffectsEvaluationsQuery());
         return result.IsSuccess
             ? Ok(result.Data)
+            : this.CreateError(result);
+    }
+    
+    [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.Shipowner}, {RoleName.CruiseManager}, {RoleName.Guest}")]
+    [HttpGet("publications")]
+    public async Task<IActionResult> GetOwnPublications()
+    {
+        var result = await mediator.Send(new GetOwnPublicationsQuery());
+        return result.IsSuccess
+            ? Ok(result.Data)
+            : this.CreateError(result);
+    }
+    
+    [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.Shipowner}, {RoleName.CruiseManager}, {RoleName.Guest}")]
+    [HttpDelete("{publicationId:guid}/publications")]
+    public async Task<IActionResult> DeleteOwnPublication(Guid publicationId)
+    {
+        var result = await mediator.Send(new DeleteOwnPublicationQuery(publicationId));
+        return result.IsSuccess
+            ? NoContent()
             : this.CreateError(result);
     }
 }

@@ -29,6 +29,8 @@ public class Publication: Entity, IEquatable<Publication>, IEquatableByExpressio
     public string MinisterialPoints { get; init; } = null!;
     
     public List<FormAPublication> FormAPublications { get; init; } = [];
+    
+    public List<UserPublication> UserPublications { get; init; } = [];
 
 
     public override bool Equals(object? other) =>

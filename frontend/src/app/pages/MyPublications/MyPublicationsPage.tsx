@@ -21,15 +21,13 @@ export const PublicationsTools = () => {
     const setPublicationContext = useContext(SetPublicationListContext);
     const publication: PublicationData = publicationsContext![cellContext?.rowIndex!]
     //TODO zmienić logike by dało się usunąć publikacje
-    const updatePublication = (fieldKey: keyof PublicationData, value: PublicationData) => {
+    const removePublication = (key: PublicationData) => {
         // @ts-ignore
-        publication[fieldKey] = value
-        const newPulicationList = [...publicationsContext!]
-        const publicationIndex = newPulicationList.findIndex(_publication => _publication.id == publication.id)
-        newPulicationList[publicationIndex] = publication
+        let newPulicationList = [...publicationsContext!];
+        newPulicationList = newPulicationList.filter(publication => publication != key);
         setPublicationContext!(newPulicationList)
     }
-    return {publication, updatePublication}
+    return {publication, removePublication}
 }
 
 const TableReadOnlyField = (props: { fieldLabel: string, fieldKey: keyof PublicationData }) => {
@@ -61,12 +59,13 @@ export const MinisterialPoints = () => (
     </div>
 )
 export const Actions = () => {
-    const {publication, updatePublication} = PublicationsTools()
+    const {publication, removePublication} = PublicationsTools()
+    console.log(publication);
 
     return (
         <div className="btn-group-vertical">
             <div className={"user-action-link"}
-                 onClick={() => deletePublication(publication).then(() => console.log("aaa"))}>
+                 onClick={() => deletePublication(publication).then(() => removePublication(publication))}>
                 Usuń publikację
             </div>
         </div>
@@ -79,39 +78,26 @@ const managePublicationsPageTableContent = () => [
     Year,
     MinisterialPoints,
     Actions,
-]
+];
 
-const deletePublication = (publication: PublicationData) => Api.delete('/Publications/' + publication.id)
-const getPublications = () => Api.get('/Publications').then(response => {
+const deletePublication = (publication: PublicationData) => Api.delete('/api/CruiseApplications/' + publication.id +'/Publications/');
+const getPublications = () => Api.get('/api/CruiseApplications/Publications').then(response => {
     return response.data
-})
+});
 
+// TODO Zamienić plik csv na liste obiektów i przesłać do backendu
 
 function MyPublicationsPage() {
     const [publicationList, setPublicationList] = useState<PublicationData[]>([])
     const fetchData = async () => {
-        // TODO tymczasowe dane
-        setPublicationList([{
-            category: "subject",
-            doi: "10.1016/j.marenvres.2023.106132",
-            authors: "Urszula Kwasigroch, Katarzyna Łukawska-Matuszewska, Agnieszka Jędruch, Olga Brocławik, Magdalena Bełdowska",
-            title: "Mobility and bioavailability of mercury in sediments of the southern Baltic sea in relation to the chemical fractions of iron: Spatial and temporal patterns",
-            magazine: "Marine Environmental Research",
-            year: "2023",
-            ministerialPoints: "0",
-            id: "1234"
-        }, {
-            category: "subject",
-            doi: "33.3016/j.marenvres.2023.106132",
-            authors: "Urszula Kwasigroch, Katarzyna Łukawska-Matuszewska",
-            title: "Drogi lęgowe karasia i jak wpływają na połów rekinów",
-            magazine: "Koło fanatyków wędkarstwa",
-            year: "2019",
-            ministerialPoints: "0",
-            id: "1235"
-        }])
-        //return getPublications().then(response => setPublicationList(response))
-    }
+        let list: PublicationData[] = [];
+        return getPublications().then(response => {
+            response.forEach((element: { publication: PublicationData; }) => {
+                list.push(element.publication)
+            });
+            setPublicationList(list);
+        });
+    };
     useEffect(() => {
         (fetchData)()
     }, []);
