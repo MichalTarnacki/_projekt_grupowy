@@ -30,6 +30,7 @@ public class Publication: Entity, IEquatable<Publication>, IEquatableByExpressio
     
     public List<FormAPublication> FormAPublications { get; init; } = [];
 
+    public List<UserPublication> UserPublications { get; init; } = [];
 
     public override bool Equals(object? other) =>
         Equals((Publication?)other);
