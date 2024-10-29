@@ -23,18 +23,12 @@ public enum CruiseApplicationStatus
     [StringValue("Wymagane uzupełnienie formularza B przez kierownika")]
     FormBRequired,
     
-    [StringValue("Formularz B wypełniony oczekiwanie na rejs")]
+    [StringValue("Formularz B wypełniony. Oczekiwanie na rejs")]
     FormBFilled,
-    
-    [StringValue("Rejs w trakcie")]
-    CruiseBegan,
     
     [StringValue("Zrealizowane")]
     Undertaken,
         
     [StringValue("Rozliczone")]
     Reported,
-    
-    [StringValue("Archiwalne")]
-    Archived
 }

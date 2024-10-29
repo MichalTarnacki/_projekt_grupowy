@@ -1,5 +1,5 @@
-import { DownloadButtonDefault, ResendButton, SaveMenu } from './SaveMenu';
-import React, { useContext, useState } from 'react';
+import { DownloadButtonDefault, RefillBButton, RefillCButton, ResendButton, SaveMenu } from './SaveMenu';
+import React, { useContext, useEffect, useState } from 'react';
 import { handlePrint } from './FormButtonsHandlers';
 import { ReactComponent as CancelIcon } from '/node_modules/bootstrap-icons/icons/x-lg.svg';
 import Api from '../../api/Api';
@@ -15,6 +15,8 @@ import { cruiseApplicationIdFromLocation } from '@hooks/cruiseApplicationIdFromL
 import { supervisorCodeFromLocation } from '@hooks/supervisorCodeFromLocation';
 import { FormType } from '../Pages/CommonComponents/FormTitleWithNavigation';
 import CruiseApplicationFromLocation from '@hooks/cruiseApplicationFromLocation';
+import cruiseApplicationFromLocation from '@hooks/cruiseApplicationFromLocation';
+import { CruiseApplicationStatus } from 'CruiseApplicationStatus';
 
 const SupervisorMenu = () => {
     const cruiseApplicationId = cruiseApplicationIdFromLocation();
@@ -112,18 +114,26 @@ const SendMenu = () => {
         const formContext = useContext(FormContext);
         const navigate = useNavigate();
         const cruiseApplication = CruiseApplicationFromLocation();
+        const [disable, setDisable] = useState(false);
+
+        useEffect(() => {
+
+        }, []);
         const handleSubmit = () =>
             formContext!.type === FormType.A ?
                 Api.post('/api/CruiseApplications/', formContext?.getValues()).then(() =>
                     navigate(Path.CruiseApplications),
                 ) :
-                Api.post(`/api/CruiseApplications/${cruiseApplication.id}/FormB`, formContext?.getValues()).then(() =>
+                Api.put(`/api/CruiseApplications/${cruiseApplication.id}/FormB`, formContext?.getValues()).then(() =>
                     navigate(Path.CruiseApplications),
                 )
         ;
         const onClickAction = formContext!.handleSubmit(handleSubmit);
         return (
-            <button onClick={onClickAction} className="form-page-option-button w-100">
+            <button onClick={() => {
+                setDisable(true);
+                handleSubmit();
+            }} disabled={disable} className="form-page-option-button w-100">
                 Potwierdź
             </button>
         );
@@ -132,7 +142,7 @@ const SendMenu = () => {
     return {
         Menu: () => (
             <div className={'d-flex flex-column w-100'}>
-                {formContext!.type == FormType.A && <Points />}
+                {/*{formContext!.type == FormType.A && <Points />}*/}
                 <div className={'d-flex flex-row w-100'}>
                     <ConfirmSendButton />
                     <CancelButton />
@@ -165,6 +175,7 @@ export const BottomOptionBar = () => {
 
     const ReadonlyFormButtons = () => {
         const formContext = useContext(FormContext);
+        const cruiseApplication = cruiseApplicationFromLocation();
         const {
             UserHasGuestAccess,
             UserHasShipownerAccess,
@@ -174,6 +185,14 @@ export const BottomOptionBar = () => {
             <>
                 <PrintButton />
                 {formContext?.type === FormType.A && !UserHasGuestAccess() && <ResendButton />}
+                {formContext?.type === FormType.B
+                    && (UserHasAdminAccess() || UserHasShipownerAccess())
+                    && (cruiseApplication?.status === CruiseApplicationStatus.FormBFilled || cruiseApplication?.status === CruiseApplicationStatus.Undertaken)
+                    && <RefillBButton />}
+                {formContext?.type === FormType.C
+                    && (UserHasAdminAccess() || UserHasShipownerAccess())
+                    && (cruiseApplication?.status === CruiseApplicationStatus.Reported)
+                    && <RefillCButton />}
                 {(UserHasShipownerAccess() || UserHasAdminAccess()) && (
                     <DownloadButtonDefault />
                 )}

@@ -5,6 +5,7 @@ namespace ResearchCruiseApp_API.Application.Services.CruiseApplicationEvaluator;
 
 public interface ICruiseApplicationEvaluator
 {
-    void Evaluate(CruiseApplication cruiseApplication);
+    Task Evaluate(CruiseApplication cruiseApplication, CancellationToken cancellationToken);
+    
     int GetPointsSum(CruiseApplication cruiseApplication);
 }

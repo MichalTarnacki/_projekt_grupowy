@@ -40,11 +40,8 @@ public class EndCruiseHandler(
         if (cruise.Status == CruiseStatus.New)
             return Error.InvalidArgument("Rejs nie został potwierdzony");
         
-        if (cruise.Status == CruiseStatus.Confirmed)
-            return Error.InvalidArgument("Rejs nie został rozpoczęty");
-        
-        if (cruise.Status != CruiseStatus.Started)
-            return Error.InvalidArgument("Rejs został już zakończony");
+        if (cruise.Status != CruiseStatus.Confirmed)
+            return Error.InvalidArgument("Rejs nie został potwierdzoy");
 
         cruise.Status = CruiseStatus.Ended;
 
