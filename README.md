@@ -1,6 +1,6 @@
 # Wymagania początkowe
 
-Zainstalowany docker
+Zainstalowany Docker
 
 # Pliki konfiguracyjne
 
@@ -10,7 +10,7 @@ Zainstalowany docker
 *Przed uruchomieniem należy ustawić poprawne adresy:*
 
 **FrontendUrl**, **JWT__ValidAudience** 
->adres URL który będzie zawierany w wiadomości email jako link, np. do potwierdzenia rejestracji
+>adres URL, który będzie zawierany w wiadomości email jako link, np. do potwierdzenia rejestracji
 
 **REACT_APP_API_URL**, **JWT__ValidIssuer**
 >adres IP i port API, na który aplikacja frontendowa wysyłać będzie żądania (adres widoczny dla użytkownika z zewnątrz)
@@ -20,7 +20,7 @@ Zainstalowany docker
 
 <br>
 
-*Dodotkowo należy ustawić*
+*Dodatkowo należy ustawić*
 
 **SmtpSettings__SmtpServer**, **SmtpSettings__SmtpPort**,
 **SmtpSettings__SmtpUsername**, **SmtpSettings__SmtpPassword**, 
@@ -29,6 +29,9 @@ Zainstalowany docker
 
 **JWT__Secret** 
 >klucz używany do podpisywania i weryfikacji autentyczności tokenów, najlepiej wygenerować go za pośrednictwem generatora
+
+**SeedDatabase**
+>informacja, czy baza danych ma zostać zasilony danymi początkowymi (`true`/`false`)
 
 ## **./ResearchCruiseApp-API/ResearchCruiseApp-API/users.json**
 
@@ -53,8 +56,8 @@ użytkownikami czy też do zmieniania danych rejsowych
 
 # Pierwsze uruchomienie aplikacji
 
-Aby uruchomić aplikację należy poprawnie skonfigurować powyższe pliki a następnie z poziomu terminala wykonać komendę
-``` sudo docker-compose up -d --build ``` (linux)
-``` docker-compose up -d --build``` (windows)
+Aby uruchomić aplikację, należy poprawnie skonfigurować powyższe pliki, a następnie z poziomu terminala wykonać komendę<br>
+`sudo docker-compose up -d --build` (Linux)<br>
+`docker-compose up -d --build` (Windows)
 
 *Na adresy email podane w pliku users.json zostaną wysłane automatycznie wygenerowane hasła, które następnie można zmienić po zalogowaniu się do konta*
