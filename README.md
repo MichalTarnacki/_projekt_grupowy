@@ -10,13 +10,13 @@ Zainstalowany Docker
 *Przed uruchomieniem należy ustawić poprawne adresy:*
 
 **FrontendUrl**, **JWT__ValidAudience** 
->adres URL, który będzie zawierany w wiadomości email jako link, np. do potwierdzenia rejestracji
+>Adres URL, który będzie zawierany w wiadomości email jako link, np. do potwierdzenia rejestracji.
 
 **REACT_APP_API_URL**, **JWT__ValidIssuer**
->adres IP i port API, na który aplikacja frontendowa wysyłać będzie żądania (adres widoczny dla użytkownika z zewnątrz)
+>Adres IP i port API, na który aplikacja frontendowa wysyłać będzie żądania (adres widoczny dla użytkownika z zewnątrz).
 
 **ConnectionStrings__ResearchCruiseApp-DB** 
->adres oraz dane potrzebne do połączenia z zewnętrzną bazą danych
+>Adres oraz dane potrzebne do połączenia z zewnętrzną bazą danych.
 
 <br>
 
@@ -25,13 +25,16 @@ Zainstalowany Docker
 **SmtpSettings__SmtpServer**, **SmtpSettings__SmtpPort**,
 **SmtpSettings__SmtpUsername**, **SmtpSettings__SmtpPassword**, 
 **SmtpSettings__SenderName** 
->Ustawienia Smtp niezbędne do poprawnego wysyłania maili za pomocą aplikacji
+>Ustawienia Smtp niezbędne do poprawnego wysyłania maili za pomocą aplikacji.
 
 **JWT__Secret** 
->klucz używany do podpisywania i weryfikacji autentyczności tokenów, najlepiej wygenerować go za pośrednictwem generatora
+>Klucz używany do podpisywania i weryfikacji autentyczności tokenów. Najlepiej wygenerować go za pośrednictwem generatora.
 
 **SeedDatabase**
->informacja, czy baza danych ma zostać zasilony danymi początkowymi (`true`/`false`)
+>Informacja, czy baza danych ma zostać zasilony danymi początkowymi (`true`/`false`). Dane zostaną wstawione do bazy
+> danych:
+> - w przypadku ról i użytkowników – tylko jeżeli takiego wiersza nie ma jeszcze w tabeli,
+> - w pozostałych przypadkach – tylko jeżeli tabela, do której ma być wstawiony wiersz, jest pusta.
 
 ## **./ResearchCruiseApp-API/ResearchCruiseApp-API/users.json**
 
@@ -42,17 +45,17 @@ Zainstalowany Docker
 Dostępne role w systemie to:
 
 **Administrator**
->administrator, ma dostęp do wszystkich danych oraz posiada dostęp do wszystkich możliwych akcji dostępnych w aplikacji
+>Administrator, ma dostęp do wszystkich danych oraz posiada dostęp do wszystkich możliwych akcji dostępnych w aplikacji.
 
 **Shipowner**
->konto pracownika Biura Armatora, względem administratora, konto posiada ograniczenia co do dodawania nowych użytkowników oraz dezaktywacji kont
+>Konto pracownika Biura Armatora, względem administratora konto posiada ograniczenia co do dodawania nowych użytkowników oraz dezaktywacji kont.
 
 **CruiseManager**
->konto kierownika, posiada dostęp tylko do swoich danych oraz do danych zgłoszeń i rejsów, na których jest zastępcą, nie ma dostępu m.in do zarządzania 
-użytkownikami czy też do zmieniania danych rejsowych
+>Konto kierownika, posiada dostęp tylko do swoich danych oraz do danych zgłoszeń i rejsów, na których jest zastępcą, nie ma dostępu m.in. do zarządzania 
+użytkownikami czy też do zmieniania danych rejsowych.
 
 **Guest**
->konto gościa, może zobaczyć wszystkie dane w aplikacji, lecz nic nie może zmienić
+>Konto gościa, może zobaczyć wszystkie dane w aplikacji, lecz nic nie może zmienić.
 
 # Pierwsze uruchomienie aplikacji
 
