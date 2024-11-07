@@ -107,8 +107,8 @@ internal class EmailSender(
         var emailSubject = await templateFileReader.ReadCruiseConfirmedSubject();
 
         var emailMessage = messageTemplate
-            .Replace("{{startDate}}", cruise.StartDate.ToString("dd.MM.yyyy (HH:mm)"))
-            .Replace("{{endDate}}", cruise.EndDate.ToString("dd.MM.yyyy (HH:mm)"))
+            .Replace("{{startDate}}", cruise.StartDate)
+            .Replace("{{endDate}}", cruise.EndDate)
             .Replace("{{firstName}}", cruiseManager.FirstName)
             .Replace("{{lastName}}", cruiseManager.LastName);
 
