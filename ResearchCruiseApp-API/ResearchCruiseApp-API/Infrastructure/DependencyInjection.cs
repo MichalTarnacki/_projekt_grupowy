@@ -34,7 +34,7 @@ public static class DependencyInjection
             .AddScoped<IYearBasedKeyGenerator, YearBasedKeyGenerator>()
             .AddScoped<ITemplateFileReader, TemplateFileReader>()
             .AddScoped<ICurrentUserService, CurrentUserService>()
-            .AddScoped<ICultureService, CultureService>();
+            .AddScoped<IGlobalizationService, GlobalizationService>();
     }
     
     

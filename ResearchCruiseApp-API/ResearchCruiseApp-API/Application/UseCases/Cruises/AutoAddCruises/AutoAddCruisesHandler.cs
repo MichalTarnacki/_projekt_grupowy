@@ -14,7 +14,7 @@ public class AutoAddCruisesHandler(
     ICruisesService cruisesService,
     ICruiseApplicationsRepository cruiseApplicationsRepository,
     ICruisesRepository cruisesRepository,
-    ICultureService cultureService)
+    IGlobalizationService globalizationService)
     : IRequestHandler<AutoAddCruisesCommand, Result>
 {
     public async Task<Result> Handle(AutoAddCruisesCommand request, CancellationToken cancellationToken)
@@ -72,12 +72,8 @@ public class AutoAddCruisesHandler(
             DateTimeKind.Unspecified);
         var endDate = startDate.AddHours(int.Parse(formA.CruiseHours));
         
-        var timeZoneInfo = cultureService.GetTimeZoneInfo();
-        var startDateUtc = TimeZoneInfo.ConvertTimeToUtc(startDate, timeZoneInfo);
-        var endDateUtc = TimeZoneInfo.ConvertTimeToUtc(endDate, timeZoneInfo);
-        
-        var startDateString = startDateUtc.ToString(DateConstants.IsoStringDateFormat);
-        var endDateString = endDateUtc.ToString(DateConstants.IsoStringDateFormat);
+        var startDateString = globalizationService.GetIsoUtcString(startDate);
+        var endDateString = globalizationService.GetIsoUtcString(endDate);
 
         return (startDateString, endDateString);
     }
