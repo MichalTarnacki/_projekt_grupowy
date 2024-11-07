@@ -10,7 +10,6 @@ public class GlobalizationService : IGlobalizationService
     private const string CultureInfoId = "pl-pl";
     private const string TimeZoneInfoId = "Central European Standard Time";
     
-    
     public CultureInfo GetCultureInfo() => new CultureInfo(CultureInfoId);
 
     public TimeZoneInfo GetTimeZoneInfo() => TimeZoneInfo.FindSystemTimeZoneById(TimeZoneInfoId);
@@ -25,5 +24,15 @@ public class GlobalizationService : IGlobalizationService
         var dateString = dateUtc.ToString(DateConstants.IsoStringDateFormat);
 
         return dateString;
+    }
+
+    public string GetLocalString(string isoUtcString)
+    {
+        var utcDate = DateTime.Parse(isoUtcString, null, DateTimeStyles.RoundtripKind);
+        var timeZoneInfo = GetTimeZoneInfo();
+        var localDate = TimeZoneInfo.ConvertTimeFromUtc(utcDate, timeZoneInfo);
+        var localDateString = localDate.ToString(DateConstants.LocalStringDateFormat);
+
+        return localDateString;
     }
 }
