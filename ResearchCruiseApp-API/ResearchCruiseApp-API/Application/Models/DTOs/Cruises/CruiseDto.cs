@@ -1,5 +1,5 @@
 using AutoMapper;
-using ResearchCruiseApp_API.Domain.Common.Extensions;
+using ResearchCruiseApp_API.Application.Common.Extensions;
 using ResearchCruiseApp_API.Domain.Entities;
 
 namespace ResearchCruiseApp_API.Application.Models.DTOs.Cruises;
