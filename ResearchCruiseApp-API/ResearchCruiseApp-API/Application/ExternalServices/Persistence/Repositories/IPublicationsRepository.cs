@@ -3,4 +3,9 @@
 namespace ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
 
 
-public interface IPublicationsRepository : IRepository<Publication>;
+public interface IPublicationsRepository : IRepository<Publication>
+{
+    Task<int> CountUserPublications(Publication publication, CancellationToken cancellationToken);
+
+    Task<int> CountUniqueFormsA(Publication publication, CancellationToken cancellationToken);
+}

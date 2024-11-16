@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Resources;
 using System.Text;
+using Microsoft.IdentityModel.Tokens;
 using MimeKit;
 using NeoSmart.Utils;
 using ResearchCruiseApp_API.App_GlobalResources;
@@ -83,11 +84,13 @@ internal class EmailSender(
     }
 
     public async Task SendRequestToSupervisorMessage(
-        Guid cruiseApplicationId, string supervisorCode, UserDto cruiseManager, string supervisorEmail)
+        Guid cruiseApplicationId, byte[] supervisorCode, UserDto cruiseManager, string supervisorEmail)
     {
+        var supervisorCodeEncoded = Base64UrlEncoder.Encode(supervisorCode);
+        
         var link =
             GetFrontEndUrl() +
-            $"/FormAForSupervisor?cruiseApplicationId={cruiseApplicationId}&supervisorCode={supervisorCode}";
+            $"/FormAForSupervisor?cruiseApplicationId={cruiseApplicationId}&supervisorCode={supervisorCodeEncoded}";
         
         var messageTemplate = await templateFileReader.ReadRequestToSupervisorMessageTemplate();
         var emailSubject = await templateFileReader.ReadRequestToSupervisorEmailSubject();

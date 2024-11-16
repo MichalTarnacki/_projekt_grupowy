@@ -17,5 +17,5 @@ public interface IEmailSender
     Task SendPasswordResetMessage(UserDto userDto, string resetCode);
     
     Task SendRequestToSupervisorMessage(
-        Guid cruiseApplicationId, string supervisorCode, UserDto cruiseManager, string supervisorEmail);
+        Guid cruiseApplicationId, byte[] supervisorCode, UserDto cruiseManager, string supervisorEmail);
 }
