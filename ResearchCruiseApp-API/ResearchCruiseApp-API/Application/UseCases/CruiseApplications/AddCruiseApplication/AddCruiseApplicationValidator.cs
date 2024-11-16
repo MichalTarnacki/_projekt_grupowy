@@ -1,9 +1,6 @@
-﻿using System.Text;
-using FluentValidation;
+﻿using FluentValidation;
 using ResearchCruiseApp_API.Application.Common.Constants;
 using ResearchCruiseApp_API.Application.ExternalServices;
-using ResearchCruiseApp_API.Application.ExternalServices.Persistence;
-using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
 
 namespace ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AddCruiseApplication;
 

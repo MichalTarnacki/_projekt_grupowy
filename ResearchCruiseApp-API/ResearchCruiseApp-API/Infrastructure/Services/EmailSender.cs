@@ -4,8 +4,8 @@ using System.Text;
 using MimeKit;
 using NeoSmart.Utils;
 using ResearchCruiseApp_API.App_GlobalResources;
-using ResearchCruiseApp_API.Application.Common.Models.DTOs;
 using ResearchCruiseApp_API.Application.ExternalServices;
+using ResearchCruiseApp_API.Application.Models.DTOs.Users;
 using ResearchCruiseApp_API.Domain.Entities;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 

@@ -1,6 +1,6 @@
 ﻿using ResearchCruiseApp_API.Domain.Entities;
 
-namespace ResearchCruiseApp_API.Application.Services.Forms;
+namespace ResearchCruiseApp_API.Application.Services.FormsService;
 
 
 public interface IFormsService

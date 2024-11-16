@@ -65,6 +65,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Application\Models\Common\" />
       <Folder Include="Infrastructure\Persistence\Migrations\" />
     </ItemGroup>
 

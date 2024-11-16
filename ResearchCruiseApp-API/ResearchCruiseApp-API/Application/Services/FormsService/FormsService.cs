@@ -1,10 +1,9 @@
 ﻿using ResearchCruiseApp_API.Application.ExternalServices.Persistence;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
-using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
-using ResearchCruiseApp_API.Application.Services.Effects;
+using ResearchCruiseApp_API.Application.Services.EffectsService;
 using ResearchCruiseApp_API.Domain.Entities;
 
-namespace ResearchCruiseApp_API.Application.Services.Forms;
+namespace ResearchCruiseApp_API.Application.Services.FormsService;
 
 
 public class FormsService(
