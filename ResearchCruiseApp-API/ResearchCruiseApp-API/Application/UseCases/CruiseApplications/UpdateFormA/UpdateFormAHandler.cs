@@ -3,6 +3,7 @@ using MediatR;
 using ResearchCruiseApp_API.Application.Common.Extensions;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
+using ResearchCruiseApp_API.Application.Models.Common.Commands.CruiseApplications;
 using ResearchCruiseApp_API.Application.Models.Common.ServiceResult;
 using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
 using ResearchCruiseApp_API.Application.Services.CruiseApplications;
@@ -16,7 +17,7 @@ namespace ResearchCruiseApp_API.Application.UseCases.CruiseApplications.UpdateFo
 
 
 public class UpdateFormAHandler(
-    IValidator<UpdateFormACommand> validator,
+    IValidator<FormACommand> validator,
     ICruiseApplicationsRepository cruiseApplicationsRepository,
     IUserPermissionVerifier userPermissionVerifier,
     IUnitOfWork unitOfWork,

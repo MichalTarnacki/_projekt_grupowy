@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Globalization;
 using ResearchCruiseApp_API.Application.Common.Constants;
 using ResearchCruiseApp_API.Application.Common.Extensions;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
@@ -76,11 +77,15 @@ public class CruiseApplicationEvaluator(
 
                 ResearchTaskType.DomesticProject when researchTask.FinancingAmount is not null =>
                     EvaluationConstants.PointsPerDivisionForDomesticProject *
-                    (int.Parse(researchTask.FinancingAmount) / EvaluationConstants.DomesticProjectDivision),
+                    (int)(
+                        double.Parse(researchTask.FinancingAmount, CultureInfo.InvariantCulture) / 
+                        EvaluationConstants.DomesticProjectDivision),
 
                 ResearchTaskType.ForeignProject when researchTask.FinancingAmount is not null =>
                     EvaluationConstants.PointsPerDivisionForForeignProject *
-                    (int.Parse(researchTask.FinancingAmount) / EvaluationConstants.ForeignProjectDivision),
+                    (int)(
+                        double.Parse(researchTask.FinancingAmount, CultureInfo.InvariantCulture) /
+                        EvaluationConstants.ForeignProjectDivision),
 
                 ResearchTaskType.InternalUgProject =>
                     EvaluationConstants.PointsForInternalUgProject,
@@ -112,8 +117,11 @@ public class CruiseApplicationEvaluator(
     {
         Debug.Assert(cruiseApplication.FormA is not null);
 
+        // Redundant since teams have been already validated on formA creation
         var notEmptyTeamsCount = cruiseApplication.FormA.FormAUgUnits
-            .Count(formAUgUnit => int.Parse(formAUgUnit.NoOfEmployees) > 0 || int.Parse(formAUgUnit.NoOfStudents) > 0);
+            .Count(formAUgUnit =>
+                int.Parse(formAUgUnit.NoOfEmployees) > 0 ||
+                int.Parse(formAUgUnit.NoOfStudents) > 0);
 
         cruiseApplication.FormA.UgUnitsPoints = notEmptyTeamsCount switch
         {

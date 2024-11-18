@@ -3,6 +3,7 @@ using MediatR;
 using ResearchCruiseApp_API.Application.Common.Extensions;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
+using ResearchCruiseApp_API.Application.Models.Common.Commands.CruiseApplications;
 using ResearchCruiseApp_API.Application.Models.Common.ServiceResult;
 using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
 using ResearchCruiseApp_API.Application.Services.CruiseApplicationEvaluator;
@@ -15,7 +16,7 @@ namespace ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AddCruis
 
 
 public class AddCruiseApplicationHandler(
-    IValidator<AddCruiseApplicationCommand> validator,
+    IValidator<FormACommand> validator,
     IFormsAFactory formsAFactory,
     ICruiseApplicationsFactory cruiseApplicationsFactory,
     ICruiseApplicationsRepository cruiseApplicationsRepository,
@@ -31,7 +32,7 @@ public class AddCruiseApplicationHandler(
             return validationResult.ToApplicationResult();
 
         var newCruiseApplicationResult = await unitOfWork.ExecuteIsolated(
-            () => AddCruiseApplication(request.FormADto, request.IsDraft, cancellationToken),
+            action: () => AddCruiseApplication(request.FormADto, request.IsDraft, cancellationToken),
             cancellationToken);
         if (!newCruiseApplicationResult.IsSuccess)
             return newCruiseApplicationResult;

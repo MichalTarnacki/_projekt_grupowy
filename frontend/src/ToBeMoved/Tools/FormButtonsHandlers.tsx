@@ -1,5 +1,4 @@
 import { FieldValues } from 'react-hook-form';
-import Api from '../../api/Api';
 import { useContext } from 'react';
 import { FormContext } from '@contexts/FormContext';
 import {putFormA, putFormB, putFormBDraft} from '@api/requests/Put';
@@ -9,18 +8,22 @@ import cruiseApplicationFromLocation from '@hooks/cruiseApplicationFromLocation'
 import {addCruiseApplication} from "@api/requests";
 import {AxiosResponse} from "axios";
 import {FormType} from "../Pages/CommonComponents/FormTitleWithNavigation";
+import {formAToSend} from "./FormsTransform";
 
 export const handleSave = () => {
   const navigate = useNavigate();
   const formContext = useContext(FormContext);
   const app = cruiseApplicationFromLocation();
+
   return () => {
     let response: Promise<AxiosResponse<any, any>>;
 
     if (formContext?.type === FormType.A) {
+      const dataToSend = formAToSend(formContext.getValues());
+
       response = app?.id && !formContext.isCopied
-        ? putFormA(formContext.getValues(), app.id, true)
-        : addCruiseApplication(formContext.getValues(), true);
+        ? putFormA(dataToSend, app.id, true)
+        : addCruiseApplication(dataToSend, true);
     }
     else if (formContext?.type === FormType.B) {
       response = putFormBDraft(app?.id, formContext!.getValues());
@@ -43,10 +46,12 @@ export const handleSubmit = () => {
   return () => {
     let response: Promise<AxiosResponse<any, any>>;
 
-    if (formContext!.type === FormType.A) {
+    if (formContext?.type === FormType.A) {
+      const dataToSend = formAToSend(formContext.getValues());
+
       response = app?.id && !formContext?.isCopied
-        ? putFormA(formContext?.getValues(), app.id, false)
-        : addCruiseApplication(formContext?.getValues(), false)
+        ? putFormA(dataToSend, app.id, false)
+        : addCruiseApplication(dataToSend, false)
     }
     else if (formContext?.type === FormType.B) {
       response = putFormB(app.id, formContext?.getValues())
