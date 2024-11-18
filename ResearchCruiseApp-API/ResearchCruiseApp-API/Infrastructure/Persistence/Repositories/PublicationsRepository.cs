@@ -28,4 +28,12 @@ internal class PublicationsRepository : Repository<Publication>, IPublicationsRe
             .Distinct()
             .CountAsync(cancellationToken);
     }
+
+    public Task<int> CountFormAPublications(Publication publication, CancellationToken cancellationToken)
+    {
+        return DbContext.Publications
+            .Where(p => p.Id == publication.Id)
+            .SelectMany(p => p.FormAPublications)
+            .CountAsync(cancellationToken);
+    }
 }
