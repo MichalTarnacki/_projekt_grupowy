@@ -1,6 +1,4 @@
-using AutoMapper;
 using ResearchCruiseApp_API.Application.Models.Interfaces;
-using ResearchCruiseApp_API.Domain.Entities;
 
 namespace ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
 
@@ -10,7 +8,9 @@ public class ResearchTaskEffectDto : IResearchTaskDto
     public string Type { get; init; } = null!;
 
     public string? Title { get; init; }
-        
+
+    public string? Magazine { get; init; }
+    
     public string? Author { get; init; }
         
     public string? Institution { get; init; }
@@ -38,61 +38,4 @@ public class ResearchTaskEffectDto : IResearchTaskDto
     public string ManagerConditionMet { get; init; } = null!;
     
     public string DeputyConditionMet { get; init; } = null!;
-
-
-    private class MapProfile : Profile
-    {
-        public MapProfile()
-        {
-            CreateMap<ResearchTaskEffect, ResearchTaskEffectDto>()
-                .ForMember(
-                    dest => dest.Type,
-                    options =>
-                        options.MapFrom(src => ((int)src.ResearchTask.Type).ToString()))
-                .ForMember(
-                    dest => dest.Title,
-                    options =>
-                        options.MapFrom(src => src.ResearchTask.Title))
-                .ForMember(
-                    dest => dest.Author,
-                    options =>
-                        options.MapFrom(src => src.ResearchTask.Author))
-                .ForMember(
-                    dest => dest.Institution,
-                    options =>
-                        options.MapFrom(src => src.ResearchTask.Institution))
-                .ForMember(
-                    dest => dest.Date,
-                    options =>
-                        options.MapFrom(src => src.ResearchTask.Date))
-                .ForMember(
-                    dest => dest.StartDate,
-                    options =>
-                        options.MapFrom(src => src.ResearchTask.StartDate))
-                .ForMember(
-                    dest => dest.EndDate,
-                    options =>
-                        options.MapFrom(src => src.ResearchTask.EndDate))
-                .ForMember(
-                    dest => dest.FinancingAmount,
-                    options =>
-                        options.MapFrom(src => src.ResearchTask.FinancingAmount))
-                .ForMember(
-                    dest => dest.FinancingApproved,
-                    options =>
-                        options.MapFrom(src => src.ResearchTask.FinancingApproved))
-                .ForMember(
-                    dest => dest.Description,
-                    options =>
-                        options.MapFrom(src => src.ResearchTask.Description))
-                .ForMember(
-                    dest => dest.SecuredAmount,
-                    options =>
-                        options.MapFrom(src => src.ResearchTask.SecuredAmount))
-                .ForMember(
-                    dest => dest.MinisterialPoints,
-                    options =>
-                        options.MapFrom(src => src.ResearchTask.MinisterialPoints));
-        }
-    }
 }

@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using ResearchCruiseApp_API.Domain.Common.Enums;
-using ResearchCruiseApp_API.Domain.Common.Interfaces;
 
 namespace ResearchCruiseApp_API.Domain.Entities;
 
@@ -9,9 +8,9 @@ public class CruiseApplication : Entity
 {
     public int Number { get; set; }
     
-    public DateOnly Date { get; init; }
+    public DateOnly Date { get; set; }
     
-    public FormA? FormA { get; init; }
+    public FormA? FormA { get; set; }
     
     public FormB? FormB { get; set; }
     
@@ -24,4 +23,7 @@ public class CruiseApplication : Entity
     public Cruise? Cruise { get; set; }
     
     public int EffectsPoints { get; set; }
+    
+    [StringLength(1024)]
+    public string? Note { get; set; }
 }

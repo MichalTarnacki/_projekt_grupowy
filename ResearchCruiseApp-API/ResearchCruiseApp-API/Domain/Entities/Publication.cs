@@ -5,7 +5,7 @@ using ResearchCruiseApp_API.Domain.Common.Interfaces;
 namespace ResearchCruiseApp_API.Domain.Entities;
 
 
-public class Publication: Entity, IEquatable<Publication>, IEquatableByExpression<Publication>
+public class Publication : Entity, IEquatable<Publication>, IEquatableByExpression<Publication>
 {
     [StringLength(1024)]
     public string Category { get; init; } = null!;
@@ -30,7 +30,9 @@ public class Publication: Entity, IEquatable<Publication>, IEquatableByExpressio
     
     public List<FormAPublication> FormAPublications { get; init; } = [];
 
+    public List<UserPublication> UserPublications { get; init; } = [];
 
+    
     public override bool Equals(object? other) =>
         Equals((Publication?)other);
 

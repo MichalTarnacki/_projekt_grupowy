@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
+using ResearchCruiseApp_API.Application.Models.Common.ServiceResult;
 using ResearchCruiseApp_API.Application.Services.CruiseApplications;
 using ResearchCruiseApp_API.Domain.Common.Enums;
 using ResearchCruiseApp_API.Domain.Entities;
@@ -37,10 +37,10 @@ public class AnswerAsSupervisorHandler(
     private static Result UpdateCruiseApplicationStatus(CruiseApplication cruiseApplication, bool accept)
     {
         if (cruiseApplication.Status == CruiseApplicationStatus.Denied)
-            return Error.InvalidArgument("Biuro armatora już wcześniej odrzuciło zgłoszenie");
+            return Error.ForbiddenOperation("Biuro Armatora już wcześniej odrzuciło zgłoszenie.");
         
         if (cruiseApplication.Status != CruiseApplicationStatus.WaitingForSupervisor)
-            return Error.InvalidArgument("Odpowiedź od przełożonego została już udzielona.");
+            return Error.ForbiddenOperation("Odpowiedź od przełożonego została już udzielona.");
         
         cruiseApplication.Status = accept
             ? CruiseApplicationStatus.AcceptedBySupervisor

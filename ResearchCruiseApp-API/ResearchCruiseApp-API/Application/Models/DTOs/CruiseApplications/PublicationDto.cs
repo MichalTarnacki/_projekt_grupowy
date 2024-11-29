@@ -1,12 +1,10 @@
-using System.ComponentModel.DataAnnotations;
-using AutoMapper;
-using ResearchCruiseApp_API.Domain.Entities;
-
 namespace ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
 
 
 public class PublicationDto
 {
+    public Guid Id { get; set; }
+    
     public string Category { get; init; } = null!;
 
     public string Doi { get; init; } = null!;
@@ -20,53 +18,4 @@ public class PublicationDto
     public string Year { get; init; } = null!;
 
     public string MinisterialPoints { get; init; } = null!;
-
-
-    private class MapProfile : Profile
-    {
-        public MapProfile()
-        {
-            CreateMap<PublicationDto, Publication>()
-                .ForMember(
-                    dest => dest.Id,
-                    options =>
-                        options.Ignore())
-                .ForMember(
-                    dest => dest.FormAPublications,
-                    options =>
-                        options.Ignore());
-
-            CreateMap<Publication, PublicationDto>();
-            
-            CreateMap<FormAPublication, PublicationDto>()
-                .ForMember(
-                    dest => dest.Category,
-                    options =>
-                        options.MapFrom(src => src.Publication.Category))
-                .ForMember(
-                    dest => dest.Doi,
-                    options =>
-                        options.MapFrom(src => src.Publication.Doi))
-                .ForMember(
-                    dest => dest.Authors,
-                    options =>
-                        options.MapFrom(src => src.Publication.Authors))
-                .ForMember(
-                    dest => dest.Title,
-                    options =>
-                        options.MapFrom(src => src.Publication.Title))
-                .ForMember(
-                    dest => dest.Magazine,
-                    options =>
-                        options.MapFrom(src => src.Publication.Magazine))
-                .ForMember(
-                    dest => dest.Year,
-                    options =>
-                        options.MapFrom(src => src.Publication.Year))
-                .ForMember(
-                    dest => dest.MinisterialPoints,
-                    options =>
-                        options.MapFrom(src => src.Publication.MinisterialPoints));
-        }
-    }
 }

@@ -19,4 +19,5 @@ export type CruiseApplication = {
     status: CruiseApplicationStatus;
     points: string;
     effectsDoneRate: string;
+    note?: string;
 };

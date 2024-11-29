@@ -177,6 +177,9 @@ $top-bar-min-width: 380px;
 
 .page-title-common {
   @extend .align-items-center,
+  .justify-content-center,
+  .d-none,
+  .d-md-flex,
   .w-100,
   .text-white,
   .bg-primary,
@@ -193,8 +196,6 @@ $top-bar-min-width: 380px;
 .form-title-with-navigation {
   z-index: 1027;
   @extend .page-title-common,
-  .d-flex,
-  .d-lg-flex,
   .border-bottom
 }
 
@@ -239,6 +240,21 @@ $top-bar-min-width: 380px;
   background-repeat: no-repeat;
 }
 
+.version-info {
+  position: fixed; /* Pozwala przypiąć element do konkretnej pozycji na ekranie */
+  bottom: 0;       /* Ustawia element na dole ekranu */
+  right: 0;        /* Ustawia element na prawej krawędzi ekranu */
+  z-index: -1;     /* Umieszcza element za innymi (ujemny indeks warstwowy) */
+  @extend
+  .text-end,
+  .pe-3,
+  .pb-1,
+  .fs-5,
+  .text-white,
+  .opacity-25,
+
+}
+
 .default-bg-img {
   background-image: url("../resources/Oceanograf.jpg");
 }
@@ -249,7 +265,8 @@ $top-bar-min-width: 380px;
 }
 
 .defualt-bg-logged-in {
-  filter: blur(7px);
+  //filter: blur(7px);
+  filter: opacity(80%);
   @extend .default-bg
 
 }
@@ -469,16 +486,21 @@ $top-bar-min-width: 380px;
   .p-md-5
 }
 
-.form-page {
+.common-page {
+  min-height: 150px;
   font-size: 0.8rem;
   min-width: $top-bar-min-width;
   @extend .d-flex,
   .flex-column,
-  .mh-100,
-  .justify-content-center,
+  .justify-content-start,
   .col-12,
   .col-xl-9,
   .bg-white
+}
+.form-page {
+  @extend
+  .mh-100,
+  .common-page
 }
 
 .form-page-option-element {
@@ -490,6 +512,8 @@ $top-bar-min-width: 380px;
 
 .form-page-option-button {
   @extend .btn,
+  .align-items-center,
+  .justify-content-center,
   .btn-sm,
   .btn-primary,
   .form-page-option-element,
@@ -562,6 +586,11 @@ $top-bar-min-width: 380px;
   }
 }
 
+.btn-primary:disabled {
+  background: rgba(0, 0, 0, 0.2) !important;
+  pointer-events: none; /* Utrzymuje stan wyłączenia przycisku */
+}
+
 .form-page-option-bar {
   @extend .d-flex,
   .flex-row,
@@ -619,7 +648,7 @@ $top-bar-min-width: 380px;
 
 .form-section-expansion-mark-error {
   @extend .form-section-expansion-mark,
-  .text-danger
+  //.text-danger
 }
 
 .form-section-children {
@@ -645,6 +674,12 @@ $top-bar-min-width: 380px;
   .col-md-6;
   @media print {
     width: 50% !important;
+  }
+}
+@media print {
+  body { margin: 0; padding: 0; }
+  @page {
+    margin: 0;
   }
 }
 

@@ -1,109 +1,204 @@
-import { fileName, handleDownload, handleSave } from './FormButtonsHandlers';
-import React, { useContext, useState } from 'react';
+import {
+  fileName,
+  handleDownload,
+  handlePrint,
+  handleSave,
+} from './FormButtonsHandlers';
+import React, { useContext, useEffect, useState } from 'react';
 import { ReactComponent as DownloadIcon } from '/node_modules/bootstrap-icons/icons/download.svg';
 import { ReactComponent as CancelIcon } from '/node_modules/bootstrap-icons/icons/x-lg.svg';
 import { FormContext } from '@contexts/FormContext';
 import { FormContextFields } from '@app/pages/FormPage/Wrappers/FormTemplate';
-import cruiseApplicationFromLocation from '@hooks/cruiseApplicationFromLocation';
 import { refillFormB, refillFormC } from '@api/requests/Put';
 import { useNavigate } from 'react-router-dom';
 import { extendedUseLocation } from '@hooks/extendedUseLocation';
 import { CruiseApplicationStatus } from 'CruiseApplicationStatus';
 import { Path } from './Path';
-
+import { FormType } from '../Pages/CommonComponents/FormTitleWithNavigation';
+import { cruiseManagerNorDeputyIsCurrentUserErrName } from '@app/pages/FormPage/Forms/FormA/FormASections/CruiseManagerSectionFields';
 
 const formDownloadProps = (formContext: FormContextFields) => {
-    return { download: fileName(formContext?.type!), href: handleDownload(formContext?.getValues()!) };
+  return {
+    download: fileName(formContext?.type!),
+    href: handleDownload(formContext?.getValues()!),
+  };
 };
 
 export const DownloadButtonDefault = () => {
-    const formContext = useContext(FormContext);
-    return (
-        <a {...formDownloadProps(formContext!)} className="form-page-option-button-default"> Pobierz </a>
-    );
+  const formContext = useContext(FormContext);
+  return (
+    <a
+      {...formDownloadProps(formContext!)}
+      className='form-page-option-button-default'
+    >
+      {' '}
+      Pobierz{' '}
+    </a>
+  );
 };
 
 export const ResendButton = () => {
-    const formContext = useContext(FormContext);
-    return (
-        <div onClick={() => formContext!.setReadOnly(false)} className="form-page-option-button-default"> Kopiuj</div>
-    );
+  const formContext = useContext(FormContext);
+  return (
+    <div
+      onClick={() => formContext!.setReadOnly(false)}
+      className='form-page-option-button-default'
+    >
+      {' '}
+      Kopiuj
+    </div>
+  );
 };
 
 export const RefillBButton = () => {
-    const location = extendedUseLocation();
-    const navigate = useNavigate();
-    return (
-        <div
-            onClick={() => refillFormB(location?.state.cruiseApplication?.id).then(_ => {
-                location!.state.cruiseApplication.status = CruiseApplicationStatus.FormBRequired;
-                navigate(Path.Form, { state: location!.state, replace: true });
-            })}
-            className="form-page-option-button-default"> Umożliw ponowną edycję</div>
-    );
+  const location = extendedUseLocation();
+  const navigate = useNavigate();
+  return (
+    <div
+      onClick={() =>
+        refillFormB(location?.state.cruiseApplication?.id).then((_) => {
+          location!.state.cruiseApplication.status =
+            CruiseApplicationStatus.FormBRequired;
+          navigate(Path.Form, { state: location!.state, replace: true });
+        })
+      }
+      className='form-page-option-button-default'
+    >
+      Cofnij do edycji
+    </div>
+  );
 };
-
 
 export const RefillCButton = () => {
-    const location = extendedUseLocation();
-    const navigate = useNavigate();
-    return (
-        <div onClick={() => refillFormC(location?.state.cruiseApplication?.id).then(_ => {
-            location!.state.cruiseApplication.status = CruiseApplicationStatus.Undertaken;
-            navigate(Path.Form, { state: location!.state, replace: true });
-        })}
-             className="form-page-option-button-default"> Umożliw ponowną edycję </div>
-    );
+  const location = extendedUseLocation();
+  const navigate = useNavigate();
+  return (
+    <div
+      onClick={() =>
+        refillFormC(location?.state.cruiseApplication?.id).then((_) => {
+          location!.state.cruiseApplication.status =
+            CruiseApplicationStatus.Undertaken;
+          navigate(Path.Form, { state: location!.state, replace: true });
+        })
+      }
+      className='form-page-option-button-default'
+    >
+      Cofnij do edycji
+    </div>
+  );
 };
 
+const ConfirmSaveButton = () => {
+  const formContext = useContext(FormContext);
+  const _handleSave = handleSave();
+
+  const cruiseManagerNorDeputyIsCurrentUserErr =
+    formContext?.formState.errors[cruiseManagerNorDeputyIsCurrentUserErrName];
+  return (
+    <button
+      disabled={
+        cruiseManagerNorDeputyIsCurrentUserErr != undefined ||
+        (formContext?.type == FormType.B &&
+          Object.values(formContext!.formState.errors).length > 0)
+      }
+      onClick={_handleSave}
+      className={
+        formContext?.type == FormType.A
+          ? 'form-page-option-button w-100'
+          : 'form-page-option-button w-100'
+      }
+    >
+      Potwierdź
+    </button>
+  );
+};
+
+const DownloadButton = () => {
+  const formContext = useContext(FormContext);
+  return (
+    <a
+      className={'form-page-option-note-button-small'}
+      {...formDownloadProps(formContext!)}
+    >
+      <DownloadIcon />
+    </a>
+  );
+};
+
+const PrintButton = () => (
+  <button
+    onClick={handlePrint}
+    className='form-page-option-note-button-large d-none d-md-flex'
+  >
+    Drukuj
+  </button>
+);
 
 export function SaveMenu() {
-    const [savingStated, setSavingStarted] = useState(false);
+  const [savingStated, setSavingStarted] = useState(false);
+  const formContext = useContext(FormContext);
+  const cruiseManagerNorDeputyIsCurrentUserErr =
+    formContext?.formState.errors[cruiseManagerNorDeputyIsCurrentUserErrName];
+  const [errorText, setErrorText] = useState('');
 
-    const CancelButton = () => (
-        <div className={'form-page-option-note-button-small'} onClick={() => setSavingStarted(false)}>
-            <CancelIcon />
+  useEffect(() => {
+    if (!cruiseManagerNorDeputyIsCurrentUserErr && errorText != '')
+      setErrorText('');
+    else if (cruiseManagerNorDeputyIsCurrentUserErr && errorText == '')
+      setErrorText(
+        'Aby zapisać zgłoszenie musisz być jego kierownikiem lub zastępcą'
+      );
+  }, [formContext]);
+
+  const CancelButton = () => (
+    <div
+      className={'form-page-option-note-button-small'}
+      onClick={() => setSavingStarted(false)}
+    >
+      <CancelIcon />
+    </div>
+  );
+
+  const SaveButton = () => {
+    const onClickAction = () => setSavingStarted(true);
+    return (
+      <button
+        onClick={onClickAction}
+        className='form-page-option-button-default'
+      >
+        Zapisz
+      </button>
+    );
+  };
+
+  const NoteInput = () => {
+    const formContext = useContext(FormContext);
+    return (
+      <input
+        maxLength={100}
+        {...formContext!.register('note')}
+        placeholder={'Notatka'}
+        className={'form-page-option-note-input d-none d-md-flex'}
+        type={'text'}
+      />
+    );
+  };
+
+  return {
+    menu: () => (
+      <div className={'d-flex flex-column w-100'}>
+        {errorText && (
+          <div className={'w-100 text-danger text-center p-2'}>{errorText}</div>
+        )}
+        <div className={'w-100 d-flex flex-row'}>
+          {formContext!.type === FormType.A && <NoteInput />}
+          <ConfirmSaveButton />
+          <PrintButton />
+          <CancelButton />
         </div>
-    );
-
-    const DownloadButton = () => {
-        const formContext = useContext(FormContext);
-        return (
-            <a className={'form-page-option-note-button-small'} {...formDownloadProps(formContext!)}>
-                <DownloadIcon />
-            </a>
-        );
-    };
-    const SaveButton = () => {
-        const onClickAction = () => setSavingStarted(true);
-        return (
-            <button onClick={onClickAction} className="form-page-option-button-default"> Zapisz </button>
-        );
-    };
-
-    const NoteInput = () => (
-        <input placeholder={'Notatka'} className={'form-page-option-note-input'} type={'text'} />
-    );
-    const ConfirmSaveButton = () => {
-        const formContext = useContext(FormContext);
-        return (
-            <div onClick={() => handleSave(formContext!)}
-                 className="form-page-option-note-button-large"> Potwierdź </div>
-        );
-    };
-
-    return {
-        menu: () => (
-            <>
-                <NoteInput />
-                <ConfirmSaveButton />
-                <DownloadButton />
-                <CancelButton />
-            </>
-        ),
-        saveButton: SaveButton,
-        enabled: savingStated,
-
-    };
-
+      </div>
+    ),
+    saveButton: SaveButton,
+    enabled: savingStated,
+  };
 }

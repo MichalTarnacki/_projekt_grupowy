@@ -6,7 +6,6 @@ using Microsoft.IdentityModel.Tokens;
 using ResearchCruiseApp_API.Application.ExternalServices;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
-using ResearchCruiseApp_API.Domain.Entities;
 using ResearchCruiseApp_API.Infrastructure.Persistence;
 using ResearchCruiseApp_API.Infrastructure.Persistence.Initialization;
 using ResearchCruiseApp_API.Infrastructure.Persistence.Repositories;
@@ -33,7 +32,8 @@ public static class DependencyInjection
             .AddScoped<IEmailSender, EmailSender>()
             .AddScoped<IYearBasedKeyGenerator, YearBasedKeyGenerator>()
             .AddScoped<ITemplateFileReader, TemplateFileReader>()
-            .AddScoped<ICurrentUserService, CurrentUserService>();
+            .AddScoped<ICurrentUserService, CurrentUserService>()
+            .AddScoped<IGlobalizationService, GlobalizationService>();
     }
     
     
@@ -55,7 +55,7 @@ public static class DependencyInjection
             .AddJwtBearer(options =>
             {
                 options.SaveToken = true;
-                options.TokenValidationParameters = new TokenValidationParameters()
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
@@ -82,7 +82,7 @@ public static class DependencyInjection
     private static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("ResearchCruiseApp-DB")));
+            options.UseSqlServer(configuration.GetConnectionString("ResearchCruiseApp")));
 
         services.AddScoped<ApplicationDbContextInitializer>();
         
@@ -99,6 +99,8 @@ public static class DependencyInjection
             .AddScoped<ISpubTasksRepository, SpubTasksRepository>()
             .AddScoped<IFormAResearchTasksRepository, FormAResearchTasksRepository>()
             .AddScoped<IFormAContractsRepository, FormAContractsRepository>()
+            .AddScoped<IFormAUgUnitsRepository, FormAUgUnitsRepository>()
+            .AddScoped<IFormAGuestUnitsRepository, FormAGuestUnitsRepository>()
             .AddScoped<IFormAPublicationsRepository, FormAPublicationsRepository>()
             .AddScoped<IFormASpubTasksRepository, FormASpubTasksRepository>()
             .AddScoped<ICruiseApplicationsRepository, CruiseApplicationsRepository>()
@@ -125,6 +127,7 @@ public static class DependencyInjection
             .AddScoped<ICollectedSamplesRepository, CollectedSamplesRepository>()
             .AddScoped<IPhotosRepository, PhotosRepository>()
             .AddScoped<IResearchTaskEffectsRepository, ResearchTaskEffectsRepository>()
-            .AddScoped<IUserEffectsRepository, UserEffectsRepository>();
+            .AddScoped<IUserEffectsRepository, UserEffectsRepository>()
+            .AddScoped<IUserPublicationsRepository, UserPublicationsRepository>();
     }
 }

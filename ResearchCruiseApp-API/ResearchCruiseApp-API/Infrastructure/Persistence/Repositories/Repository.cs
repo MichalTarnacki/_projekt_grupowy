@@ -6,7 +6,7 @@ using ResearchCruiseApp_API.Domain.Entities;
 namespace ResearchCruiseApp_API.Infrastructure.Persistence.Repositories;
 
 
-internal class Repository<T> : IRepository<T>
+internal abstract class Repository<T> : IRepository<T>
     where T : Entity
 {
     protected readonly ApplicationDbContext DbContext;
@@ -40,6 +40,19 @@ internal class Repository<T> : IRepository<T>
     public async Task Add(T newEntity, CancellationToken cancellationToken)
     {
         await DbContext.Set<T>().AddAsync(newEntity, cancellationToken);
+    }
+
+    public async Task UpdateOrAdd(T newEntity, CancellationToken cancellationToken)
+    {
+        var oldEntity = await DbContext.Set<T>().FirstOrDefaultAsync(e => e.Id.Equals(newEntity.Id), cancellationToken);
+        if (oldEntity != null)
+        {
+            DbContext.Set<T>().Entry(oldEntity).CurrentValues.SetValues(newEntity);
+        }
+        else
+        {
+            DbContext.Set<T>().Add(newEntity);
+        }
     }
 
     public void Delete(T entity)

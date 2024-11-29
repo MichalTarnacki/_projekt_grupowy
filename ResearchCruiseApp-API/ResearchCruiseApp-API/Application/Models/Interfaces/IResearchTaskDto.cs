@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using ResearchCruiseApp_API.Domain.Entities;
-
-namespace ResearchCruiseApp_API.Application.Models.Interfaces;
+﻿namespace ResearchCruiseApp_API.Application.Models.Interfaces;
 
 
 public interface IResearchTaskDto
@@ -10,6 +7,8 @@ public interface IResearchTaskDto
 
     string? Title { get; init; }
         
+    string? Magazine { get; init; }
+    
     string? Author { get; init; }
         
     string? Institution { get; init; }
@@ -29,13 +28,4 @@ public interface IResearchTaskDto
     string? SecuredAmount { get; init; }
 
     string? MinisterialPoints { get; init; }
-    
-    
-    private class MapProfile : Profile
-    {
-        public MapProfile()
-        {
-            CreateMap<IResearchTaskDto, ResearchTask>();
-        }
-    }
 }

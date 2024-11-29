@@ -8,6 +8,8 @@ import LinkWithState from '../../../components/Navigation/LinkWithState';
 import { Path } from '../../../ToBeMoved/Tools/Path';
 import { EMPTY_GUID } from '@consts/emptyGuid';
 import { CruiseStatus } from '@enums/CruiseStatus';
+import {parse} from "date-fns";
+import {dateFormat, localeCode} from "@consts/cultureConstants";
 
 export const TableReadOnlyField = (props: {
     fieldLabel: string;
@@ -27,20 +29,13 @@ export const TableReadOnlyFieldDate = (props: {
     fieldKey: keyof Cruise;
 }) => {
     const { cruise } = CruisesTools();
+    const date = new Date(cruise![props.fieldKey] as string);
+
     return (
         <div className={'task-field-input'}>
             <label className={'table-field-input-label'}>{props.fieldLabel}</label>
             <ReadOnlyTextInput
-                value={
-                    new Date(cruise![props.fieldKey] as string).toLocaleDateString('pl-PL', {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: false,
-                    }) as string
-                }
+                value={date.toLocaleDateString(localeCode, dateFormat)}
             />
         </div>
     );

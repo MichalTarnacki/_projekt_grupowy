@@ -443,8 +443,10 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("EndDate")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<Guid>("MainCruiseManagerId")
                         .HasColumnType("uniqueidentifier");
@@ -457,8 +459,10 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                         .HasMaxLength(1024)
                         .HasColumnType("nvarchar(1024)");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("StartDate")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -491,6 +495,10 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
 
                     b.Property<Guid?>("FormCId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
 
                     b.Property<int>("Number")
                         .ValueGeneratedOnAdd()
@@ -578,11 +586,11 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(1024)");
 
                     b.Property<string>("CruiseGoal")
-                        .IsRequired()
                         .HasMaxLength(1024)
                         .HasColumnType("nvarchar(1024)");
 
                     b.Property<string>("CruiseGoalDescription")
+                        .IsRequired()
                         .HasMaxLength(1024)
                         .HasColumnType("nvarchar(1024)");
 
@@ -598,6 +606,7 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("DifferentUsage")
+                        .IsRequired()
                         .HasMaxLength(1024)
                         .HasColumnType("nvarchar(1024)");
 
@@ -612,10 +621,11 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(1024)");
 
                     b.Property<string>("PeriodNotes")
+                        .IsRequired()
                         .HasMaxLength(1024)
                         .HasColumnType("nvarchar(1024)");
 
-                    b.Property<Guid>("ResearchAreaId")
+                    b.Property<Guid?>("ResearchAreaId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ResearchAreaInfo")
@@ -623,7 +633,6 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(1024)");
 
                     b.Property<string>("ShipUsage")
-                        .IsRequired()
                         .HasMaxLength(1024)
                         .HasColumnType("nvarchar(1024)");
 
@@ -1411,6 +1420,10 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                         .HasMaxLength(1024)
                         .HasColumnType("nvarchar(1024)");
 
+                    b.Property<string>("Magazine")
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
+
                     b.Property<string>("MinisterialPoints")
                         .HasMaxLength(1024)
                         .HasColumnType("nvarchar(1024)");
@@ -1559,6 +1572,25 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                     b.HasIndex("EffectId");
 
                     b.ToTable("UserEffects");
+                });
+
+            modelBuilder.Entity("ResearchCruiseApp_API.Domain.Entities.UserPublication", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PublicationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PublicationId");
+
+                    b.ToTable("UserPublications");
                 });
 
             modelBuilder.Entity("ResearchCruiseApp_API.Infrastructure.Services.Identity.User", b =>
@@ -1885,9 +1917,7 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                 {
                     b.HasOne("ResearchCruiseApp_API.Domain.Entities.ResearchArea", "ResearchArea")
                         .WithMany("FormsA")
-                        .HasForeignKey("ResearchAreaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ResearchAreaId");
 
                     b.Navigation("ResearchArea");
                 });
@@ -2261,7 +2291,7 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.HasOne("ResearchCruiseApp_API.Domain.Entities.ResearchTask", "ResearchTask")
-                        .WithMany("FormCResearchTasks")
+                        .WithMany("ResearchTasksEffects")
                         .HasForeignKey("ResearchTaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2280,6 +2310,17 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Effect");
+                });
+
+            modelBuilder.Entity("ResearchCruiseApp_API.Domain.Entities.UserPublication", b =>
+                {
+                    b.HasOne("ResearchCruiseApp_API.Domain.Entities.Publication", "Publication")
+                        .WithMany("UserPublications")
+                        .HasForeignKey("PublicationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Publication");
                 });
 
             modelBuilder.Entity("ResearchCruiseApp_API.Domain.Entities.Contract", b =>
@@ -2365,6 +2406,8 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("ResearchCruiseApp_API.Domain.Entities.Publication", b =>
                 {
                     b.Navigation("FormAPublications");
+
+                    b.Navigation("UserPublications");
                 });
 
             modelBuilder.Entity("ResearchCruiseApp_API.Domain.Entities.ResearchArea", b =>
@@ -2393,7 +2436,7 @@ namespace ResearchCruiseApp_API.Infrastructure.Persistence.Migrations
                 {
                     b.Navigation("FormAResearchTasks");
 
-                    b.Navigation("FormCResearchTasks");
+                    b.Navigation("ResearchTasksEffects");
                 });
 
             modelBuilder.Entity("ResearchCruiseApp_API.Domain.Entities.ResearchTaskEffect", b =>

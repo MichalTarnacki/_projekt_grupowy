@@ -1,12 +1,15 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ResearchCruiseApp_API.Application.Common.Constants;
 using ResearchCruiseApp_API.Application.Models.DTOs.CruiseApplications;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AcceptCruiseApplication;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AddCruiseApplication;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AddFormB;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AddFormC;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.AnswerAsSupervisor;
+using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.DeleteAllOwnPublications;
+using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.DeleteOwnPublication;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.EditCruiseApplicationEvaluation;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetAllCruiseApplications;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetCruiseApplicationById;
@@ -22,7 +25,9 @@ using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetOwnEffect
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.RefillFormB;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.RefillFormC;
 using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.UpdateEffects;
-using ResearchCruiseApp_API.Domain.Common.Constants;
+using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.UpdateFormA;
+using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.GetOwnPublications;
+using ResearchCruiseApp_API.Application.UseCases.CruiseApplications.PostOwnPublications;
 using ResearchCruiseApp_API.Web.Common.Extensions;
 
 namespace ResearchCruiseApp_API.Web.Controllers;
@@ -41,7 +46,7 @@ public class CruiseApplicationsController(IMediator mediator) : ControllerBase
             ? Ok(result.Data)
             : this.CreateError(result);
     }
-    
+
     [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.Shipowner}, {RoleName.CruiseManager},  {RoleName.Guest}")]
     [HttpGet("forCruise")]
     public async Task<IActionResult> GetCruiseApplicationsForCruise()
@@ -51,7 +56,7 @@ public class CruiseApplicationsController(IMediator mediator) : ControllerBase
             ? Ok(result.Data)
             : this.CreateError(result);
     }
-        
+
     [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.Shipowner}, {RoleName.CruiseManager}, {RoleName.Guest}")]
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetCruiseApplicationById(Guid id)
@@ -64,11 +69,23 @@ public class CruiseApplicationsController(IMediator mediator) : ControllerBase
 
     [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.Shipowner}, {RoleName.CruiseManager}")]
     [HttpPost]
-    public async Task<IActionResult> AddCruiseApplication([FromBody] FormADto formADto)
+    public async Task<IActionResult> AddCruiseApplication(
+        [FromBody] FormADto formADto, [FromQuery] bool isDraft = false)
     {
-        var result = await mediator.Send(new AddCruiseApplicationCommand(formADto));
+        var result = await mediator.Send(new AddCruiseApplicationCommand(formADto, isDraft));
         return result.IsSuccess
             ? Created()
+            : this.CreateError(result);
+    }
+
+    [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.Shipowner}, {RoleName.CruiseManager}")]
+    [HttpPut("{cruiseApplicationId:guid}/FormA")]
+    public async Task<IActionResult> UpdateFormA(
+        Guid cruiseApplicationId, [FromBody] FormADto formADto, [FromQuery] bool isDraft)
+    {
+        var result = await mediator.Send(new UpdateFormACommand(cruiseApplicationId, formADto, isDraft));
+        return result.IsSuccess
+            ? NoContent()
             : this.CreateError(result);
     }
     
@@ -99,9 +116,9 @@ public class CruiseApplicationsController(IMediator mediator) : ControllerBase
     
     [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.CruiseManager}")]
     [HttpPut("{cruiseApplicationId:guid}/FormB")]
-    public async Task<IActionResult> AddFormB(Guid cruiseApplicationId, [FromBody] FormBDto formBDto)
+    public async Task<IActionResult> AddFormB(Guid cruiseApplicationId, [FromBody] FormBDto formBDto, [FromQuery] bool isDraft)
     {
-        var result = await mediator.Send(new AddFormBCommand(cruiseApplicationId, formBDto));
+        var result = await mediator.Send(new AddFormBCommand(cruiseApplicationId, formBDto , isDraft));
         return result.IsSuccess
             ? Created()
             : this.CreateError(result);
@@ -210,7 +227,7 @@ public class CruiseApplicationsController(IMediator mediator) : ControllerBase
             ? NoContent()
             : this.CreateError(result);
     }
-    
+
     [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.Shipowner}, {RoleName.Guest}")]
     [HttpGet("{userId:guid}/effectsEvaluations")]
     public async Task<IActionResult> GetEffectsEvaluations(Guid userId)
@@ -220,7 +237,7 @@ public class CruiseApplicationsController(IMediator mediator) : ControllerBase
             ? Ok(result.Data)
             : this.CreateError(result);
     }
-    
+
     [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.Shipowner}, {RoleName.Guest}, {RoleName.CruiseManager}")]
     [HttpGet("{cruiseApplicationId:guid}/cruise")]
     public async Task<IActionResult> GetCruiseForCruiseApplication(Guid cruiseApplicationId)
@@ -230,7 +247,7 @@ public class CruiseApplicationsController(IMediator mediator) : ControllerBase
             ? Ok(result.Data)
             : this.CreateError(result);
     }
-    
+
     [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.Shipowner}, {RoleName.CruiseManager}, {RoleName.Guest}")]
     [HttpGet("effectsEvaluations")]
     public async Task<IActionResult> GetOwnEffectsEvaluations()
@@ -238,6 +255,46 @@ public class CruiseApplicationsController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(new GetOwnEffectsEvaluationsQuery());
         return result.IsSuccess
             ? Ok(result.Data)
+            : this.CreateError(result);
+    }
+
+    [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.Shipowner}, {RoleName.CruiseManager}")]
+    [HttpGet("ownPublications")]
+    public async Task<IActionResult> GetOwnPublications()
+    {
+        var result = await mediator.Send(new GetOwnPublicationsQuery());
+        return result.IsSuccess
+            ? Ok(result.Data)
+            : this.CreateError(result);
+    }
+    
+    [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.Shipowner}, {RoleName.CruiseManager}")]
+    [HttpPost("ownPublications")]
+    public async Task<IActionResult> PostOwnPublications([FromBody] PublicationDto[] publicationsDto)
+    {
+        var result = await mediator.Send(new PostOwnPublicationsCommand(publicationsDto));
+        return result.IsSuccess
+            ? NoContent()
+            : this.CreateError(result);
+    }
+
+    [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.Shipowner}, {RoleName.CruiseManager}")]
+    [HttpDelete("ownPublications/{publicationId:guid}")]
+    public async Task<IActionResult> DeleteOwnPublication(Guid publicationId)
+    {
+        var result = await mediator.Send(new DeleteOwnPublicationCommand(publicationId));
+        return result.IsSuccess
+            ? NoContent()
+            : this.CreateError(result);
+    }
+    
+    [Authorize(Roles = $"{RoleName.Administrator}, {RoleName.Shipowner}, {RoleName.CruiseManager}")]
+    [HttpDelete("ownPublications")]
+    public async Task<IActionResult> DeleteAllOwnPublication()
+    {
+        var result = await mediator.Send(new DeleteAllOwnPublicationsCommand());
+        return result.IsSuccess
+            ? NoContent()
             : this.CreateError(result);
     }
 }

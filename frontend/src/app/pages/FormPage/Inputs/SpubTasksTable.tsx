@@ -105,8 +105,8 @@ export const SpubTaskTable = (props: ThesesTableProps) => {
             validate: {
                 notEmptyArray: notEmptyArray<SpubTask>,
                 rightYearPeriod: (value: FieldValues) => {
-                    if (value.some((row: SpubTask) => row.yearTo < row.yearFrom)) {
-                        return 'Rok zakończenia przed rokiem rozpoczęcia';
+                    if (value.some((row: SpubTask) => new Date(row.yearTo) < new Date(row.yearFrom))) {
+                        return 'Rok zakończenia nie może być wcześniejszy niż rok rozpoczęcia';
                     }
                 },
             },

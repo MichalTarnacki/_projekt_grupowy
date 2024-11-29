@@ -1,9 +1,8 @@
-using AutoMapper;
 using MediatR;
-using ResearchCruiseApp_API.Application.Common.Models.ServiceResult;
 using ResearchCruiseApp_API.Application.ExternalServices;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence;
 using ResearchCruiseApp_API.Application.ExternalServices.Persistence.Repositories;
+using ResearchCruiseApp_API.Application.Models.Common.ServiceResult;
 using ResearchCruiseApp_API.Domain.Common.Enums;
 using ResearchCruiseApp_API.Domain.Entities;
 
@@ -14,8 +13,7 @@ public class ConfirmCruiseHandler(
     ICruisesRepository cruisesRepository,
     IEmailSender emailSender,
     IUnitOfWork unitOfWork,
-    IIdentityService identityService,
-    IMapper mapper)
+    IIdentityService identityService)
     : IRequestHandler<ConfirmCruiseCommand, Result>
 {
     public async Task<Result> Handle(ConfirmCruiseCommand request, CancellationToken cancellationToken)
