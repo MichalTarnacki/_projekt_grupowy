@@ -43,6 +43,8 @@ export const ExportCruisesForm = () => {
           name='year'
           disabled={exporting}
           maxLength={4}
+          validationPattern={/^[0-9]{4}$/}
+          validationPatternMessage={"Niepoprawny rok"}
         />
 
         <div className='d-flex w-100 mt-1 justify-content-end'>
