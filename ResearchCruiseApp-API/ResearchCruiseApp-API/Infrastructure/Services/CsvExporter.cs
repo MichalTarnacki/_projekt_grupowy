@@ -22,7 +22,7 @@ public class CsvExporter(
 
         foreach (var cruise in cruises)
         {
-            await AddGoogleCalendarCruises(csvContentBuilder, cruise);
+            await AddGoogleCalendarCruise(csvContentBuilder, cruise);
         }
 
         var csvContent = csvContentBuilder.ToString();
@@ -44,7 +44,7 @@ public class CsvExporter(
         return builder;
     }
 
-    private async Task AddGoogleCalendarCruises(StringBuilder csvContentBuilder, Cruise cruise)
+    private async Task AddGoogleCalendarCruise(StringBuilder csvContentBuilder, Cruise cruise)
     {
         var localStartTime = globalizationService.GetLocalString(cruise.StartDate);
         var localEndTime = globalizationService.GetLocalString(cruise.EndDate);
